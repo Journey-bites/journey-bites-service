@@ -1,12 +1,21 @@
 import supertest from 'supertest';
 
-import app, { startServer, closeServer } from '../app';
+import server from '../app';
+import mongo from '@/db/mongo';
 
-const request = supertest(app);
+const request = supertest(server);
 
 describe('GET /', () => {
-  beforeAll(startServer);
-  afterAll(closeServer);
+  beforeAll(async () => {
+    await mongo.connectDB();
+  });
+
+  afterAll((done) => {
+    server.close(async () => {
+      await mongo.disconnectDB();
+      done();
+    });
+  });
 
   it('responds with json', (done) => {
     request.get('/api/v1').set('Accept', 'application/json').expect('Content-Type', /json/).expect(

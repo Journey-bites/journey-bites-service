@@ -1,35 +1,19 @@
 /* eslint-disable no-console */
-import { type Server } from 'http';
 import 'dotenv/config';
 import express from 'express';
 
 import router from '@/routes';
+import mongoDB from '@/db/mongo';
 
 const PORT = process.env.PORT ?? 3001;
 
+mongoDB.connectDB();
 const app = express();
-let server: Server;
-
-const startServer = () => {
-  server = app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-};
-
-const closeServer = (done: () => void) => {
-  if (server) {
-    server.close(() => {
-      console.log('Server closed');
-      done();
-    });
-  }
-};
 
 app.use('/api/v1', router);
 
-if (require.main === module) {
-  startServer();
-}
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
-export { startServer, closeServer };
-export default app;
+export default server;

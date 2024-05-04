@@ -14,7 +14,9 @@ router.get(
         description: 'Hello World',
         schema: 
           {
-            "message": "Hello World",
+            "statusCode": 0,
+            "message": "Hello World!",
+            "data": null
           }
         } 
       #swagger.responses[500] = {
@@ -23,7 +25,9 @@ router.get(
   */
   (_, res) => {
     res.json({
-      message: 'Hello World',
+      statusCode: 0,
+      message: 'Hello World!',
+      data: null,
     });
   }
 );

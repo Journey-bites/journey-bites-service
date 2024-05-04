@@ -16,6 +16,7 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "no-console": "warn",
     "no-multiple-empty-lines": ["error", { "max": 1 }],
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"]
   }
 }

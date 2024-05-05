@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model SocialLinks {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  website   String?
+  instagram String?
+  facebook  String?
+  Profile   Profile[]
+}
+
+model Profile {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  pictureUrl    String?
+  bio           String?
+  socialLinks   SocialLinks? @relation(fields: [socialLinksId], references: [id])
+  socialLinksId String?      @db.ObjectId
+  User          User[]
+}
+
+model OAuthProvider {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  googleId   String?
+  facebookId String?
+  User       User[]
+}
+
+model Billing {
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  bankCode         String?
+  bankAccount      String?
+  bankAccountOwner String?
+  User             User[]
+}
+
+model User {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  email           String         @unique
+  emailVerified   Boolean
+  password        String
+  profile         Profile?       @relation(fields: [profileId], references: [id])
+  profileId       String?        @db.ObjectId
+  oAuthProvider   OAuthProvider? @relation(fields: [oAuthProviderId], references: [id])
+  oAuthProviderId String?        @db.ObjectId
+  billing         Billing?       @relation(fields: [billingId], references: [id])
+  billingId       String?        @db.ObjectId
+}

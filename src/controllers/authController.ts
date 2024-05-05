@@ -13,14 +13,6 @@ const authController = {
     try {
       const { email, password } = req.body;
 
-      if (!email || !password) {
-        throw new HttpException({
-          httpCode: 400,
-          errorCode: ErrorCode.USER_NOT_VERIFIED,
-          message: 'email, and password are required',
-        });
-      }
-
       const foundUser = await userService.findUserByEmail(email);
       const isUserExists = !!foundUser;
 
@@ -37,7 +29,7 @@ const authController = {
 
       return createResponse(res, {
         httpCode: 201,
-        message: `New user ${email} registered`,
+        message: 'User registered successfully',
       });
     } catch (error) {
       if (error instanceof HttpException) {
@@ -50,14 +42,6 @@ const authController = {
   login: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
-
-      if (!email || !password) {
-        throw new HttpException({
-          httpCode: 400,
-          errorCode: ErrorCode.USER_NOT_VERIFIED,
-          message: 'email and password are required',
-        });
-      }
 
       const user = await userService.findUserByEmail(email);
 

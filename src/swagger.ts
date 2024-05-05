@@ -1,13 +1,13 @@
 import swaggerAutogen from 'swagger-autogen';
 
-const PORT = process.env.PORT ?? 3001;
+const HOST = process.env.HOST ?? 'localhost:3001';
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'Description',
+    title: 'Journey bites API',
+    description: 'for the journey bites app',
   },
-  host: `localhost:${PORT}/api/v1`,
+  host: `${HOST}/api/v1`,
 };
 
 const outputFile = './swagger-output.json';

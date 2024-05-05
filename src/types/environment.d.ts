@@ -5,5 +5,6 @@ declare namespace NodeJS {
     DATABASE_URL: string;
     TOKEN_SECRET: string;
     TOKEN_EXPIRATION: string;
+    HOST: string;
   }
 }

@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 
 import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
+import authRouter from '@/routes/auth';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.get(
   */
   (_, res) => createResponse(res, { message: 'Hello World!' })
 );
+router.use('/auth', authRouter);
 
 export default router;

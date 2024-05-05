@@ -1,11 +1,29 @@
 import db from '@/db';
 
 const findUserById = async (id: string) => {
-  return db.user.findFirst({ where: { id } });
+  const user = await db.user.findUniqueOrThrow({
+    where: { id },
+    include: {
+      profile: true,
+      oAuthProvider: true,
+      billing: true,
+    },
+  });
+
+  return user;
 };
 
 const findUserByEmail = async (email: string) => {
-  return db.user.findFirst({ where: { email } });
+  const user = await db.user.findUniqueOrThrow({
+    where: { email },
+    include: {
+      profile: true,
+      oAuthProvider: true,
+      billing: true,
+    },
+  });
+
+  return user;
 };
 
 const createUser = async (email: string, hashedPassword: string) => {

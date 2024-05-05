@@ -4,6 +4,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
 import authRouter from '@/routes/auth';
+import userRouter from '@/routes/user';
+import authenticate from '@/middlewares/authenticate';
 
 const router = Router();
 
@@ -28,5 +30,8 @@ router.get(
   (_, res) => createResponse(res, { message: 'Hello World!' })
 );
 router.use('/auth', authRouter);
+
+router.use(authenticate);
+router.use('/user', userRouter);
 
 export default router;

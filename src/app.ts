@@ -3,11 +3,10 @@ import 'dotenv/config';
 import express from 'express';
 
 import router from '@/routes';
-import mongoDB from '@/db/mongo';
+import '@/db';
 
 const PORT = process.env.PORT ?? 3001;
 
-mongoDB.connectDB();
 const app = express();
 
 app.use('/api/v1', router);

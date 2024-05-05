@@ -12,14 +12,19 @@
     "pretty": "prettier --write src/**/*.ts",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "swagger": "ts-node -r dotenv/config ./src/swagger.ts"
+    "swagger:generate": "ts-node -r dotenv/config ./src/swagger.ts",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push"
   },
   "author": "north-4",
   "license": "MIT",
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "dependencies": {
+    "@prisma/client": "^5.13.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.3.3",
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
@@ -38,6 +43,7 @@
     "jest": "^29.7.0",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
+    "prisma": "^5.13.0",
     "supertest": "^7.0.0",
     "swagger-autogen": "^2.23.7",
     "ts-jest": "^29.1.2",

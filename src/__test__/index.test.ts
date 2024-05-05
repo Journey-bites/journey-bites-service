@@ -13,7 +13,7 @@ describe('GET /', () => {
     request.get('/api/v1').set('Accept', 'application/json').expect('Content-Type', /json/).expect(
       200,
       {
-        statusCode: 0,
+        errorCode: 0,
         message: 'Hello World!',
         data: null,
       },

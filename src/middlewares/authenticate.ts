@@ -4,11 +4,6 @@ import { HttpException } from '@/exceptions/HttpException';
 import ErrorCode from '@/exceptions/ErrorCode';
 import { verifyToken } from '@/utils/tokenHelper';
 
-type Payload = {
-  id: string;
-  email: string;
-};
-
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
@@ -23,7 +18,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
 
     const token = authHeader.split(' ')[1];
 
-    const jwtDecoded = verifyToken<Payload>(token);
+    const jwtDecoded = verifyToken(token);
 
     if (!jwtDecoded) {
       throw new HttpException({

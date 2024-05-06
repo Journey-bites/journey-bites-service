@@ -14,9 +14,8 @@ const authController = {
       const { email, password } = req.body;
 
       const foundUser = await userService.findUserByEmail(email);
-      const isUserExists = !!foundUser;
 
-      if (isUserExists) {
+      if (foundUser) {
         throw new HttpException({
           httpCode: 400,
           errorCode: ErrorCode.USER_ALREADY_EXISTS,

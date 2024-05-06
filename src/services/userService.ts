@@ -1,7 +1,7 @@
 import db from '@/db';
 
 const findUserById = async (id: string) => {
-  const user = await db.user.findUniqueOrThrow({
+  const user = await db.user.findUnique({
     where: { id },
     include: {
       profile: true,
@@ -14,7 +14,7 @@ const findUserById = async (id: string) => {
 };
 
 const findUserByEmail = async (email: string) => {
-  const user = await db.user.findUniqueOrThrow({
+  const user = await db.user.findUnique({
     where: { email },
     include: {
       profile: true,

@@ -10,7 +10,7 @@ export const generateToken = (payload: Record<string, any>) => {
 
 export const verifyToken = <
   T = {
-    userId: string;
+    id: string;
     email: string;
   },
 >(

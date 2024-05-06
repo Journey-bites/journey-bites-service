@@ -1,7 +1,8 @@
 import { CorsOptions } from 'cors';
 
 const allowedOrigins = [
-  'http://127.0.0.1:3005',
+  'http://localhost:3000',
+  'http://localhost:3001',
   'http://localhost:3005',
   'https://journey-bites.zeabur.app',
   'https://api-journey-bites.zeabur.app',

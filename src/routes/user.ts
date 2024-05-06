@@ -3,6 +3,10 @@ import userController from '@/controllers/userController';
 
 const router = Router();
 
-router.get('/', userController.getUserInfo);
+router.get(
+  '/',
+  // #swagger.security = [{'Bearer': []}]
+  userController.getUserInfo
+);
 
 export default router;

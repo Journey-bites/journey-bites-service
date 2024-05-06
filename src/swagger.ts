@@ -9,7 +9,15 @@ const doc = {
   },
   host: HOST,
   basePath: '/api/v1',
-  schemes: ['http', 'https'],
+  schemes: HOST.includes('localhost') ? ['http'] : ['https'],
+  securityDefinitions: {
+    Bearer: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"',
+    },
+  },
 };
 
 const outputFile = './swagger-output.json';

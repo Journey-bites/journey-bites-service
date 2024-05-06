@@ -7,7 +7,9 @@ const doc = {
     title: 'Journey bites API',
     description: 'for the journey bites app',
   },
-  host: `${HOST}/api/v1`,
+  host: HOST,
+  basePath: '/api/v1',
+  schemes: ['http', 'https'],
 };
 
 const outputFile = './swagger-output.json';

@@ -12,7 +12,7 @@ export class HttpException extends Error {
   public errorCode: ErrorCode;
   public data: unknown;
 
-  constructor({ httpCode, errorCode, message, data = null }: HttpErrorArgs<unknown>) {
+  constructor({ httpCode, errorCode, message, data }: HttpErrorArgs<unknown>) {
     super(message);
     this.httpCode = httpCode;
     this.errorCode = errorCode;

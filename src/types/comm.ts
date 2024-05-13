@@ -1,5 +1,13 @@
-export type BaseResponse<T = null> = {
-  errorCode: number;
+export type Meta = {
+  page: number;
+  totalPage: number;
+  totalData: number;
+  pageSize: number;
+};
+
+export type BaseResponse<T> = {
+  statusCode: number;
   message: string;
-  data: T | null;
+  data?: T;
+  meta?: Meta;
 };

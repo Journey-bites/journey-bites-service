@@ -18,7 +18,7 @@ const validateData = (schema: z.ZodObject<any, any>) => {
 
         createResponse(res, {
           httpCode: 400,
-          errorCode: ErrorCode.INVALID_FIELD,
+          errorCode: ErrorCode.ILLEGAL_PAYLOAD,
           message: 'Invalid field',
           data: errorMessages,
         });

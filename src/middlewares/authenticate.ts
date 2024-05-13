@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
-import ErrorCode from '@/exceptions/ErrorCode';
+import { PermissionDeniedException } from '@/exceptions/PermissionDeniedException';
 import { verifyToken } from '@/utils/tokenHelper';
 
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
@@ -9,11 +9,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     if (!authHeader || !authHeader.startsWith('Bearer ') || !authHeader.split(' ')[1]) {
-      throw new HttpException({
-        httpCode: 401,
-        errorCode: ErrorCode.USER_NOT_AUTHORIZED,
-        message: 'Token is required',
-      });
+      throw new PermissionDeniedException('Token is required');
     }
 
     const token = authHeader.split(' ')[1];
@@ -21,11 +17,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const jwtDecoded = verifyToken(token);
 
     if (!jwtDecoded) {
-      throw new HttpException({
-        httpCode: 401,
-        errorCode: ErrorCode.USER_NOT_AUTHORIZED,
-        message: 'Invalid token',
-      });
+      throw new PermissionDeniedException('Invalid token');
     }
 
     req.user = {
@@ -39,13 +31,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
       return next(error);
     }
 
-    return next(
-      new HttpException({
-        httpCode: 401,
-        errorCode: ErrorCode.USER_NOT_AUTHORIZED,
-        message: 'Permission denied',
-      })
-    );
+    return next(new PermissionDeniedException());
   }
 };
 

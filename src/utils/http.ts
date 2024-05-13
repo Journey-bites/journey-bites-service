@@ -4,15 +4,29 @@ import { BaseResponse } from '@/types/comm';
 
 type ResponseBody<T> = {
   httpCode?: number;
-} & Partial<BaseResponse<T>>;
+  errorCode?: ErrorCode;
+  message?: string;
+  data?: T;
+};
 
 export const createResponse = <T>(
   res: Response,
-  { httpCode = 200, errorCode = ErrorCode.NORMAL, message = 'success', data = null }: ResponseBody<T>
+  { httpCode = 200, errorCode = ErrorCode.NORMAL, message = 'success', data }: ResponseBody<T>
 ) => {
-  return res.status(httpCode).json({
-    errorCode,
-    message,
-    data,
-  } satisfies BaseResponse<T>);
+  let response: BaseResponse<T>;
+
+  if (!data) {
+    response = {
+      statusCode: errorCode,
+      message,
+    };
+  } else {
+    response = {
+      statusCode: errorCode,
+      message,
+      data,
+    };
+  }
+
+  return res.status(httpCode).json(response);
 };

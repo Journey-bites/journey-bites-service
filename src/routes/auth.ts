@@ -14,9 +14,14 @@ const loginSchema = z.object({
   password: z.string().min(8),
 });
 
+const checkEmailSchema = z.object({
+  email: z.string().email(),
+});
+
 const router = Router();
 
 router.post('/register', validateData(registerSchema), authController.register);
 router.post('/login', validateData(loginSchema), authController.login);
+router.post('/verify-email', validateData(checkEmailSchema), authController.verifyEmail);
 
 export default router;

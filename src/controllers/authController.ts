@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 
 import userService from '@/services/userService';
 import ErrorCode from '@/exceptions/ErrorCode';
@@ -8,8 +8,11 @@ import { createResponse } from '@/utils/http';
 import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
 
-const authController = {
-  register: async (req: Request, res: Response, next: NextFunction) => {
+type Method = 'register' | 'login' | 'verifyEmail';
+type AuthController = Record<Method, RequestHandler>;
+
+const authController: AuthController = {
+  register: async (req, res, next) => {
     try {
       const { email, password } = req.body;
 
@@ -38,7 +41,7 @@ const authController = {
       next(new SystemException('Error while registering new user'));
     }
   },
-  login: async (req: Request, res: Response, next: NextFunction) => {
+  login: async (req, res, next) => {
     try {
       const { email, password } = req.body;
 
@@ -77,6 +80,31 @@ const authController = {
         return;
       }
       next(new SystemException('Error while logging in'));
+    }
+  },
+  verifyEmail: async (req, res, next) => {
+    try {
+      const { email } = req.body;
+
+      const foundUser = await userService.findUserByEmail(email);
+
+      if (foundUser) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.USER_ALREADY_EXISTS,
+          message: 'User already exists',
+        });
+      }
+
+      return createResponse(res, {
+        message: 'Email is available',
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while verifying email'));
     }
   },
 };

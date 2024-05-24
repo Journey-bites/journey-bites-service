@@ -9,7 +9,7 @@ import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
 import authorityRepository from '@/repositories/authorityRepository';
 
-type Method = 'register' | 'login' | 'verifyEmail' | 'logout';
+type Method = 'register' | 'login' | 'verifyEmail' | 'logout' | 'resetPassword';
 type AuthController = Record<Method, RequestHandler>;
 
 const authController: AuthController = {
@@ -121,6 +121,25 @@ const authController: AuthController = {
         return;
       }
       next(new SystemException('Error while logging out'));
+    }
+  },
+  resetPassword: async (req, res, next) => {
+    try {
+      const { password } = req.body;
+      const userId = req.user.id;
+
+      const hashedPassword = await hashPassword(password);
+      await userService.updateUserPassword(userId, hashedPassword);
+
+      return createResponse(res, {
+        message: 'Password updated successfully',
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while resetting password'));
     }
   },
 };

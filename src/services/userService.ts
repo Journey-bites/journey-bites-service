@@ -41,8 +41,22 @@ const createUser = async (email: string, hashedPassword: string) => {
   }
 };
 
+const updateUserPassword = async (id: string, hashedPassword: string) => {
+  try {
+    await db.user.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while updating user password');
+  }
+};
+
 export default {
   findUserById,
   findUserByEmail,
   createUser,
+  updateUserPassword,
 };

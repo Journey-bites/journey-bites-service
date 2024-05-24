@@ -23,6 +23,7 @@ const authenticate: RequestHandler = async (req, res, next) => {
     req.user = {
       id: authorityInfo.id,
       email: authorityInfo.email,
+      token,
     };
 
     next();

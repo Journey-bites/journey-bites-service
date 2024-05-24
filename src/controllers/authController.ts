@@ -9,7 +9,7 @@ import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
 import authorityRepository from '@/repositories/authorityRepository';
 
-type Method = 'register' | 'login' | 'verifyEmail';
+type Method = 'register' | 'login' | 'verifyEmail' | 'logout';
 type AuthController = Record<Method, RequestHandler>;
 
 const authController: AuthController = {
@@ -108,6 +108,19 @@ const authController: AuthController = {
         return;
       }
       next(new SystemException('Error while verifying email'));
+    }
+  },
+  logout: async (req, res, next) => {
+    try {
+      await authorityRepository.deleteAuthority(req.user.token);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while logging out'));
     }
   },
 };

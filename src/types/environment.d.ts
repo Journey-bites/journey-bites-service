@@ -4,7 +4,7 @@ declare namespace NodeJS {
     SALT_ROUNDS: string;
     DATABASE_URL: string;
     TOKEN_SECRET: string;
-    TOKEN_EXPIRATION: string;
+    REDIS_URI: string;
     HOST: string;
   }
 }

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import { createResponse } from '@/utils/http';
 import ErrorCode from '@/exceptions/ErrorCode';
 
 // must have 4 parameters to be recognized as an error handler
-const errorHandler = (err: unknown, req: Request, res: Response, next: NextFunction) => {
+// eslint-disable-next-line no-unused-vars
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err instanceof Error) {
     if (err instanceof HttpException) {
       createResponse(res, {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
-import express, { NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 app.use('/api/v1', router);
 
-app.use((_, __, next: NextFunction) => {
+app.use((_, __, next) => {
   const err = new NotFoundException();
   next(err);
 });

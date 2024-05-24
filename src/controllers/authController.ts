@@ -7,6 +7,7 @@ import { HttpException } from '@/exceptions/HttpException';
 import { createResponse } from '@/utils/http';
 import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
+import authorityRepository from '@/repositories/authorityRepository';
 
 type Method = 'register' | 'login' | 'verifyEmail';
 type AuthController = Record<Method, RequestHandler>;
@@ -65,13 +66,15 @@ const authController: AuthController = {
         });
       }
 
-      const jwtPayload = { id: user.id, email };
-      const accessToken = generateToken(jwtPayload);
+      const userPayload = { id: user.id, email };
+      const userToken = generateToken();
+
+      await authorityRepository.setAuthority(userToken, userPayload);
 
       return createResponse(res, {
         message: 'Login successful',
         data: {
-          token: accessToken,
+          token: userToken,
         },
       });
     } catch (error) {

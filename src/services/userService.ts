@@ -26,12 +26,17 @@ const findUserByEmail = async (email: string) => {
   return user;
 };
 
-const createUser = async (email: string, hashedPassword: string) => {
+const createUser = async (email: string, hashedPassword: string, displayName: string) => {
   try {
     const user = await db.user.create({
       data: {
         email,
         password: hashedPassword,
+        profile: {
+          create: {
+            displayName,
+          },
+        },
       },
     });
 

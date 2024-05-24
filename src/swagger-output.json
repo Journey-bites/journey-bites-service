@@ -7,9 +7,7 @@
   },
   "host": "localhost:3005",
   "basePath": "/api/v1",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "securityDefinitions": {
     "Bearer": {
       "type": "apiKey",
@@ -21,9 +19,7 @@
   "paths": {
     "/": {
       "get": {
-        "tags": [
-          "default"
-        ],
+        "tags": ["default"],
         "description": "Demo",
         "responses": {
           "200": {
@@ -67,6 +63,9 @@
                 },
                 "password": {
                   "example": "any"
+                },
+                "displayName": {
+                  "example": "any"
                 }
               }
             }
@@ -92,6 +91,64 @@
                 "email": {
                   "example": "any"
                 },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/verify-email": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
                 "password": {
                   "example": "any"
                 }

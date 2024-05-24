@@ -9,6 +9,7 @@ import authenticate from '@/middlewares/authenticate';
 const registerSchema = z.object({
   email: z.string().email(),
   password: passwordSchema,
+  displayName: z.string().max(50),
 });
 
 const loginSchema = z.object({

@@ -15,8 +15,7 @@ type AuthController = Record<Method, RequestHandler>;
 const authController: AuthController = {
   register: async (req, res, next) => {
     try {
-      const { email, password } = req.body;
-
+      const { email, password, displayName } = req.body;
       const foundUser = await userService.findUserByEmail(email);
 
       if (foundUser) {
@@ -28,7 +27,7 @@ const authController: AuthController = {
       }
 
       const hashedPassword = await hashPassword(password);
-      await userService.createUser(email, hashedPassword);
+      await userService.createUser(email, hashedPassword, displayName);
 
       return createResponse(res, {
         httpCode: 201,

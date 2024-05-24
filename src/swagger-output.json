@@ -7,9 +7,7 @@
   },
   "host": "localhost:3005",
   "basePath": "/api/v1",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "securityDefinitions": {
     "Bearer": {
       "type": "apiKey",
@@ -21,9 +19,7 @@
   "paths": {
     "/": {
       "get": {
-        "tags": [
-          "default"
-        ],
+        "tags": ["default"],
         "description": "Demo",
         "responses": {
           "200": {
@@ -63,10 +59,13 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "any"
+                  "example": "test@example.com"
                 },
                 "password": {
-                  "example": "any"
+                  "example": "abc12345"
+                },
+                "displayName": {
+                  "example": "Journey bites"
                 }
               }
             }

@@ -22,13 +22,13 @@ model SocialLinks {
 }
 
 model Profile {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  pictureUrl    String?
-  bio           String?
-  socialLinks   SocialLinks? @relation(fields: [socialLinksId], references: [id])
-  socialLinksId String?      @db.ObjectId
-  User          User[]
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  displayName    String
+  avatarImageUrl String?
+  bio            String?
+  socialLinks    SocialLinks? @relation(fields: [socialLinksId], references: [id])
+  socialLinksId  String?      @db.ObjectId
+  User           User[]
 }
 
 model OAuthProvider {

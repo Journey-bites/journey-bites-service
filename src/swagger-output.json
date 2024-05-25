@@ -50,59 +50,448 @@
     },
     "/auth/register": {
       "post": {
-        "description": "",
+        "tags": ["Auth"],
+        "description": "Register a new user with email, password, and display name.",
         "parameters": [
           {
-            "name": "body",
+            "name": "payload",
             "in": "body",
+            "description": "User information",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "test@example.com"
+                  "type": "string",
+                  "example": "journey-bites@gmail.com"
                 },
                 "password": {
-                  "example": "abc12345"
+                  "type": "string",
+                  "example": "test1234"
                 },
                 "displayName": {
-                  "example": "Journey bites"
+                  "type": "string",
+                  "example": "Journey Bites"
                 }
               }
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "User created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User created successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User already exists"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while registering new user"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
     },
     "/auth/login": {
       "post": {
-        "description": "",
+        "tags": ["Auth"],
+        "description": "Login with email and password.",
         "parameters": [
           {
-            "name": "body",
+            "name": "payload",
             "in": "body",
+            "description": "User information",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "journey-bites@gmail.com"
                 },
                 "password": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "test1234"
                 }
               }
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User created successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "6a431b030bfcb67e98ff0eaafbe43c3ed0addc7809cfc946"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "User not found or wrong password",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2008
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User not found or wrong password"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while logging in"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
+      }
+    },
+    "/auth/verify-email": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Verify email.",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "User information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "journey-bites@gmail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email is available",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Email is available\""
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User already exists"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while verifying email"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "Logout.",
+        "responses": {
+          "204": {
+            "description": "Logout successful"
+          },
+          "401": {
+            "description": "Token is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Token is invalid"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while logging out"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/reset-password": {
+      "patch": {
+        "tags": ["Auth"],
+        "description": "Reset password.",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "New password",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "test5678"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email is available",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Password updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Token is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Token is invalid"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while verifying email"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/user/": {

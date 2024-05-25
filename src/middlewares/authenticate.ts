@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
 import { PermissionDeniedException } from '@/exceptions/PermissionDeniedException';
-import { verifyToken } from '@/utils/tokenHelper';
+import authorityRepository from '@/repositories/authorityRepository';
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+const authenticate: RequestHandler = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   try {
@@ -14,15 +14,16 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
 
     const token = authHeader.split(' ')[1];
 
-    const jwtDecoded = verifyToken(token);
+    const authorityInfo = await authorityRepository.getAuthority(token);
 
-    if (!jwtDecoded) {
-      throw new PermissionDeniedException('Invalid token');
+    if (!authorityInfo) {
+      throw new PermissionDeniedException('Token is invalid');
     }
 
     req.user = {
-      id: jwtDecoded.id,
-      email: jwtDecoded.email,
+      id: authorityInfo.id,
+      email: authorityInfo.email,
+      token,
     };
 
     next();

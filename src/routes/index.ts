@@ -31,7 +31,6 @@ router.get(
 );
 router.use('/auth', authRouter);
 
-router.use(authenticate);
-router.use('/user', userRouter);
+router.use('/user', authenticate, userRouter);
 
 export default router;

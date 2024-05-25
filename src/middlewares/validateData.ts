@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { z, ZodError } from 'zod';
 
 import { createResponse } from '@/utils/http';
 import ErrorCode from '@/exceptions/ErrorCode';
 
-const validateData = (schema: z.ZodObject<any, any>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+const validateData: (schema: z.ZodObject<any, any>) => RequestHandler = (schema) => {
+  return (req, res, next) => {
     try {
       schema.parse(req.body);
       next();

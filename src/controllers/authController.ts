@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 
 import userService from '@/services/userService';
 import ErrorCode from '@/exceptions/ErrorCode';
@@ -7,9 +7,13 @@ import { HttpException } from '@/exceptions/HttpException';
 import { createResponse } from '@/utils/http';
 import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
+import authorityRepository from '@/repositories/authorityRepository';
 
-const authController = {
-  register: async (req: Request, res: Response, next: NextFunction) => {
+type Method = 'register' | 'login' | 'verifyEmail' | 'logout' | 'resetPassword';
+type AuthController = Record<Method, RequestHandler>;
+
+const authController: AuthController = {
+  register: async (req, res, next) => {
     try {
       const { email, password, displayName } = req.body;
       const foundUser = await userService.findUserByEmail(email);
@@ -37,7 +41,7 @@ const authController = {
       next(new SystemException('Error while registering new user'));
     }
   },
-  login: async (req: Request, res: Response, next: NextFunction) => {
+  login: async (req, res, next) => {
     try {
       const { email, password } = req.body;
 
@@ -61,13 +65,15 @@ const authController = {
         });
       }
 
-      const jwtPayload = { id: user.id, email };
-      const accessToken = generateToken(jwtPayload);
+      const userPayload = { id: user.id, email };
+      const userToken = generateToken();
+
+      await authorityRepository.setAuthority(userToken, userPayload);
 
       return createResponse(res, {
         message: 'Login successful',
         data: {
-          token: accessToken,
+          token: userToken,
         },
       });
     } catch (error) {
@@ -76,6 +82,63 @@ const authController = {
         return;
       }
       next(new SystemException('Error while logging in'));
+    }
+  },
+  verifyEmail: async (req, res, next) => {
+    try {
+      const { email } = req.body;
+
+      const foundUser = await userService.findUserByEmail(email);
+
+      if (foundUser) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.USER_ALREADY_EXISTS,
+          message: 'User already exists',
+        });
+      }
+
+      return createResponse(res, {
+        message: 'Email is available',
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while verifying email'));
+    }
+  },
+  logout: async (req, res, next) => {
+    try {
+      await authorityRepository.deleteAuthority(req.user.token);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while logging out'));
+    }
+  },
+  resetPassword: async (req, res, next) => {
+    try {
+      const { password } = req.body;
+      const userId = req.user.id;
+
+      const hashedPassword = await hashPassword(password);
+      await userService.updateUserPassword(userId, hashedPassword);
+
+      return createResponse(res, {
+        message: 'Password updated successfully',
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while resetting password'));
     }
   },
 };

@@ -12,9 +12,9 @@ const updateUserRequestSchema = z.object({
   bio: z.string().optional(),
   socialLinks: z
     .object({
-      website: z.string().optional(),
-      instagram: z.string().optional(),
-      facebook: z.string().optional(),
+      website: z.string().url().optional(),
+      instagram: z.string().url().optional(),
+      facebook: z.string().url().optional(),
     })
     .optional(),
 });

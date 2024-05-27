@@ -1,10 +1,19 @@
+import { Profile, SocialLinks } from '@prisma/client';
+
 import db from '@/db';
 
 const findUserById = async (id: string) => {
   const user = await db.user.findUnique({
     where: { id },
     include: {
-      profile: true,
+      profile: {
+        select: {
+          displayName: true,
+          avatarImageUrl: true,
+          bio: true,
+          socialLinks: true,
+        },
+      },
       oAuthProvider: true,
       billing: true,
     },
@@ -17,7 +26,14 @@ const findUserByEmail = async (email: string) => {
   const user = await db.user.findUnique({
     where: { email },
     include: {
-      profile: true,
+      profile: {
+        select: {
+          displayName: true,
+          avatarImageUrl: true,
+          bio: true,
+          socialLinks: true,
+        },
+      },
       oAuthProvider: true,
       billing: true,
     },
@@ -35,7 +51,16 @@ const createUser = async (email: string, hashedPassword: string, displayName: st
         profile: {
           create: {
             displayName,
+            socialLinks: {
+              create: {},
+            },
           },
+        },
+        oAuthProvider: {
+          create: {},
+        },
+        billing: {
+          create: {},
         },
       },
     });
@@ -59,9 +84,42 @@ const updateUserPassword = async (id: string, hashedPassword: string) => {
   }
 };
 
+const updateUserProfile = async (
+  id: string,
+  userProfile: Partial<Profile> & { socialLinks?: Partial<SocialLinks> }
+) => {
+  const { displayName, avatarImageUrl, bio, socialLinks } = userProfile;
+  const { website, instagram, facebook } = socialLinks || {};
+
+  try {
+    await db.user.update({
+      where: { id },
+      data: {
+        profile: {
+          update: {
+            displayName,
+            avatarImageUrl,
+            bio,
+            socialLinks: {
+              update: {
+                website,
+                instagram,
+                facebook,
+              },
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while updating user profile');
+  }
+};
+
 export default {
   findUserById,
   findUserByEmail,
   createUser,
   updateUserPassword,
+  updateUserProfile,
 };

@@ -1,9 +1,16 @@
-import prisma from '@/db';
+import db from '@/db';
 
 const findArticleHotByCount = async (count: number) => {
-  return prisma.articles.findMany({
+  return db.articles.findMany({
     include: {
-      status: true,
+      // status: true,
+      status: {
+        select: {
+          views: true,
+          likes: true,
+          subscriptions: true,
+        },
+      },
     },
 
     orderBy: {

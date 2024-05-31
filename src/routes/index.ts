@@ -33,6 +33,6 @@ router.get(
 router.use('/auth', authRouter);
 
 router.use('/user', authenticate, userRouter);
-router.use('/articles-hot', authenticate, articleHotRouter);
+router.use('/articles-hot', articleHotRouter);
 
 export default router;

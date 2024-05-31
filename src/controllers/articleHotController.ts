@@ -1,17 +1,32 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
 import articleHotServices from '@/services/articleHotServices';
 import { SystemException } from '@/exceptions/SystemException';
 import { createResponse } from '@/utils/http';
 
-const userController = {
-  getArticleHotInfo: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const parmCount = req.query.count as string;
-      const count = parseInt(parmCount);
+interface RequestParams {}
 
-      const articleHot = await articleHotServices.findArticleHotByCount(count);
+interface ResponseBody {}
+
+interface RequestBody {}
+
+interface RequestQuery {
+  count: string;
+}
+
+const userController = {
+  getArticleHotInfo: async (
+    req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { count } = req.query;
+
+      const countNum = parseInt(count);
+
+      const articleHot = await articleHotServices.findArticleHotByCount(countNum);
 
       return createResponse(res, {
         data: articleHot,

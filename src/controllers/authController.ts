@@ -27,7 +27,7 @@ const authController: AuthController = {
       }
 
       const hashedPassword = await hashPassword(password);
-      await userService.createUser(email, hashedPassword, displayName);
+      await userService.createUser(email, hashedPassword, { displayName });
 
       return createResponse(res, {
         httpCode: 201,

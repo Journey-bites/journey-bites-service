@@ -1,3 +1,5 @@
+import { Profile, SocialLinks } from '@prisma/client';
+
 export type Meta = {
   page: number;
   totalPage: number;
@@ -11,3 +13,5 @@ export type BaseResponse<T> = {
   data?: T;
   meta?: Meta;
 };
+
+export type UserProfile = Omit<Profile, 'id' | 'socialLinksId'> & { socialLinks: Partial<SocialLinks> };

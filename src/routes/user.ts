@@ -7,7 +7,7 @@ import validateData from '@/middlewares/validateData';
 const router = Router();
 
 const updateUserRequestSchema = z.object({
-  displayName: z.string().max(50),
+  displayName: z.string().max(50).optional(),
   avatarImageUrl: z.string().optional(),
   bio: z.string().optional(),
   socialLinks: z

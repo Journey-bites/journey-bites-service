@@ -201,6 +201,30 @@ const followUser = async (followerUserId: string, followingUserId: string) => {
   }
 };
 
+const unfollowUser = async (followerUserId: string, followingUserId: string) => {
+  try {
+    const isFollowed = await db.follow.findFirst({
+      where: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+
+    if (!isFollowed) {
+      return;
+    }
+
+    await db.follow.deleteMany({
+      where: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while unfollowing user');
+  }
+};
+
 export default {
   findUserById,
   findUserByEmail,
@@ -210,4 +234,5 @@ export default {
   updateUserOauthProvider,
   getUserFollowers,
   followUser,
+  unfollowUser,
 };

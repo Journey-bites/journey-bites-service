@@ -145,6 +145,10 @@ router.post(
       description: 'User followed successfully',
       schema: { statusCode: 0, message: 'User followed successfully' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You cannot follow yourself' }
+    }
     #swagger.responses[404] = {
       description: 'User not found',
       schema: { statusCode: 1001, message: 'User not found' }
@@ -155,6 +159,32 @@ router.post(
     }
   */
   userController.followUser
+);
+
+router.delete(
+  '/:userId/follow',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Unfollow a user.'
+    #swagger.responses[200] = {
+      description: 'User unfollowed successfully',
+      schema: { statusCode: 0, message: 'User unfollowed successfully' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You cannot unfollow yourself' }
+    }
+    #swagger.responses[404] = {
+      description: 'User not found',
+      schema: { statusCode: 1001, message: 'User not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while unfollowing user' }
+    }
+  */
+  userController.unfollowUser
 );
 
 export default router;

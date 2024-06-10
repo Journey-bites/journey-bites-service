@@ -1,13 +1,13 @@
 import { RequestHandler } from 'express';
 
-import { HttpException } from '@/exceptions/HttpException';
 import ErrorCode from '@/exceptions/ErrorCode';
-import userService from '@/services/userService';
+import { HttpException } from '@/exceptions/HttpException';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
+import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 
-type Method = 'getUserInfo' | 'updateUserProfile' | 'getUserFollowers' | 'followUser';
+type Method = 'getUserInfo' | 'updateUserProfile' | 'getUserFollowers' | 'followUser' | 'unfollowUser';
 type UserController = Record<Method, RequestHandler>;
 
 const userController: UserController = {
@@ -81,6 +81,14 @@ const userController: UserController = {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
+    if (followerUserId === followingUserId) {
+      return createResponse(res, {
+        httpCode: 400,
+        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+        message: 'You cannot follow yourself',
+      });
+    }
+
     try {
       const followingUser = await userService.findUserById(followingUserId);
 
@@ -90,16 +98,43 @@ const userController: UserController = {
 
       await userService.followUser(followerUserId, followingUserId);
 
-      return createResponse(res, {
-        httpCode: 201,
-        message: 'User followed successfully',
-      });
+      return createResponse(res, { httpCode: 204 });
     } catch (error) {
       if (error instanceof HttpException) {
         next(error);
         return;
       }
       throw new SystemException('Error while following user');
+    }
+  },
+  unfollowUser: async (req, res, next) => {
+    const followerUserId = req.user.id;
+    const followingUserId = req.params.userId;
+
+    if (followerUserId === followingUserId) {
+      return createResponse(res, {
+        httpCode: 400,
+        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+        message: 'You cannot unfollow yourself',
+      });
+    }
+
+    try {
+      const followingUser = await userService.findUserById(followingUserId);
+
+      if (!followingUser) {
+        throw new UserNotFoundException();
+      }
+
+      await userService.unfollowUser(followerUserId, followingUserId);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      throw new SystemException('Error while unfollowing user');
     }
   },
 };

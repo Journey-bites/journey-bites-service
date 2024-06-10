@@ -45,7 +45,7 @@ const hotArticleController = {
         return;
       }
 
-      throw new SystemException('Error while getting user info');
+      throw new SystemException('Error while getting hot article info');
     }
   },
 };

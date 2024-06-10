@@ -156,7 +156,7 @@ const authController: AuthController = {
 
       const params = new URLSearchParams({ token: userToken }).toString();
 
-      res.redirect(`${process.env.CLIENT_URL}/login/callback?${params}`);
+      res.redirect(`${process.env.CLIENT_URL}/login?${params}`);
     } catch (error) {
       if (error instanceof HttpException) {
         next(error);

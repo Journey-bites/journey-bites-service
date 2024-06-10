@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import corsOptions from '@/config/corsOptions';
+import '@/config/passport';
 import router from '@/routes';
 import '@/db';
 import errorHandler from '@/middlewares/errorHandler';

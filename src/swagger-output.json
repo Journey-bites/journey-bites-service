@@ -494,12 +494,252 @@
         ]
       }
     },
-    "/user/": {
+    "/auth/google": {
       "get": {
         "description": "",
         "responses": {
           "default": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user profile information.",
+        "responses": {
+          "200": {
+            "description": "User profile information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "journey-bites@gmail.com"
+                    },
+                    "emailVerified": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "profile": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string",
+                          "example": "Journey"
+                        },
+                        "avatarImageUrl": {
+                          "type": "string",
+                          "example": "https://journey-bites.com/avatar.jpg"
+                        },
+                        "bio": {
+                          "type": "string",
+                          "example": "Travel blogger"
+                        },
+                        "socialLinks": {
+                          "type": "object",
+                          "properties": {
+                            "website": {
+                              "type": "string",
+                              "example": "https://journey-bites.com"
+                            },
+                            "instagram": {
+                              "type": "string",
+                              "example": "https://instagram.com/journey-bites"
+                            },
+                            "facebook": {
+                              "type": "string",
+                              "example": "https://facebook.com/journey-bites"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "billing": {
+                      "type": "object",
+                      "properties": {
+                        "bankCode": {},
+                        "bankAccount": {},
+                        "bankAccountOwner": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user info"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["User"],
+        "description": "Update user profile information.",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "User profile",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "displayName": {
+                  "type": "string",
+                  "example": "Journey Bites"
+                },
+                "avatarImageUrl": {
+                  "type": "string",
+                  "example": "https://journey-bites.com/avatar.jpg"
+                },
+                "bio": {
+                  "type": "string",
+                  "example": "Travel blogger"
+                },
+                "socialLinks": {
+                  "type": "object",
+                  "properties": {
+                    "website": {
+                      "type": "string",
+                      "example": "https://journey-bites.com"
+                    },
+                    "instagram": {
+                      "type": "string",
+                      "example": "https://instagram.com/journey-bites"
+                    },
+                    "facebook": {
+                      "type": "string",
+                      "example": "https://facebook.com/journey-bites"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User profile updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User profile updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while updating user profile"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         },
         "security": [

@@ -5,6 +5,7 @@ import { passwordSchema } from '@/constants/schema';
 import authController from '@/controllers/authController';
 import validateData from '@/middlewares/validateData';
 import authenticate from '@/middlewares/authenticate';
+import passport from 'passport';
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -186,6 +187,13 @@ router.patch(
   authenticate,
   validateData(resetPasswordSchema),
   authController.resetPassword
+);
+
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  authController.authorizationCallback
 );
 
 export default router;

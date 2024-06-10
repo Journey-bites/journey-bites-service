@@ -9,7 +9,7 @@ import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
 import authorityRepository from '@/repositories/authorityRepository';
 
-type Method = 'register' | 'login' | 'verifyEmail' | 'logout' | 'resetPassword';
+type Method = 'register' | 'login' | 'verifyEmail' | 'logout' | 'resetPassword' | 'authorizationCallback';
 type AuthController = Record<Method, RequestHandler>;
 
 const authController: AuthController = {
@@ -27,7 +27,7 @@ const authController: AuthController = {
       }
 
       const hashedPassword = await hashPassword(password);
-      await userService.createUser(email, hashedPassword, displayName);
+      await userService.createUser(email, hashedPassword, { displayName });
 
       return createResponse(res, {
         httpCode: 201,
@@ -45,7 +45,7 @@ const authController: AuthController = {
     try {
       const { email, password } = req.body;
 
-      const user = await userService.findUserByEmail(email);
+      const user = await userService.findUserByEmail(email, true);
 
       if (!user) {
         throw new HttpException({
@@ -139,6 +139,30 @@ const authController: AuthController = {
         return;
       }
       next(new SystemException('Error while resetting password'));
+    }
+  },
+  authorizationCallback: async (req, res, next) => {
+    try {
+      if (!req.user) {
+        throw new Error('loginCallback error!');
+      }
+
+      const { id, email } = req.user;
+
+      const userPayload = { id, email };
+      const userToken = generateToken();
+
+      await authorityRepository.setAuthority(userToken, userPayload);
+
+      const params = new URLSearchParams({ token: userToken }).toString();
+
+      res.redirect(`${process.env.CLIENT_URL}/login/callback?${params}`);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while oauth logging in'));
     }
   },
 };

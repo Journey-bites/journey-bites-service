@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import articleHotController from '@/controllers/articleHotController';
+import hotArticleController from '@/controllers/hotArticleController';
 
 const router = Router();
 
 router.get(
   '/',
   // #swagger.security = [{'Bearer': []}]
-  articleHotController.getArticleHotInfo
+  hotArticleController.getHotArticleInfo
 );
 
 export default router;

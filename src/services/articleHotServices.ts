@@ -3,7 +3,6 @@ import db from '@/db';
 const findArticleHotByCount = async (count: number) => {
   return db.articles.findMany({
     include: {
-      // status: true,
       status: {
         select: {
           views: true,
@@ -24,5 +23,5 @@ const findArticleHotByCount = async (count: number) => {
 };
 
 export default {
-  findArticleHotByCount,
+  findHotArticleByCount: findArticleHotByCount,
 };

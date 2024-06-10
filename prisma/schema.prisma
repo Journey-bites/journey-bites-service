@@ -63,9 +63,7 @@ model User {
 model Articles {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   creatorId    User          @relation(fields: [id], references: [id])
-  // creatorId    String
-  // creator      User     @relation(fields: [creatorId], references: [id]) // user.username
-  creator      String // user.username // https://ithelp.ithome.com.tw/articles/10251700
+  creator      String
   title        String
   abstract     String
   content      String
@@ -73,17 +71,14 @@ model Articles {
   needsPay     Boolean
   wordsCount   Int
   readingTime  Int
-  status       StatusArticle @relation(fields: [statusId], references: [id])
+  status       ArticleStatus @relation(fields: [statusId], references: [id])
   statusId     String        @db.ObjectId
   tags         String[]
-  // categoriesId String        @db.ObjectId
-  // category     Categories @relation(fields: [categoriesId], references: [id]) // Categories.
-  // category     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
 
-model StatusArticle {
+model ArticleStatus {
   id            String     @id @default(auto()) @map("_id") @db.ObjectId
   views         Int
   likes         Int
@@ -96,7 +91,6 @@ model Categories {
   name        String
   path        String
   description String
-  // Articles    Articles[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

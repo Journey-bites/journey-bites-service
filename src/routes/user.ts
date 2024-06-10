@@ -101,4 +101,60 @@ router.patch(
   userController.updateUserProfile
 );
 
+router.get(
+  '/followers',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Get user followers.'
+    #swagger.responses[200] = {
+      description: 'User followers',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: [
+          {
+            userId: 1,
+            email: 'journey-bites@gmail.com',
+            displayName: 'Journey Bites',
+            avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites.com',
+              instagram: 'https://instagram.com/journey-bites',
+              facebook: 'https://facebook.com/journey-bites',
+            },
+          }
+        ]
+      }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting user followers' }
+    }
+  */
+  userController.getUserFollowers
+);
+
+router.post(
+  '/:userId/follow',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Follow a user.'
+    #swagger.responses[201] = {
+      description: 'User followed successfully',
+      schema: { statusCode: 0, message: 'User followed successfully' }
+    }
+    #swagger.responses[404] = {
+      description: 'User not found',
+      schema: { statusCode: 1001, message: 'User not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while following user' }
+    }
+  */
+  userController.followUser
+);
+
 export default router;

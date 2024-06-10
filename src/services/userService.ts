@@ -138,6 +138,69 @@ const updateUserOauthProvider = async (id: string, provider: keyof Omit<OAuthPro
   }
 };
 
+const getUserFollowers = async (userId: string) => {
+  try {
+    const followers = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        followedBy: {
+          select: {
+            follower: {
+              select: {
+                id: true,
+                email: true,
+                profile: {
+                  select: {
+                    displayName: true,
+                    avatarImageUrl: true,
+                    socialLinks: {
+                      select: {
+                        website: true,
+                        instagram: true,
+                        facebook: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return followers?.followedBy ?? [];
+  } catch (error) {
+    throw new Error('Error while getting user followers');
+  }
+};
+
+const followUser = async (followerUserId: string, followingUserId: string) => {
+  try {
+    const isFollowed = await db.follow.findFirst({
+      where: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+
+    if (isFollowed) {
+      return;
+    }
+
+    await db.follow.create({
+      data: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while following user');
+  }
+};
+
 export default {
   findUserById,
   findUserByEmail,
@@ -145,4 +208,6 @@ export default {
   updateUserPassword,
   updateUserProfile,
   updateUserOauthProvider,
+  getUserFollowers,
+  followUser,
 };

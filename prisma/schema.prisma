@@ -65,6 +65,41 @@ model Follow {
   updatedAt   DateTime @updatedAt @map("updated_at")
 }
 
+model ArticleStatus {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  views         Int
+  likes         Int
+  subscriptions Int
+  Articles      Articles[]
+}
+
+model Articles {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  creatorId    User          @relation(fields: [id], references: [id])
+  creator      String
+  title        String
+  abstract     String
+  content      String
+  thumbnailUrl String
+  needsPay     Boolean
+  wordsCount   Int
+  readingTime  Int
+  status       ArticleStatus @relation(fields: [statusId], references: [id])
+  statusId     String        @db.ObjectId
+  tags         String[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+}
+
+model Categories {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  path        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
 model User {
   id              String         @id @default(auto()) @map("_id") @db.ObjectId
   email           String         @unique
@@ -78,6 +113,7 @@ model User {
   billingId       String?        @db.ObjectId
   follows         Follow[]       @relation("UserFollows")
   followedBy      Follow[]       @relation("UserFollowedBy")
+  Articles        Articles[]
   createdAt       DateTime       @default(now()) @map("created_at")
   updatedAt       DateTime       @updatedAt @map("updated_at")
 }

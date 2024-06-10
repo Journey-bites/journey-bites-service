@@ -5,6 +5,7 @@ import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
 import authRouter from '@/routes/auth';
 import userRouter from '@/routes/user';
+import hotArticleRouter from '@/routes/articleHot';
 import authenticate from '@/middlewares/authenticate';
 
 const router = Router();
@@ -32,5 +33,6 @@ router.get(
 router.use('/auth', authRouter);
 
 router.use('/user', authenticate, userRouter);
+router.use('/hot-articles', hotArticleRouter);
 
 export default router;

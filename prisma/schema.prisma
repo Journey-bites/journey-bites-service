@@ -58,4 +58,40 @@ model User {
   oAuthProviderId String?        @db.ObjectId
   billing         Billing?       @relation(fields: [billingId], references: [id])
   billingId       String?        @db.ObjectId
+  Articles        Articles[]
+}
+
+model Articles {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  creatorId    User          @relation(fields: [id], references: [id])
+  creator      String
+  title        String
+  abstract     String
+  content      String
+  thumbnailUrl String
+  needsPay     Boolean
+  wordsCount   Int
+  readingTime  Int
+  status       ArticleStatus @relation(fields: [statusId], references: [id])
+  statusId     String        @db.ObjectId
+  tags         String[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model ArticleStatus {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  views         Int
+  likes         Int
+  subscriptions Int
+  Articles      Articles[]
+}
+
+model Categories {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  path        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

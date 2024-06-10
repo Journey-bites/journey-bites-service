@@ -9,7 +9,7 @@ import '@/config/passport';
 import router from '@/routes';
 import '@/db';
 import errorHandler from '@/middlewares/errorHandler';
-import { NotFoundException } from '@/exceptions/NotFoundException';
+import { RouteNotFoundException } from '@/exceptions/RouteNotFoundException';
 
 const PORT = process.env.PORT ?? 3001;
 
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use('/api/v1', router);
 
 app.use((_, __, next) => {
-  const err = new NotFoundException();
+  const err = new RouteNotFoundException();
   next(err);
 });
 app.use(errorHandler);

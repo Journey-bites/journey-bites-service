@@ -1,7 +1,7 @@
 import ErrorCode from './ErrorCode';
 import { HttpException } from './HttpException';
 
-export class NotFoundException extends HttpException {
+export class RouteNotFoundException extends HttpException {
   constructor(message = 'Route Not Found') {
     super({
       httpCode: 404,

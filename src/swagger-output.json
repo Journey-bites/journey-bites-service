@@ -841,6 +841,98 @@
         ]
       }
     },
+    "/user/followings": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user followings.",
+        "responses": {
+          "200": {
+            "description": "User followings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followings"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/user/{userId}/follow": {
       "post": {
         "tags": ["User"],
@@ -866,6 +958,25 @@
                 "message": {
                   "type": "string",
                   "example": "User followed successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1005
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You cannot follow yourself"
                 }
               },
               "xml": {
@@ -942,6 +1053,25 @@
                 "message": {
                   "type": "string",
                   "example": "User unfollowed successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1005
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You cannot unfollow yourself"
                 }
               },
               "xml": {

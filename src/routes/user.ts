@@ -135,6 +135,40 @@ router.get(
   userController.getUserFollowers
 );
 
+router.get(
+  '/followings',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Get user followings.'
+    #swagger.responses[200] = {
+      description: 'User followings',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: [
+        {
+            userId: 1,
+            email: 'journey-bites@gmail.com',
+            displayName: 'Journey Bites',
+            avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites.com',
+              instagram: 'https://instagram.com/journey-bites',
+              facebook: 'https://facebook.com/journey-bites',
+            },
+          }
+        ]
+      }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting user followings' }
+    }
+  */
+  userController.getUserFollowings
+);
+
 router.post(
   '/:userId/follow',
   /* 

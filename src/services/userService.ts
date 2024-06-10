@@ -177,6 +177,45 @@ const getUserFollowers = async (userId: string) => {
   }
 };
 
+const getUserFollowings = async (userId: string) => {
+  try {
+    const followings = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        follows: {
+          select: {
+            following: {
+              select: {
+                id: true,
+                email: true,
+                profile: {
+                  select: {
+                    displayName: true,
+                    avatarImageUrl: true,
+                    socialLinks: {
+                      select: {
+                        website: true,
+                        instagram: true,
+                        facebook: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return followings?.follows ?? [];
+  } catch (error) {
+    throw new Error('Error while getting user followings');
+  }
+};
+
 const followUser = async (followerUserId: string, followingUserId: string) => {
   try {
     const isFollowed = await db.follow.findFirst({
@@ -233,6 +272,7 @@ export default {
   updateUserProfile,
   updateUserOauthProvider,
   getUserFollowers,
+  getUserFollowings,
   followUser,
   unfollowUser,
 };

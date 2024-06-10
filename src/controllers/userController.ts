@@ -7,7 +7,13 @@ import { SystemException } from '@/exceptions/SystemException';
 import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 
-type Method = 'getUserInfo' | 'updateUserProfile' | 'getUserFollowers' | 'followUser' | 'unfollowUser';
+type Method =
+  | 'getUserInfo'
+  | 'updateUserProfile'
+  | 'getUserFollowers'
+  | 'getUserFollowings'
+  | 'followUser'
+  | 'unfollowUser';
 type UserController = Record<Method, RequestHandler>;
 
 const userController: UserController = {
@@ -75,6 +81,28 @@ const userController: UserController = {
       }
 
       throw new SystemException('Error while getting user followers');
+    }
+  },
+  getUserFollowings: async (req, res, next) => {
+    try {
+      const followings = await userService.getUserFollowings(req.user.id);
+
+      const data = followings.map(({ following }) => ({
+        userId: following.id,
+        email: following.email,
+        ...following.profile,
+      }));
+
+      return createResponse(res, {
+        data,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting user followings');
     }
   },
   followUser: async (req, res, next) => {

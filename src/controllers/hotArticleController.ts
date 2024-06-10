@@ -6,11 +6,11 @@ import { SystemException } from '@/exceptions/SystemException';
 import { createResponse } from '@/utils/http';
 import ErrorCode from '@/exceptions/ErrorCode';
 
-interface RequestParams {}
+interface RequestParams { }
 
-interface ResponseBody {}
+interface ResponseBody { }
 
-interface RequestBody {}
+interface RequestBody { }
 
 interface RequestQuery {
   count: string;
@@ -45,7 +45,7 @@ const hotArticleController = {
         return;
       }
 
-      throw new SystemException('Error while getting user info');
+      throw new SystemException('Error while getting hot article info');
     }
   },
 };

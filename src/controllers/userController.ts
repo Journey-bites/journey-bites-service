@@ -109,15 +109,15 @@ const userController: UserController = {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
-    if (followerUserId === followingUserId) {
-      throw new HttpException({
-        httpCode: 400,
-        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
-        message: 'You cannot follow yourself',
-      });
-    }
-
     try {
+      if (followerUserId === followingUserId) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You cannot follow yourself',
+        });
+      }
+
       const followingUser = await userService.findUserById(followingUserId);
 
       if (!followingUser) {
@@ -139,15 +139,15 @@ const userController: UserController = {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
-    if (followerUserId === followingUserId) {
-      throw new HttpException({
-        httpCode: 400,
-        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
-        message: 'You cannot unfollow yourself',
-      });
-    }
-
     try {
+      if (followerUserId === followingUserId) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You cannot unfollow yourself',
+        });
+      }
+
       const followingUser = await userService.findUserById(followingUserId);
 
       if (!followingUser) {

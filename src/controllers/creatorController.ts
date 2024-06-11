@@ -8,7 +8,7 @@ import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 
 type Method = 'getCreatorFollowers' | 'getCreatorFollowings';
-type CreatorController = Record<Method, RequestHandler>;
+type CreatorController = Record<Method, RequestHandler<{ creatorId: string }>>;
 
 const creatorController: CreatorController = {
   getCreatorFollowers: async (req, res, next) => {

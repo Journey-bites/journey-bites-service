@@ -14,7 +14,7 @@ type Method =
   | 'getUserFollowings'
   | 'followUser'
   | 'unfollowUser';
-type UserController = Record<Method, RequestHandler>;
+type UserController = Record<Method, RequestHandler<{ userId: string }>>;
 
 const userController: UserController = {
   getUserInfo: async (req, res, next) => {

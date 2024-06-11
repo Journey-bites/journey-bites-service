@@ -189,9 +189,31 @@ router.patch(
   authController.resetPassword
 );
 
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get(
+  '/google',
+  /* 
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Login with Google.'
+    #swagger.responses[200] = {
+      description: 'Redirect to Google login page',
+    }
+  */
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 router.get(
   '/google/callback',
+  /* 
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Callback from Google login.'
+    #swagger.responses[200] = {
+      description: 'Login successful',
+      schema: { statusCode: 0, message: 'Login successful', data: { token: '6a431b030bfcb67e98ff0eaafbe43c3ed0addc7809cfc946' } }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while logging in' }
+    }
+  */
   passport.authenticate('google', { session: false }),
   authController.authorizationCallback
 );

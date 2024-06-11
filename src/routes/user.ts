@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import userController from '@/controllers/userController';
-import validateData from '@/middlewares/validateData';
+import validateRequest from '@/middlewares/validateRequest';
 
 const router = Router();
 
@@ -90,14 +90,14 @@ router.patch(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while updating user profile' }
     }
   */
-  validateData(updateUserRequestSchema),
+  validateRequest({ body: updateUserRequestSchema }),
   userController.updateUserProfile
 );
 

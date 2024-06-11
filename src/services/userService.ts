@@ -140,7 +140,7 @@ const updateUserOauthProvider = async (id: string, provider: keyof Omit<OAuthPro
 
 const getUserFollowers = async (userId: string) => {
   try {
-    const followers = await db.user.findUnique({
+    const followersDetails = await db.user.findUnique({
       where: {
         id: userId,
       },
@@ -164,6 +164,11 @@ const getUserFollowers = async (userId: string) => {
                     },
                   },
                 },
+                followedBy: {
+                  select: {
+                    followerId: true,
+                  },
+                },
               },
             },
           },
@@ -171,7 +176,14 @@ const getUserFollowers = async (userId: string) => {
       },
     });
 
-    return followers?.followedBy ?? [];
+    const followers = followersDetails?.followedBy.map(({ follower }) => ({
+      userId: follower.id,
+      email: follower.email,
+      ...follower.profile,
+      isMutualFollow: follower.followedBy.some(({ followerId }) => followerId === userId),
+    }));
+
+    return followers ?? [];
   } catch (error) {
     throw new Error('Error while getting user followers');
   }

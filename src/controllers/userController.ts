@@ -65,14 +65,8 @@ const userController: UserController = {
     try {
       const followers = await userService.getUserFollowers(req.user.id);
 
-      const data = followers.map(({ follower }) => ({
-        userId: follower.id,
-        email: follower.email,
-        ...follower.profile,
-      }));
-
       return createResponse(res, {
-        data,
+        data: followers,
       });
     } catch (error) {
       if (error instanceof HttpException) {

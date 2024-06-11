@@ -160,7 +160,7 @@ router.get(
         statusCode: 0,
         message: 'success',
         data: [
-        {
+          {
             userId: 1,
             email: 'journey-bites@gmail.com',
             displayName: 'Journey Bites',
@@ -170,6 +170,19 @@ router.get(
               instagram: 'https://instagram.com/journey-bites',
               facebook: 'https://facebook.com/journey-bites',
             },
+            isMutualFollow: true
+          },
+          {
+            userId: 2,
+            email: 'journey-bites2@gmail.com',
+            displayName: 'Journey Bites 2',
+            avatarImageUrl: 'https://journey-bites2.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites2.com',
+              instagram: 'https://instagram.com/journey-bites2',
+              facebook: 'https://facebook.com/journey-bites2',
+            },
+            isMutualFollow: false
           }
         ]
       }

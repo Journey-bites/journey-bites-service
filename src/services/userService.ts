@@ -191,7 +191,7 @@ const getUserFollowers = async (userId: string) => {
 
 const getUserFollowings = async (userId: string) => {
   try {
-    const followings = await db.user.findUnique({
+    const followingsDetails = await db.user.findUnique({
       where: {
         id: userId,
       },
@@ -215,6 +215,11 @@ const getUserFollowings = async (userId: string) => {
                     },
                   },
                 },
+                follows: {
+                  select: {
+                    followingId: true,
+                  },
+                },
               },
             },
           },
@@ -222,7 +227,14 @@ const getUserFollowings = async (userId: string) => {
       },
     });
 
-    return followings?.follows ?? [];
+    const followings = followingsDetails?.follows.map(({ following }) => ({
+      userId: following.id,
+      email: following.email,
+      ...following.profile,
+      isMutualFollow: following.follows.some(({ followingId }) => followingId === userId),
+    }));
+
+    return followings ?? [];
   } catch (error) {
     throw new Error('Error while getting user followings');
   }

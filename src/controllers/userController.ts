@@ -110,7 +110,7 @@ const userController: UserController = {
     const followingUserId = req.params.userId;
 
     if (followerUserId === followingUserId) {
-      return createResponse(res, {
+      throw new HttpException({
         httpCode: 400,
         errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
         message: 'You cannot follow yourself',
@@ -140,7 +140,7 @@ const userController: UserController = {
     const followingUserId = req.params.userId;
 
     if (followerUserId === followingUserId) {
-      return createResponse(res, {
+      throw new HttpException({
         httpCode: 400,
         errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
         message: 'You cannot unfollow yourself',

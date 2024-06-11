@@ -496,20 +496,66 @@
     },
     "/auth/google": {
       "get": {
-        "description": "",
+        "tags": ["Auth"],
+        "description": "Login with Google.",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Redirect to Google login page"
           }
         }
       }
     },
     "/auth/google/callback": {
       "get": {
-        "description": "",
+        "tags": ["Auth"],
+        "description": "Callback from Google login.",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "6a431b030bfcb67e98ff0eaafbe43c3ed0addc7809cfc946"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while logging in"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }

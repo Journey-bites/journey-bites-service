@@ -138,6 +138,156 @@ const updateUserOauthProvider = async (id: string, provider: keyof Omit<OAuthPro
   }
 };
 
+const getUserFollowers = async (userId: string) => {
+  try {
+    const followersDetails = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        followedBy: {
+          select: {
+            follower: {
+              select: {
+                id: true,
+                email: true,
+                profile: {
+                  select: {
+                    displayName: true,
+                    avatarImageUrl: true,
+                    socialLinks: {
+                      select: {
+                        website: true,
+                        instagram: true,
+                        facebook: true,
+                      },
+                    },
+                  },
+                },
+                followedBy: {
+                  select: {
+                    followerId: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const followers = followersDetails?.followedBy.map(({ follower }) => ({
+      userId: follower.id,
+      email: follower.email,
+      ...follower.profile,
+      isMutualFollow: follower.followedBy.some(({ followerId }) => followerId === userId),
+    }));
+
+    return followers ?? [];
+  } catch (error) {
+    throw new Error('Error while getting user followers');
+  }
+};
+
+const getUserFollowings = async (userId: string) => {
+  try {
+    const followingsDetails = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        follows: {
+          select: {
+            following: {
+              select: {
+                id: true,
+                email: true,
+                profile: {
+                  select: {
+                    displayName: true,
+                    avatarImageUrl: true,
+                    socialLinks: {
+                      select: {
+                        website: true,
+                        instagram: true,
+                        facebook: true,
+                      },
+                    },
+                  },
+                },
+                follows: {
+                  select: {
+                    followingId: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const followings = followingsDetails?.follows.map(({ following }) => ({
+      userId: following.id,
+      email: following.email,
+      ...following.profile,
+      isMutualFollow: following.follows.some(({ followingId }) => followingId === userId),
+    }));
+
+    return followings ?? [];
+  } catch (error) {
+    throw new Error('Error while getting user followings');
+  }
+};
+
+const followUser = async (followerUserId: string, followingUserId: string) => {
+  try {
+    const isFollowed = await db.follow.findFirst({
+      where: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+
+    if (isFollowed) {
+      return;
+    }
+
+    await db.follow.create({
+      data: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while following user');
+  }
+};
+
+const unfollowUser = async (followerUserId: string, followingUserId: string) => {
+  try {
+    const isFollowed = await db.follow.findFirst({
+      where: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+
+    if (!isFollowed) {
+      return;
+    }
+
+    await db.follow.deleteMany({
+      where: {
+        followerId: followerUserId,
+        followingId: followingUserId,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while unfollowing user');
+  }
+};
+
 export default {
   findUserById,
   findUserByEmail,
@@ -145,4 +295,8 @@ export default {
   updateUserPassword,
   updateUserProfile,
   updateUserOauthProvider,
+  getUserFollowers,
+  getUserFollowings,
+  followUser,
+  unfollowUser,
 };

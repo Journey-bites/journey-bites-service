@@ -1,13 +1,20 @@
 import { RequestHandler } from 'express';
 
-import { HttpException } from '@/exceptions/HttpException';
 import ErrorCode from '@/exceptions/ErrorCode';
-import userService from '@/services/userService';
+import { HttpException } from '@/exceptions/HttpException';
+import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
+import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 
-type Method = 'getUserInfo' | 'updateUserProfile';
-type UserController = Record<Method, RequestHandler>;
+type Method =
+  | 'getUserInfo'
+  | 'updateUserProfile'
+  | 'getUserFollowers'
+  | 'getUserFollowings'
+  | 'followUser'
+  | 'unfollowUser';
+type UserController = Record<Method, RequestHandler<{ userId: string }>>;
 
 const userController: UserController = {
   getUserInfo: async (req, res, next) => {
@@ -15,11 +22,7 @@ const userController: UserController = {
       const user = await userService.findUserById(req.user.id);
 
       if (!user) {
-        throw new HttpException({
-          httpCode: 404,
-          errorCode: ErrorCode.USER_NOT_FOUND,
-          message: 'User not found',
-        });
+        throw new UserNotFoundException();
       }
 
       const { email, emailVerified, profile, billing } = user;
@@ -56,6 +59,98 @@ const userController: UserController = {
       }
 
       throw new SystemException('Error while updating user profile');
+    }
+  },
+  getUserFollowers: async (req, res, next) => {
+    try {
+      const followers = await userService.getUserFollowers(req.user.id);
+
+      return createResponse(res, {
+        data: followers,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting user followers');
+    }
+  },
+  getUserFollowings: async (req, res, next) => {
+    try {
+      const followings = await userService.getUserFollowings(req.user.id);
+
+      return createResponse(res, {
+        data: followings,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting user followings');
+    }
+  },
+  followUser: async (req, res, next) => {
+    const followerUserId = req.user.id;
+    const followingUserId = req.params.userId;
+
+    try {
+      if (followerUserId === followingUserId) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You cannot follow yourself',
+        });
+      }
+
+      const followingUser = await userService.findUserById(followingUserId);
+
+      if (!followingUser) {
+        throw new UserNotFoundException();
+      }
+
+      await userService.followUser(followerUserId, followingUserId);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      throw new SystemException('Error while following user');
+    }
+  },
+  unfollowUser: async (req, res, next) => {
+    const followerUserId = req.user.id;
+    const followingUserId = req.params.userId;
+
+    try {
+      if (followerUserId === followingUserId) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You cannot unfollow yourself',
+        });
+      }
+
+      const followingUser = await userService.findUserById(followingUserId);
+
+      if (!followingUser) {
+        throw new UserNotFoundException();
+      }
+
+      await userService.unfollowUser(followerUserId, followingUserId);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      throw new SystemException('Error while unfollowing user');
     }
   },
 };

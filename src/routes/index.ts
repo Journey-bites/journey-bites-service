@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
 
+import authenticate from '@/middlewares/authenticate';
+import authRouter from '@/routes/auth';
+import hotArticleRouter from '@/routes/articleHot';
+import creatorRouter from '@/routes/creator';
+import userRouter from '@/routes/user';
 import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
-import authRouter from '@/routes/auth';
-import userRouter from '@/routes/user';
-import hotArticleRouter from '@/routes/articleHot';
-import authenticate from '@/middlewares/authenticate';
 
 const router = Router();
 
@@ -31,8 +32,9 @@ router.get(
   (_, res) => createResponse(res, { message: 'Hello World!' })
 );
 router.use('/auth', authRouter);
+router.use('/hot-articles', hotArticleRouter);
+router.use('/creator', creatorRouter);
 
 router.use('/user', authenticate, userRouter);
-router.use('/hot-articles', hotArticleRouter);
 
 export default router;

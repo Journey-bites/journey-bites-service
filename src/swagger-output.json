@@ -560,6 +560,226 @@
         }
       }
     },
+    "/hot-articles/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/creator/{creatorId}/followers": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get user followers.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followers",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followers"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creator/{creatorId}/followings": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get user followings.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followings"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/": {
       "get": {
         "tags": ["User"],
@@ -820,36 +1040,40 @@
                     "properties": {
                       "userId": {
                         "type": "number",
-                        "example": 1
+                        "example": 2
                       },
                       "email": {
                         "type": "string",
-                        "example": "journey-bites@gmail.com"
+                        "example": "journey-bites2@gmail.com"
                       },
                       "displayName": {
                         "type": "string",
-                        "example": "Journey Bites"
+                        "example": "Journey Bites 2"
                       },
                       "avatarImageUrl": {
                         "type": "string",
-                        "example": "https://journey-bites.com/avatar.jpg"
+                        "example": "https://journey-bites2.com/avatar.jpg"
                       },
                       "socialLinks": {
                         "type": "object",
                         "properties": {
                           "website": {
                             "type": "string",
-                            "example": "https://journey-bites.com"
+                            "example": "https://journey-bites2.com"
                           },
                           "instagram": {
                             "type": "string",
-                            "example": "https://instagram.com/journey-bites"
+                            "example": "https://instagram.com/journey-bites2"
                           },
                           "facebook": {
                             "type": "string",
-                            "example": "https://facebook.com/journey-bites"
+                            "example": "https://facebook.com/journey-bites2"
                           }
                         }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
                       }
                     }
                   }
@@ -912,36 +1136,40 @@
                     "properties": {
                       "userId": {
                         "type": "number",
-                        "example": 1
+                        "example": 2
                       },
                       "email": {
                         "type": "string",
-                        "example": "journey-bites@gmail.com"
+                        "example": "journey-bites2@gmail.com"
                       },
                       "displayName": {
                         "type": "string",
-                        "example": "Journey Bites"
+                        "example": "Journey Bites 2"
                       },
                       "avatarImageUrl": {
                         "type": "string",
-                        "example": "https://journey-bites.com/avatar.jpg"
+                        "example": "https://journey-bites2.com/avatar.jpg"
                       },
                       "socialLinks": {
                         "type": "object",
                         "properties": {
                           "website": {
                             "type": "string",
-                            "example": "https://journey-bites.com"
+                            "example": "https://journey-bites2.com"
                           },
                           "instagram": {
                             "type": "string",
-                            "example": "https://instagram.com/journey-bites"
+                            "example": "https://instagram.com/journey-bites2"
                           },
                           "facebook": {
                             "type": "string",
-                            "example": "https://facebook.com/journey-bites"
+                            "example": "https://facebook.com/journey-bites2"
                           }
                         }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
                       }
                     }
                   }
@@ -1162,28 +1390,6 @@
                 "name": "main"
               }
             }
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/hot-articles/": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "count",
-            "in": "query",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
           }
         },
         "security": [

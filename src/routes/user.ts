@@ -1,23 +1,10 @@
 import { Router } from 'express';
-import { z } from 'zod';
 
 import userController from '@/controllers/userController';
 import validateRequest from '@/middlewares/validateRequest';
+import { updateUserRequestSchema } from '@/validateSchema/updateUserRequest';
 
 const router = Router();
-
-const updateUserRequestSchema = z.object({
-  displayName: z.string().max(50).optional(),
-  avatarImageUrl: z.string().optional(),
-  bio: z.string().optional(),
-  socialLinks: z
-    .object({
-      website: z.string().url().optional(),
-      instagram: z.string().url().optional(),
-      facebook: z.string().url().optional(),
-    })
-    .optional(),
-});
 
 router.get(
   '/',

@@ -5,22 +5,11 @@ import { HttpException } from '@/exceptions/HttpException';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
 import userService from '@/services/userService';
+import { UpdateUserRequest } from '@/validateSchema/updateUserRequest';
 import { createResponse } from '@/utils/http';
 
 type UpdateUserProfileRequest = Request & {
-  body: {
-    profile: {
-      firstName: string;
-      lastName: string;
-      bio: string;
-      avatarUrl: string;
-    };
-    billing: {
-      cardNumber: string;
-      expirationDate: string;
-      cvv: string;
-    };
-  };
+  body: UpdateUserRequest;
 };
 
 type FollowUserRequest = Request & {

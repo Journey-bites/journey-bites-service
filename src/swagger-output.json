@@ -203,7 +203,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field"
+                  "example": "Invalid field (body)"
                 }
               },
               "xml": {
@@ -440,7 +440,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field"
+                  "example": "Invalid field (body)"
                 }
               },
               "xml": {
@@ -580,6 +580,148 @@
             "Bearer": []
           }
         ]
+      }
+    },
+    "/creator/": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get creators.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search creator by name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type of creators",
+            "required": false,
+            "type": "string",
+            "enum": ["hot", "random"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creators",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites"
+                          }
+                        }
+                      },
+                      "followers": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "followerId": {
+                              "type": "number",
+                              "example": 2
+                            }
+                          }
+                        }
+                      },
+                      "followings": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "followingId": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting creators"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/creator/{creatorId}/followers": {
@@ -980,7 +1122,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field"
+                  "example": "Invalid field (body)"
                 }
               },
               "xml": {

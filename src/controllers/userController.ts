@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
@@ -7,17 +7,36 @@ import { SystemException } from '@/exceptions/SystemException';
 import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 
-type Method =
-  | 'getUserInfo'
-  | 'updateUserProfile'
-  | 'getUserFollowers'
-  | 'getUserFollowings'
-  | 'followUser'
-  | 'unfollowUser';
-type UserController = Record<Method, RequestHandler<{ userId: string }>>;
+type UpdateUserProfileRequest = Request & {
+  body: {
+    profile: {
+      firstName: string;
+      lastName: string;
+      bio: string;
+      avatarUrl: string;
+    };
+    billing: {
+      cardNumber: string;
+      expirationDate: string;
+      cvv: string;
+    };
+  };
+};
 
-const userController: UserController = {
-  getUserInfo: async (req, res, next) => {
+type FollowUserRequest = Request & {
+  params: {
+    userId: string;
+  };
+};
+
+type UnfollowUserRequest = Request & {
+  params: {
+    userId: string;
+  };
+};
+
+const userController = {
+  getUserInfo: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await userService.findUserById(req.user.id);
 
@@ -44,7 +63,7 @@ const userController: UserController = {
       throw new SystemException('Error while getting user info');
     }
   },
-  updateUserProfile: async (req, res, next) => {
+  updateUserProfile: async (req: UpdateUserProfileRequest, res: Response, next: NextFunction) => {
     try {
       await userService.updateUserProfile(req.user.id, req.body);
 
@@ -61,7 +80,7 @@ const userController: UserController = {
       throw new SystemException('Error while updating user profile');
     }
   },
-  getUserFollowers: async (req, res, next) => {
+  getUserFollowers: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const followers = await userService.getUserFollowers(req.user.id);
 
@@ -77,7 +96,7 @@ const userController: UserController = {
       throw new SystemException('Error while getting user followers');
     }
   },
-  getUserFollowings: async (req, res, next) => {
+  getUserFollowings: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const followings = await userService.getUserFollowings(req.user.id);
 
@@ -93,7 +112,7 @@ const userController: UserController = {
       throw new SystemException('Error while getting user followings');
     }
   },
-  followUser: async (req, res, next) => {
+  followUser: async (req: FollowUserRequest, res: Response, next: NextFunction) => {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
@@ -123,7 +142,7 @@ const userController: UserController = {
       throw new SystemException('Error while following user');
     }
   },
-  unfollowUser: async (req, res, next) => {
+  unfollowUser: async (req: UnfollowUserRequest, res: Response, next: NextFunction) => {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 

@@ -1,6 +1,6 @@
 import db from '@/db';
 
-const getCreators = async (page = 1, pageSize = 10) => {
+const getCreators = async (page: number, pageSize: number) => {
   const creatorsDetails = await db.user.findMany({
     select: {
       id: true,

@@ -60,7 +60,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while registering new user' }
     }
   */
-  validateRequest({ body: registerSchema }),
+  validateRequest(registerSchema, 'body'),
   authController.register
 );
 router.post(
@@ -94,7 +94,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while logging in' }
     }
   */
-  validateRequest({ body: loginSchema }),
+  validateRequest(loginSchema, 'body'),
   authController.login
 );
 router.post(
@@ -127,7 +127,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while verifying email' }
     }
   */
-  validateRequest({ body: checkEmailSchema }),
+  validateRequest(checkEmailSchema, 'body'),
   authController.verifyEmail
 );
 
@@ -185,7 +185,7 @@ router.patch(
     }
   */
   authenticate,
-  validateRequest({ body: resetPasswordSchema }),
+  validateRequest(resetPasswordSchema, 'body'),
   authController.resetPassword
 );
 

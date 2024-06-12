@@ -97,7 +97,7 @@ router.patch(
       schema: { statusCode: 9999, message: 'Error while updating user profile' }
     }
   */
-  validateRequest({ body: updateUserRequestSchema }),
+  validateRequest(updateUserRequestSchema, 'body'),
   userController.updateUserProfile
 );
 

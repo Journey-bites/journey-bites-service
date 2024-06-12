@@ -1,32 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RequestHandler } from 'express';
-import { z, ZodError } from 'zod';
+import { AnyZodObject, ZodError } from 'zod';
 
-import { createResponse } from '@/utils/http';
 import ErrorCode from '@/exceptions/ErrorCode';
+import { createResponse } from '@/utils/http';
 
-interface ValidationRequestSchema {
-  body?: z.AnyZodObject;
-  params?: z.AnyZodObject;
-  query?: z.AnyZodObject;
-}
+type FieldType = 'body' | 'params' | 'query';
 
-const validateRequest = (schema: ValidationRequestSchema): RequestHandler => {
-  return async (req, res, next) => {
-    let rootCause = '';
+const validateRequest = (schema: AnyZodObject, type: FieldType = 'body'): RequestHandler => {
+  return (req, res, next) => {
     try {
-      if (schema.body) {
-        rootCause = 'body';
-        schema.body.parse(req.body);
-      }
-      if (schema.params) {
-        rootCause = 'params';
-        schema.params.parse(req.params);
-      }
-      if (schema.query) {
-        rootCause = 'query';
-        schema.query.parse(req.query);
-      }
+      req[type] = schema.parse(req[type]);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
@@ -40,7 +24,7 @@ const validateRequest = (schema: ValidationRequestSchema): RequestHandler => {
         createResponse(res, {
           httpCode: 400,
           errorCode: ErrorCode.ILLEGAL_PAYLOAD,
-          message: `Invalid field (${rootCause})`,
+          message: `Invalid field (${type})`,
           data: errorMessages,
         });
       } else {

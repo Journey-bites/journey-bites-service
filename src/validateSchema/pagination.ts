@@ -3,11 +3,11 @@ import { z } from 'zod';
 export const paginationSchema = z.object({
   page: z
     .string()
-    .transform((page) => parseInt(page))
+    .transform((val) => parseInt(val, 10))
     .catch(1),
   pageSize: z
     .string()
-    .transform((limit) => parseInt(limit))
+    .transform((val) => parseInt(val))
     .catch(10),
 });
 

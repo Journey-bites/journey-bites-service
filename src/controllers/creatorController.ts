@@ -1,19 +1,32 @@
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
 import creatorService from '@/services/creatorService';
 import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
-import { paginationSchema } from '@/validateSchema/pagination';
+import { Pagination } from '@/validateSchema/pagination';
 
-type Method = 'getCreators' | 'getCreatorFollowers' | 'getCreatorFollowings';
-type CreatorController = Record<Method, RequestHandler<{ creatorId: string }>>;
+type GetCreatorsRequest = Request & {
+  query: Pagination;
+};
 
-const creatorController: CreatorController = {
-  getCreators: async (req, res, next) => {
+type GetCreatorFollowersRequest = Request & {
+  params: {
+    creatorId: string;
+  };
+};
+
+type GetCreatorFollowingsRequest = Request & {
+  params: {
+    creatorId: string;
+  };
+};
+
+const creatorController = {
+  getCreators: async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
+    const { page, pageSize } = req.query;
     try {
-      const { page, pageSize } = paginationSchema.parse(req.query);
       const creators = await creatorService.getCreators(page, pageSize);
 
       return createResponse(res, {
@@ -28,7 +41,7 @@ const creatorController: CreatorController = {
       throw new SystemException('Error while getting creators');
     }
   },
-  getCreatorFollowers: async (req, res, next) => {
+  getCreatorFollowers: async (req: GetCreatorFollowersRequest, res: Response, next: NextFunction) => {
     try {
       const followers = await userService.getUserFollowers(req.params.creatorId);
 
@@ -44,7 +57,7 @@ const creatorController: CreatorController = {
       throw new SystemException('Error while getting creator followers');
     }
   },
-  getCreatorFollowings: async (req, res, next) => {
+  getCreatorFollowings: async (req: GetCreatorFollowingsRequest, res: Response, next: NextFunction) => {
     try {
       const followings = await userService.getUserFollowings(req.params.creatorId);
 

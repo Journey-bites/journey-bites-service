@@ -46,7 +46,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting creators' }
     }
   */
-  validateRequest({ query: paginationSchema }),
+  validateRequest(paginationSchema, 'query'),
   creatorController.getCreators
 );
 

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { z } from 'zod';
 
 import creatorController from '@/controllers/creatorController';
 import validateRequest from '@/middlewares/validateRequest';
@@ -6,11 +7,41 @@ import { paginationSchema } from '@/validateSchema/pagination';
 
 const router = Router();
 
+const getCreatorsQuerySchema = paginationSchema.extend({
+  type: z.enum(['hot', 'random']).or(z.string()).optional(),
+  search: z.string().optional(),
+});
+
 router.get(
   '/',
   /* 
     #swagger.tags = ['Creator']
     #swagger.description = 'Get creators.'
+    #swagger.parameters['page'] = {
+      in: 'query',
+      description: 'Page number',
+      required: false,
+      type: 'number'
+    }
+    #swagger.parameters['pageSize'] = {
+      in: 'query',
+      description: 'Number of items per page',
+      required: false,
+      type: 'number'
+    }
+    #swagger.parameters['search'] = {
+      in: 'query',
+      description: 'Search creator by name',
+      required: false,
+      type: 'string'
+    }
+    #swagger.parameters['type'] = {
+      in: 'query',
+      description: 'Type of creators',
+      required: false,
+      type: 'string',
+      enum: ['hot', 'random']
+    }
     #swagger.responses[200] = {
       description: 'Creators',
       schema: {
@@ -46,7 +77,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting creators' }
     }
   */
-  validateRequest(paginationSchema, 'query'),
+  validateRequest(getCreatorsQuerySchema, 'query'),
   creatorController.getCreators
 );
 

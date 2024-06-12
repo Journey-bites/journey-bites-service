@@ -8,7 +8,10 @@ import { createResponse } from '@/utils/http';
 import { Pagination } from '@/validateSchema/pagination';
 
 type GetCreatorsRequest = Request & {
-  query: Pagination;
+  query: Partial<Pagination> & {
+    type?: 'hot' | 'random';
+    search?: string;
+  };
 };
 
 type GetCreatorFollowersRequest = Request & {
@@ -25,9 +28,14 @@ type GetCreatorFollowingsRequest = Request & {
 
 const creatorController = {
   getCreators: async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
-    const { page, pageSize } = req.query;
+    const { page, pageSize, type, search } = req.query;
     try {
-      const creators = await creatorService.getCreators(page, pageSize);
+      const creators = await creatorService.getCreators({
+        page,
+        pageSize,
+        type,
+        searchName: search?.trim(),
+      });
 
       return createResponse(res, {
         data: creators,

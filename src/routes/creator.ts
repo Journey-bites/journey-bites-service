@@ -1,8 +1,85 @@
 import { Router } from 'express';
+import { z } from 'zod';
 
 import creatorController from '@/controllers/creatorController';
+import validateRequest from '@/middlewares/validateRequest';
+import { paginationSchema } from '@/validateSchema/pagination';
 
 const router = Router();
+
+const getCreatorsQuerySchema = paginationSchema.extend({
+  type: z.enum(['hot', 'random']).or(z.string()).optional(),
+  search: z.string().optional(),
+});
+
+router.get(
+  '/',
+  /* 
+    #swagger.tags = ['Creator']
+    #swagger.description = 'Get creators.'
+    #swagger.parameters['page'] = {
+      in: 'query',
+      description: 'Page number',
+      required: false,
+      type: 'number'
+    }
+    #swagger.parameters['pageSize'] = {
+      in: 'query',
+      description: 'Number of items per page',
+      required: false,
+      type: 'number'
+    }
+    #swagger.parameters['search'] = {
+      in: 'query',
+      description: 'Search creator by name',
+      required: false,
+      type: 'string'
+    }
+    #swagger.parameters['type'] = {
+      in: 'query',
+      description: 'Type of creators',
+      required: false,
+      type: 'string',
+      enum: ['hot', 'random']
+    }
+    #swagger.responses[200] = {
+      description: 'Creators',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: [
+          {
+            userId: 1,
+            email: 'journey-bites@gmail.com',
+            displayName: 'Journey Bites',
+            avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites.com',
+              instagram: 'https://instagram.com/journey-bites',
+              facebook: 'https://facebook.com/journey-bites',
+            },
+            followers: [
+              {
+                followerId: 2
+              }
+            ],
+            followings: [
+              {
+                followingId: 1
+              }
+            ]
+          },
+        ]
+      }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting creators' }
+    }
+  */
+  validateRequest(getCreatorsQuerySchema, 'query'),
+  creatorController.getCreators
+);
 
 router.get(
   '/:creatorId/followers',

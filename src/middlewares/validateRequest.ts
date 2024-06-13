@@ -1,25 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RequestHandler } from 'express';
-import { z, ZodError } from 'zod';
+import { AnyZodObject, ZodError } from 'zod';
 
-import { createResponse } from '@/utils/http';
 import ErrorCode from '@/exceptions/ErrorCode';
+import { createResponse } from '@/utils/http';
 
-const validateData: (schema: z.ZodObject<any, any>) => RequestHandler = (schema) => {
+type FieldType = 'body' | 'params' | 'query';
+
+const validateRequest = (schema: AnyZodObject, type: FieldType = 'body'): RequestHandler => {
   return (req, res, next) => {
     try {
-      schema.parse(req.body);
+      req[type] = schema.parse(req[type]);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.errors.map((issue: any) => ({
-          message: `${issue.path.join('.')} is ${issue.message}`,
-        }));
+        const errorMessages: Record<string, string> = {};
+
+        error.errors.forEach((err) => {
+          const field = err.path.join('.');
+          errorMessages[field] = err.message;
+        });
 
         createResponse(res, {
           httpCode: 400,
           errorCode: ErrorCode.ILLEGAL_PAYLOAD,
-          message: 'Invalid field',
+          message: `Invalid field (${type})`,
           data: errorMessages,
         });
       } else {
@@ -33,4 +38,4 @@ const validateData: (schema: z.ZodObject<any, any>) => RequestHandler = (schema)
   };
 };
 
-export default validateData;
+export default validateRequest;

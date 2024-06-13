@@ -1,23 +1,10 @@
 import { Router } from 'express';
-import { z } from 'zod';
 
 import userController from '@/controllers/userController';
-import validateData from '@/middlewares/validateData';
+import validateRequest from '@/middlewares/validateRequest';
+import { updateUserRequestSchema } from '@/validateSchema/updateUserRequest';
 
 const router = Router();
-
-const updateUserRequestSchema = z.object({
-  displayName: z.string().max(50).optional(),
-  avatarImageUrl: z.string().optional(),
-  bio: z.string().optional(),
-  socialLinks: z
-    .object({
-      website: z.string().url().optional(),
-      instagram: z.string().url().optional(),
-      facebook: z.string().url().optional(),
-    })
-    .optional(),
-});
 
 router.get(
   '/',
@@ -90,14 +77,14 @@ router.patch(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while updating user profile' }
     }
   */
-  validateData(updateUserRequestSchema),
+  validateRequest(updateUserRequestSchema, 'body'),
   userController.updateUserProfile
 );
 

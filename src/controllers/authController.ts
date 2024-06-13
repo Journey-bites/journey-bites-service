@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import userService from '@/services/userService';
 import ErrorCode from '@/exceptions/ErrorCode';
@@ -9,11 +9,35 @@ import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
 import { generateToken } from '@/utils/tokenHelper';
 import authorityRepository from '@/repositories/authorityRepository';
 
-type Method = 'register' | 'login' | 'verifyEmail' | 'logout' | 'resetPassword' | 'authorizationCallback';
-type AuthController = Record<Method, RequestHandler>;
+type RegisterRequest = Request & {
+  body: {
+    email: string;
+    password: string;
+    displayName: string;
+  };
+};
 
-const authController: AuthController = {
-  register: async (req, res, next) => {
+type LoginRequest = Request & {
+  body: {
+    email: string;
+    password: string;
+  };
+};
+
+type VerifyEmailRequest = Request & {
+  body: {
+    email: string;
+  };
+};
+
+type ResetPasswordRequest = Request & {
+  body: {
+    password: string;
+  };
+};
+
+const authController = {
+  register: async (req: RegisterRequest, res: Response, next: NextFunction) => {
     try {
       const { email, password, displayName } = req.body;
       const foundUser = await userService.findUserByEmail(email);
@@ -41,7 +65,7 @@ const authController: AuthController = {
       next(new SystemException('Error while registering new user'));
     }
   },
-  login: async (req, res, next) => {
+  login: async (req: LoginRequest, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
 
@@ -84,7 +108,7 @@ const authController: AuthController = {
       next(new SystemException('Error while logging in'));
     }
   },
-  verifyEmail: async (req, res, next) => {
+  verifyEmail: async (req: VerifyEmailRequest, res: Response, next: NextFunction) => {
     try {
       const { email } = req.body;
 
@@ -109,7 +133,7 @@ const authController: AuthController = {
       next(new SystemException('Error while verifying email'));
     }
   },
-  logout: async (req, res, next) => {
+  logout: async (req: Request, res: Response, next: NextFunction) => {
     try {
       await authorityRepository.deleteAuthority(req.user.token);
 
@@ -122,7 +146,7 @@ const authController: AuthController = {
       next(new SystemException('Error while logging out'));
     }
   },
-  resetPassword: async (req, res, next) => {
+  resetPassword: async (req: ResetPasswordRequest, res: Response, next: NextFunction) => {
     try {
       const { password } = req.body;
       const userId = req.user.id;
@@ -141,7 +165,7 @@ const authController: AuthController = {
       next(new SystemException('Error while resetting password'));
     }
   },
-  authorizationCallback: async (req, res, next) => {
+  authorizationCallback: async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.user) {
         throw new Error('loginCallback error!');

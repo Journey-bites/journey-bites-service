@@ -1,17 +1,55 @@
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
-import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
+import creatorService from '@/services/creatorService';
 import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
+import { Pagination } from '@/validateSchema/pagination';
 
-type Method = 'getCreatorFollowers' | 'getCreatorFollowings';
-type CreatorController = Record<Method, RequestHandler<{ creatorId: string }>>;
+type GetCreatorsRequest = Request & {
+  query: Partial<Pagination> & {
+    type?: 'hot' | 'random';
+    search?: string;
+  };
+};
 
-const creatorController: CreatorController = {
-  getCreatorFollowers: async (req, res, next) => {
+type GetCreatorFollowersRequest = Request & {
+  params: {
+    creatorId: string;
+  };
+};
+
+type GetCreatorFollowingsRequest = Request & {
+  params: {
+    creatorId: string;
+  };
+};
+
+const creatorController = {
+  getCreators: async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
+    const { page, pageSize, type, search } = req.query;
+    try {
+      const creators = await creatorService.getCreators({
+        page,
+        pageSize,
+        type,
+        searchName: search?.trim(),
+      });
+
+      return createResponse(res, {
+        data: creators,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting creators');
+    }
+  },
+  getCreatorFollowers: async (req: GetCreatorFollowersRequest, res: Response, next: NextFunction) => {
     try {
       const followers = await userService.getUserFollowers(req.params.creatorId);
 
@@ -27,7 +65,7 @@ const creatorController: CreatorController = {
       throw new SystemException('Error while getting creator followers');
     }
   },
-  getCreatorFollowings: async (req, res, next) => {
+  getCreatorFollowings: async (req: GetCreatorFollowingsRequest, res: Response, next: NextFunction) => {
     try {
       const followings = await userService.getUserFollowings(req.params.creatorId);
 

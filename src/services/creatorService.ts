@@ -2,7 +2,7 @@
 import db from '@/db';
 import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
-import { ObjectId } from 'mongodb';
+import { isValidObjectId } from '@/utils/dbHelper';
 
 type getCreatorsPayload = {
   page?: number;
@@ -141,7 +141,7 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
 
 const getCreatorById = async (id: string) => {
   try {
-    if (!ObjectId.isValid(id)) {
+    if (!isValidObjectId(id)) {
       throw new HttpException({
         httpCode: 400,
         message: 'Invalid creator id',

@@ -15,3 +15,5 @@ export const prismaExclude = <T extends Entity, K extends Keys<T>>(type: T, omit
   }
   return result;
 };
+
+export const isValidObjectId = (id: string) => /^[0-9a-fA-F]{24}$/.test(id);

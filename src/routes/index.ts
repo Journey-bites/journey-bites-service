@@ -6,6 +6,7 @@ import authRouter from '@/routes/auth';
 import hotArticleRouter from '@/routes/articleHot';
 import creatorRouter from '@/routes/creator';
 import userRouter from '@/routes/user';
+import categoryRouter from '@/routes/category';
 import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
 
@@ -36,5 +37,6 @@ router.use('/hot-articles', hotArticleRouter);
 router.use('/creator', creatorRouter);
 
 router.use('/user', authenticate, userRouter);
+router.use('/category', categoryRouter);
 
 export default router;

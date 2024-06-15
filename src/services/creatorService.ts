@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import db from '@/db';
+import ErrorCode from '@/exceptions/ErrorCode';
+import { HttpException } from '@/exceptions/HttpException';
+import { ObjectId } from 'mongodb';
 
 type getCreatorsPayload = {
   page?: number;
@@ -138,6 +141,14 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
 
 const getCreatorById = async (id: string) => {
   try {
+    if (!ObjectId.isValid(id)) {
+      throw new HttpException({
+        httpCode: 400,
+        message: 'Invalid creator id',
+        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+      });
+    }
+
     const creator = await db.user.findUnique({
       where: { id },
       select: {
@@ -167,7 +178,10 @@ const getCreatorById = async (id: string) => {
 
     return creator;
   } catch (error) {
-    throw new Error('Error while getting creator');
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    throw new Error('Error while getting creator by id');
   }
 };
 

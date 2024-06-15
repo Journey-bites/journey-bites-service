@@ -19,6 +19,8 @@ model SocialLinks {
   instagram String?
   facebook  String?
   Profile   Profile[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 }
 
 model Profile {
@@ -29,35 +31,45 @@ model Profile {
   socialLinks    SocialLinks? @relation(fields: [socialLinksId], references: [id])
   socialLinksId  String?      @db.ObjectId
   User           User[]
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
 }
 
 model OAuthProvider {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   googleId   String?
   facebookId String?
   User       User[]
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 }
 
 model Billing {
-  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
   bankCode         String?
   bankAccount      String?
   bankAccountOwner String?
   User             User[]
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 }
 
-model User {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  email           String         @unique
-  emailVerified   Boolean        @default(false)
-  password        String
-  profile         Profile?       @relation(fields: [profileId], references: [id])
-  profileId       String?        @db.ObjectId
-  oAuthProvider   OAuthProvider? @relation(fields: [oAuthProviderId], references: [id])
-  oAuthProviderId String?        @db.ObjectId
-  billing         Billing?       @relation(fields: [billingId], references: [id])
-  billingId       String?        @db.ObjectId
-  Articles        Articles[]
+model Follow {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  followerId  String   @db.ObjectId
+  followingId String   @db.ObjectId
+  follower    User     @relation("UserFollows", fields: [followerId], references: [id])
+  following   User     @relation("UserFollowedBy", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model ArticleStatus {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  views         Int
+  likes         Int
+  subscriptions Int
+  Articles      Articles[]
 }
 
 model Articles {
@@ -76,7 +88,6 @@ model Articles {
   tags         String[]
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
-}
 
 model ArticleStatus {
   id            String     @id @default(auto()) @map("_id") @db.ObjectId
@@ -84,13 +95,31 @@ model ArticleStatus {
   likes         Int
   subscriptions Int
   Articles      Articles[]
-}
+
 
 model Categories {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   path        String
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model User {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  email           String         @unique
+  emailVerified   Boolean        @default(false)
+  password        String
+  profile         Profile?       @relation(fields: [profileId], references: [id])
+  profileId       String?        @db.ObjectId
+  oAuthProvider   OAuthProvider? @relation(fields: [oAuthProviderId], references: [id])
+  oAuthProviderId String?        @db.ObjectId
+  billing         Billing?       @relation(fields: [billingId], references: [id])
+  billingId       String?        @db.ObjectId
+  follows         Follow[]       @relation("UserFollows")
+  followedBy      Follow[]       @relation("UserFollowedBy")
+  Articles        Articles[]
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
 }

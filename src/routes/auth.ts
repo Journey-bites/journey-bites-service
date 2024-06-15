@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { passwordSchema } from '@/constants/schema';
 import authController from '@/controllers/authController';
-import validateData from '@/middlewares/validateData';
+import validateRequest from '@/middlewares/validateRequest';
 import authenticate from '@/middlewares/authenticate';
 import passport from 'passport';
 
@@ -49,7 +49,7 @@ router.post(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[400] = {
       description: 'User already exists',
@@ -60,7 +60,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while registering new user' }
     }
   */
-  validateData(registerSchema),
+  validateRequest(registerSchema, 'body'),
   authController.register
 );
 router.post(
@@ -83,7 +83,7 @@ router.post(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[401] = {
       description: 'User not found or wrong password',
@@ -94,7 +94,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while logging in' }
     }
   */
-  validateData(loginSchema),
+  validateRequest(loginSchema, 'body'),
   authController.login
 );
 router.post(
@@ -116,7 +116,7 @@ router.post(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[400] = {
       description: 'User already exists',
@@ -127,7 +127,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while verifying email' }
     }
   */
-  validateData(checkEmailSchema),
+  validateRequest(checkEmailSchema, 'body'),
   authController.verifyEmail
 );
 
@@ -173,7 +173,7 @@ router.patch(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[401] = {
       description: 'Token is invalid',
@@ -185,13 +185,35 @@ router.patch(
     }
   */
   authenticate,
-  validateData(resetPasswordSchema),
+  validateRequest(resetPasswordSchema, 'body'),
   authController.resetPassword
 );
 
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get(
+  '/google',
+  /* 
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Login with Google.'
+    #swagger.responses[200] = {
+      description: 'Redirect to Google login page',
+    }
+  */
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 router.get(
   '/google/callback',
+  /* 
+    #swagger.tags = ['Auth']
+    #swagger.description = 'Callback from Google login.'
+    #swagger.responses[200] = {
+      description: 'Login successful',
+      schema: { statusCode: 0, message: 'Login successful', data: { token: '6a431b030bfcb67e98ff0eaafbe43c3ed0addc7809cfc946' } }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while logging in' }
+    }
+  */
   passport.authenticate('google', { session: false }),
   authController.authorizationCallback
 );

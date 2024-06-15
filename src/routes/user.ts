@@ -1,23 +1,10 @@
 import { Router } from 'express';
-import { z } from 'zod';
 
 import userController from '@/controllers/userController';
-import validateData from '@/middlewares/validateData';
+import validateRequest from '@/middlewares/validateRequest';
+import { updateUserRequestSchema } from '@/validateSchema/updateUserRequest';
 
 const router = Router();
-
-const updateUserRequestSchema = z.object({
-  displayName: z.string().max(50).optional(),
-  avatarImageUrl: z.string().optional(),
-  bio: z.string().optional(),
-  socialLinks: z
-    .object({
-      website: z.string().url().optional(),
-      instagram: z.string().url().optional(),
-      facebook: z.string().url().optional(),
-    })
-    .optional(),
-});
 
 router.get(
   '/',
@@ -90,15 +77,161 @@ router.patch(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1003, message: 'Invalid field' }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while updating user profile' }
     }
   */
-  validateData(updateUserRequestSchema),
+  validateRequest(updateUserRequestSchema, 'body'),
   userController.updateUserProfile
+);
+
+router.get(
+  '/followers',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Get user followers.'
+    #swagger.responses[200] = {
+      description: 'User followers',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: [
+          {
+            userId: 1,
+            email: 'journey-bites@gmail.com',
+            displayName: 'Journey Bites',
+            avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites.com',
+              instagram: 'https://instagram.com/journey-bites',
+              facebook: 'https://facebook.com/journey-bites',
+            },
+            isMutualFollow: true
+          },
+          {
+            userId: 2,
+            email: 'journey-bites2@gmail.com',
+            displayName: 'Journey Bites 2',
+            avatarImageUrl: 'https://journey-bites2.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites2.com',
+              instagram: 'https://instagram.com/journey-bites2',
+              facebook: 'https://facebook.com/journey-bites2',
+            },
+            isMutualFollow: false
+          }
+        ]
+      }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting user followers' }
+    }
+  */
+  userController.getUserFollowers
+);
+
+router.get(
+  '/followings',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Get user followings.'
+    #swagger.responses[200] = {
+      description: 'User followings',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: [
+          {
+            userId: 1,
+            email: 'journey-bites@gmail.com',
+            displayName: 'Journey Bites',
+            avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites.com',
+              instagram: 'https://instagram.com/journey-bites',
+              facebook: 'https://facebook.com/journey-bites',
+            },
+            isMutualFollow: true
+          },
+          {
+            userId: 2,
+            email: 'journey-bites2@gmail.com',
+            displayName: 'Journey Bites 2',
+            avatarImageUrl: 'https://journey-bites2.com/avatar.jpg',
+            socialLinks: {
+              website: 'https://journey-bites2.com',
+              instagram: 'https://instagram.com/journey-bites2',
+              facebook: 'https://facebook.com/journey-bites2',
+            },
+            isMutualFollow: false
+          }
+        ]
+      }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting user followings' }
+    }
+  */
+  userController.getUserFollowings
+);
+
+router.post(
+  '/:userId/follow',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Follow a user.'
+    #swagger.responses[201] = {
+      description: 'User followed successfully',
+      schema: { statusCode: 0, message: 'User followed successfully' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You cannot follow yourself' }
+    }
+    #swagger.responses[404] = {
+      description: 'User not found',
+      schema: { statusCode: 1001, message: 'User not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while following user' }
+    }
+  */
+  userController.followUser
+);
+
+router.delete(
+  '/:userId/follow',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Unfollow a user.'
+    #swagger.responses[200] = {
+      description: 'User unfollowed successfully',
+      schema: { statusCode: 0, message: 'User unfollowed successfully' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You cannot unfollow yourself' }
+    }
+    #swagger.responses[404] = {
+      description: 'User not found',
+      schema: { statusCode: 1001, message: 'User not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while unfollowing user' }
+    }
+  */
+  userController.unfollowUser
 );
 
 export default router;

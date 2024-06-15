@@ -203,7 +203,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field"
+                  "example": "Invalid field (body)"
                 }
               },
               "xml": {
@@ -440,7 +440,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field"
+                  "example": "Invalid field (body)"
                 }
               },
               "xml": {
@@ -496,20 +496,428 @@
     },
     "/auth/google": {
       "get": {
-        "description": "",
+        "tags": ["Auth"],
+        "description": "Login with Google.",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Redirect to Google login page"
           }
         }
       }
     },
     "/auth/google/callback": {
       "get": {
+        "tags": ["Auth"],
+        "description": "Callback from Google login.",
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "6a431b030bfcb67e98ff0eaafbe43c3ed0addc7809cfc946"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while logging in"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hot-articles/": {
+      "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "default": {
             "description": ""
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/creator/": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get creators.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search creator by name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type of creators",
+            "required": false,
+            "type": "string",
+            "enum": ["hot", "random"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creators",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites"
+                          }
+                        }
+                      },
+                      "followers": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "followerId": {
+                              "type": "number",
+                              "example": 2
+                            }
+                          }
+                        }
+                      },
+                      "followings": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "followingId": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting creators"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creator/{creatorId}/followers": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get user followers.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followers",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followers"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creator/{creatorId}/followings": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get user followings.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followings"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
@@ -714,7 +1122,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field"
+                  "example": "Invalid field (body)"
                 }
               },
               "xml": {
@@ -734,6 +1142,390 @@
                 "message": {
                   "type": "string",
                   "example": "Error while updating user profile"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/followers": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user followers.",
+        "responses": {
+          "200": {
+            "description": "User followers",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followers"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/followings": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user followings.",
+        "responses": {
+          "200": {
+            "description": "User followings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followings"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/{userId}/follow": {
+      "post": {
+        "tags": ["User"],
+        "description": "Follow a user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User followed successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User followed successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1005
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You cannot follow yourself"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while following user"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["User"],
+        "description": "Unfollow a user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User unfollowed successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User unfollowed successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1005
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You cannot unfollow yourself"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while unfollowing user"
                 }
               },
               "xml": {

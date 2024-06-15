@@ -15,7 +15,7 @@ router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 router.get(
   '/',
   /*  #swagger.tags = ['default']
-            #swagger.description = 'Demo' */
+      #swagger.description = 'Demo' */
   /*  #swagger.responses[200] = {
             description: 'Hello World',
             schema:

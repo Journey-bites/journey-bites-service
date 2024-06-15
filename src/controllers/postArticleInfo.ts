@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
 import articleService from '@/services/articleService';
+import { z } from 'zod';
 
 interface RequestParams {}
 
@@ -21,6 +22,17 @@ interface RequestBody {
 
 interface RequestQuery {}
 
+const ArticleInputSchema = z.object({
+  creator: z.string().min(1, 'Creator is required'),
+  title: z.string().min(1, 'Title is required'),
+  abstract: z.string().min(1, 'Abstract is required'),
+  content: z.string().min(1, 'Content is required'),
+  thumbnailUrl: z.string().min(1, 'Thumbnail URL is required'),
+  needsPay: z.boolean(),
+  wordsCount: z.number(),
+  tags: z.array(z.string()),
+});
+
 const articleController = {
   postArticleInfo: async (
     req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>,
@@ -28,15 +40,15 @@ const articleController = {
     next: NextFunction
   ) => {
     try {
-      const { creator, title, abstract, content, thumbnailUrl, needsPay, wordsCount, tags } = req.body;
-
-      await articleService.addArticle(creator, title, abstract, content, thumbnailUrl, needsPay, wordsCount, tags);
+      const parsedInput = ArticleInputSchema.parse(req.body);
+      await articleService.addArticle(parsedInput);
 
       return createResponse(res, {
+        httpCode: 201,
         message: 'Create article success',
         data: {
-          creator,
-          title,
+          creator: parsedInput.creator,
+          title: parsedInput.title,
         },
       });
     } catch (error) {

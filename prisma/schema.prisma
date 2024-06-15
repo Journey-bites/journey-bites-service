@@ -5,8 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["omitApi"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -63,8 +62,8 @@ model User {
 
 model Articles {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  creatorId    User          @relation(fields: [id], references: [id])
-  creator      String
+  creatorId    String        @db.ObjectId
+  creator      User          @relation(fields: [creatorId], references: [id])
   title        String
   abstract     String
   content      String
@@ -75,8 +74,8 @@ model Articles {
   status       ArticleStatus @relation(fields: [statusId], references: [id])
   statusId     String        @db.ObjectId
   tags         String[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
 }
 
 model ArticleStatus {

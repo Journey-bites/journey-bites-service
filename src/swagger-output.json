@@ -963,37 +963,32 @@
                       "type": "string",
                       "example": "journey-bites@gmail.com"
                     },
-                    "profile": {
+                    "displayName": {
+                      "type": "string",
+                      "example": "Journey Bites"
+                    },
+                    "avatarImageUrl": {
+                      "type": "string",
+                      "example": "https://journey-bites.com/avatar.jpg"
+                    },
+                    "bio": {
+                      "type": "string",
+                      "example": "Journey Bites is a travel blogger"
+                    },
+                    "socialLinks": {
                       "type": "object",
                       "properties": {
-                        "displayName": {
+                        "website": {
                           "type": "string",
-                          "example": "Journey Bites"
+                          "example": "https://journey-bites2.com"
                         },
-                        "avatarImageUrl": {
+                        "instagram": {
                           "type": "string",
-                          "example": "https://journey-bites.com/avatar.jpg"
+                          "example": "https://instagram.com/journey-bites2"
                         },
-                        "bio": {
+                        "facebook": {
                           "type": "string",
-                          "example": "Journey Bites is a travel blogger"
-                        },
-                        "socialLinks": {
-                          "type": "object",
-                          "properties": {
-                            "website": {
-                              "type": "string",
-                              "example": "https://journey-bites2.com"
-                            },
-                            "instagram": {
-                              "type": "string",
-                              "example": "https://instagram.com/journey-bites2"
-                            },
-                            "facebook": {
-                              "type": "string",
-                              "example": "https://facebook.com/journey-bites2"
-                            }
-                          }
+                          "example": "https://facebook.com/journey-bites2"
                         }
                       }
                     },
@@ -1002,6 +997,44 @@
                       "example": 55
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting creator info"
                 }
               },
               "xml": {

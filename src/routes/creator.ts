@@ -187,23 +187,21 @@ router.get(
         data: {
           id: "12312312",
           email: "journey-bites@gmail.com",
-          profile: {
-            displayName: "Journey Bites",
-            avatarImageUrl: "https://journey-bites.com/avatar.jpg",
-            bio: "Journey Bites is a travel blogger",
-            socialLinks: {
-              website: 'https://journey-bites2.com',
-              instagram: 'https://instagram.com/journey-bites2',
-              facebook: 'https://facebook.com/journey-bites2',
-            }
+          displayName: "Journey Bites",
+          avatarImageUrl: "https://journey-bites.com/avatar.jpg",
+          bio: "Journey Bites is a travel blogger",
+          socialLinks: {
+            website: 'https://journey-bites2.com',
+            instagram: 'https://instagram.com/journey-bites2',
+            facebook: 'https://facebook.com/journey-bites2',
           },
           followersCount: 55
         }
       }
     }
     #swagger.responses[404] = {
-      description: 'Creator doesn't exist',
-      schema: { statusCode: 1001, message: 'Creator doesn't exist' }
+      description: 'Creator doesn\'t exist',
+      schema: { statusCode: 1001, message: 'Creator doesn\'t exist' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

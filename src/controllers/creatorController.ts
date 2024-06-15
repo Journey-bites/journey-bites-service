@@ -96,13 +96,13 @@ const creatorController = {
         throw new UserNotFoundException("Creator doesn't exist");
       }
 
-      const { _count, email, profile, id } = creator;
+      const { _count, email, id } = creator;
 
       return createResponse(res, {
         data: {
-          id,
+          userId: id,
           email,
-          profile,
+          ...creator.profile,
           followersCount: _count.followedBy,
         },
       });

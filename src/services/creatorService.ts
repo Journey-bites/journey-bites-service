@@ -103,6 +103,7 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
                 facebook: true,
               },
             },
+            bio: true,
           },
         },
         follows: {

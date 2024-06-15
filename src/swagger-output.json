@@ -652,6 +652,10 @@
                         "type": "string",
                         "example": "https://journey-bites.com/avatar.jpg"
                       },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites is a travel blogger"
+                      },
                       "socialLinks": {
                         "type": "object",
                         "properties": {

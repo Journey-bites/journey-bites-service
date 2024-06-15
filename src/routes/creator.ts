@@ -53,6 +53,7 @@ router.get(
             email: 'journey-bites@gmail.com',
             displayName: 'Journey Bites',
             avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            bio: 'Journey Bites is a travel blogger',
             socialLinks: {
               website: 'https://journey-bites.com',
               instagram: 'https://instagram.com/journey-bites',

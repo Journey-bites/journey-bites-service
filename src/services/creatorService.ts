@@ -136,6 +136,42 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
   }
 };
 
+const getCreatorById = async (id: string) => {
+  try {
+    const creator = await db.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        profile: {
+          select: {
+            displayName: true,
+            avatarImageUrl: true,
+            bio: true,
+            socialLinks: {
+              select: {
+                website: true,
+                instagram: true,
+                facebook: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            followedBy: true,
+          },
+        },
+      },
+    });
+
+    return creator;
+  } catch (error) {
+    throw new Error('Error while getting creator');
+  }
+};
+
 export default {
   getCreators,
+  getCreatorById,
 };

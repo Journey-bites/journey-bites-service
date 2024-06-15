@@ -922,6 +922,92 @@
         }
       }
     },
+    "/creator/{creatorId}": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get creator profile information.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creator profile information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "12312312"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "journey-bites@gmail.com"
+                    },
+                    "profile": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string",
+                          "example": "Journey Bites"
+                        },
+                        "avatarImageUrl": {
+                          "type": "string",
+                          "example": "https://journey-bites.com/avatar.jpg"
+                        },
+                        "bio": {
+                          "type": "string",
+                          "example": "Journey Bites is a travel blogger"
+                        },
+                        "socialLinks": {
+                          "type": "object",
+                          "properties": {
+                            "website": {
+                              "type": "string",
+                              "example": "https://journey-bites2.com"
+                            },
+                            "instagram": {
+                              "type": "string",
+                              "example": "https://instagram.com/journey-bites2"
+                            },
+                            "facebook": {
+                              "type": "string",
+                              "example": "https://facebook.com/journey-bites2"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "followersCount": {
+                      "type": "number",
+                      "example": 55
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/": {
       "get": {
         "tags": ["User"],

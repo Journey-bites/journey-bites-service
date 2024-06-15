@@ -6,6 +6,7 @@ import creatorService from '@/services/creatorService';
 import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 import { Pagination } from '@/validateSchema/pagination';
+import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 
 type GetCreatorsRequest = Request & {
   query: Partial<Pagination> & {
@@ -21,6 +22,12 @@ type GetCreatorFollowersRequest = Request & {
 };
 
 type GetCreatorFollowingsRequest = Request & {
+  params: {
+    creatorId: string;
+  };
+};
+
+type GetCreatorInfoRequest = Request & {
   params: {
     creatorId: string;
   };
@@ -79,6 +86,33 @@ const creatorController = {
       }
 
       throw new SystemException('Error while getting creator followings');
+    }
+  },
+  getCreatorInfo: async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
+    try {
+      const creator = await creatorService.getCreatorById(req.params.creatorId);
+
+      if (!creator) {
+        throw new UserNotFoundException("Creator doesn't exist");
+      }
+
+      const { _count, email, profile, id } = creator;
+
+      return createResponse(res, {
+        data: {
+          id,
+          email,
+          profile,
+          followersCount: _count.followedBy,
+        },
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting creator info');
     }
   },
 };

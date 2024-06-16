@@ -14,7 +14,7 @@ export const setAuthority = async (userId: string, authorityInfo: AuthorityInfo)
   return true;
 };
 
-export const getAuthority = async (userId: string) => {
+export const getAuthority = async (userId: string): Promise<AuthorityInfo> => {
   const authorityInfo = await redisClient.get(`${PREFIX_KEY}:${userId}`);
 
   return authorityInfo ? JSON.parse(authorityInfo) : null;

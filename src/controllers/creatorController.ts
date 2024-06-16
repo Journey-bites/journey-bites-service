@@ -7,6 +7,8 @@ import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 import { Pagination } from '@/validateSchema/pagination';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
+import authorityRepository from '@/repositories/authorityRepository';
+import { GetCreatorInfoData } from '@/types/comm';
 
 type GetCreatorsRequest = Request & {
   query: Partial<Pagination> & {
@@ -98,13 +100,27 @@ const creatorController = {
 
       const { _count, email, id } = creator;
 
+      const data: GetCreatorInfoData = {
+        userId: id,
+        email,
+        ...creator.profile,
+        followersCount: _count.followedBy,
+      };
+
+      const authHeader = req.headers.authorization;
+      let userAlreadyFollowed = false;
+      if (authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1]) {
+        const token = authHeader.split(' ')[1];
+        const authorityInfo = await authorityRepository.getAuthority(token);
+        const creatorFollowers = await userService.getUserFollowers(req.params.creatorId);
+        if (creatorFollowers.find((follower) => follower.userId === authorityInfo.id)) {
+          userAlreadyFollowed = true;
+        }
+        data.userAlreadyFollowed = userAlreadyFollowed;
+      }
+
       return createResponse(res, {
-        data: {
-          userId: id,
-          email,
-          ...creator.profile,
-          followersCount: _count.followedBy,
-        },
+        data,
       });
     } catch (error) {
       if (error instanceof HttpException) {

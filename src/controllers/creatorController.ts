@@ -107,16 +107,11 @@ const creatorController = {
         followersCount: _count.followedBy,
       };
 
-      const authHeader = req.headers.authorization;
-      let userAlreadyFollowed = false;
-      if (authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1]) {
-        const token = authHeader.split(' ')[1];
-        const authorityInfo = await authorityRepository.getAuthority(token);
+      if (req.user?.id) {
         const creatorFollowers = await userService.getUserFollowers(req.params.creatorId);
-        if (creatorFollowers.find((follower) => follower.userId === authorityInfo.id)) {
-          userAlreadyFollowed = true;
+        if (creatorFollowers) {
+          data.userAlreadyFollowed = Boolean(creatorFollowers.find((follower) => follower.userId === req.user.id));
         }
-        data.userAlreadyFollowed = userAlreadyFollowed;
       }
 
       return createResponse(res, {

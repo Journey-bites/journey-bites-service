@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import creatorController from '@/controllers/creatorController';
 import validateRequest from '@/middlewares/validateRequest';
+import { optionalTokenAuthentication } from '@/middlewares/authenticate';
 import { paginationSchema } from '@/validateSchema/pagination';
 
 const router = Router();
@@ -208,6 +209,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting creator info' }
     }
   */
+  optionalTokenAuthentication,
   creatorController.getCreatorInfo
 );
 

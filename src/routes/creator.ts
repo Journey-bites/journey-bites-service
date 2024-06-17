@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import creatorController from '@/controllers/creatorController';
 import validateRequest from '@/middlewares/validateRequest';
+import { optionalTokenAuthentication } from '@/middlewares/authenticate';
 import { paginationSchema } from '@/validateSchema/pagination';
 
 const router = Router();
@@ -53,6 +54,7 @@ router.get(
             email: 'journey-bites@gmail.com',
             displayName: 'Journey Bites',
             avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+            bio: 'Journey Bites is a travel blogger',
             socialLinks: {
               website: 'https://journey-bites.com',
               instagram: 'https://instagram.com/journey-bites',
@@ -171,6 +173,44 @@ router.get(
     }
   */
   creatorController.getCreatorFollowings
+);
+
+router.get(
+  '/:creatorId',
+  /* 
+    #swagger.tags = ['Creator']
+    #swagger.description = 'Get creator profile information.'
+    #swagger.responses[200] = {
+      description: 'Creator profile information',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: {
+          id: "12312312",
+          email: "journey-bites@gmail.com",
+          displayName: "Journey Bites",
+          avatarImageUrl: "https://journey-bites.com/avatar.jpg",
+          bio: "Journey Bites is a travel blogger",
+          socialLinks: {
+            website: 'https://journey-bites2.com',
+            instagram: 'https://instagram.com/journey-bites2',
+            facebook: 'https://facebook.com/journey-bites2',
+          },
+          followersCount: 55
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: 'Creator doesn\'t exist',
+      schema: { statusCode: 1001, message: 'Creator doesn\'t exist' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting creator info' }
+    }
+  */
+  optionalTokenAuthentication,
+  creatorController.getCreatorInfo
 );
 
 export default router;

@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import db from '@/db';
+import ErrorCode from '@/exceptions/ErrorCode';
+import { HttpException } from '@/exceptions/HttpException';
+import { isValidObjectId } from '@/utils/dbHelper';
 
 type getCreatorsPayload = {
   page?: number;
@@ -103,6 +106,7 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
                 facebook: true,
               },
             },
+            bio: true,
           },
         },
         follows: {
@@ -135,6 +139,53 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
   }
 };
 
+const getCreatorById = async (id: string) => {
+  try {
+    if (!isValidObjectId(id)) {
+      throw new HttpException({
+        httpCode: 400,
+        message: 'Invalid creator id',
+        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+      });
+    }
+
+    const creator = await db.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        profile: {
+          select: {
+            displayName: true,
+            avatarImageUrl: true,
+            bio: true,
+            socialLinks: {
+              select: {
+                website: true,
+                instagram: true,
+                facebook: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            followedBy: true,
+          },
+        },
+      },
+    });
+
+    return creator;
+  } catch (error) {
+    if (error instanceof HttpException) {
+      throw error;
+    }
+    throw new Error('Error while getting creator by id');
+  }
+};
+
 export default {
   getCreators,
+  getCreatorById,
 };

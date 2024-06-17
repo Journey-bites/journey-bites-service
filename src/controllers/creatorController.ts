@@ -6,6 +6,9 @@ import creatorService from '@/services/creatorService';
 import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 import { Pagination } from '@/validateSchema/pagination';
+import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
+import authorityRepository from '@/repositories/authorityRepository';
+import { GetCreatorInfoData } from '@/types/comm';
 
 type GetCreatorsRequest = Request & {
   query: Partial<Pagination> & {
@@ -21,6 +24,12 @@ type GetCreatorFollowersRequest = Request & {
 };
 
 type GetCreatorFollowingsRequest = Request & {
+  params: {
+    creatorId: string;
+  };
+};
+
+type GetCreatorInfoRequest = Request & {
   params: {
     creatorId: string;
   };
@@ -79,6 +88,42 @@ const creatorController = {
       }
 
       throw new SystemException('Error while getting creator followings');
+    }
+  },
+  getCreatorInfo: async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
+    try {
+      const creator = await creatorService.getCreatorById(req.params.creatorId);
+
+      if (!creator) {
+        throw new UserNotFoundException("Creator doesn't exist");
+      }
+
+      const { _count, email, id } = creator;
+
+      const data: GetCreatorInfoData = {
+        userId: id,
+        email,
+        ...creator.profile,
+        followersCount: _count.followedBy,
+      };
+
+      if (req.user?.id) {
+        const creatorFollowers = await userService.getUserFollowers(req.params.creatorId);
+        if (creatorFollowers) {
+          data.userAlreadyFollowed = Boolean(creatorFollowers.find((follower) => follower.userId === req.user.id));
+        }
+      }
+
+      return createResponse(res, {
+        data,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting creator info');
     }
   },
 };

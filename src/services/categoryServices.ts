@@ -22,7 +22,7 @@ const getCategories = async () => {
 
     return categories;
   } catch (error) {
-    throw new Error('Error while fetching categories');
+    throw new Error('Error while getting categories');
   }
 };
 

@@ -26,22 +26,6 @@ router.get(
                 "description": "日本",
                 "createdAt": "2024-06-16T10:28:45.135Z",
                 "updatedAt": "2024-06-17T18:28:45.135Z"
-            },
-            {
-                "id": "66700fe482ebeef8be8f9324",
-                "name": "America",
-                "path": "/america",
-                "description": "美國",
-                "createdAt": "2024-06-16T10:28:52.076Z",
-                "updatedAt": "2024-06-17T20:28:52.076Z"
-            },
-            {
-                "id": "66700fea82ebeef8be8f9325",
-                "name": "Korea",
-                "path": "/korea",
-                "description": "韓國",
-                "createdAt": "2024-06-16T10:28:58.791Z",
-                "updatedAt": "2024-06-17T21:28:58.791Z"
             }
           ]
       }

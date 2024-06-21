@@ -28,11 +28,12 @@ const categoryController = {
       next(new SystemException('Error while adding category'));
     }
   },
-  getCategory: async (req: AddCategoryRequest, res: Response, next: NextFunction) => {
+  getCategory: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const categories = await categoryService.getCategories();
+
       return createResponse(res, {
-        message: 'Categories fetched successfully',
+        message: 'Getting Categories successfully',
         data: categories,
       });
     } catch (error) {
@@ -40,7 +41,7 @@ const categoryController = {
         next(error);
         return;
       }
-      next(new SystemException('Error while fetching categories'));
+      next(new SystemException('Error while getting categories'));
     }
   },
 };

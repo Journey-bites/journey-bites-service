@@ -104,6 +104,7 @@ router.get(
               instagram: 'https://instagram.com/journey-bites',
               facebook: 'https://facebook.com/journey-bites',
             },
+            bio: 'Journey Bites is a travel blogger',
             isMutualFollow: true
           },
           {
@@ -116,6 +117,7 @@ router.get(
               instagram: 'https://instagram.com/journey-bites2',
               facebook: 'https://facebook.com/journey-bites2',
             },
+            bio: 'Journey Bites 2 is a travel blogger',
             isMutualFollow: false
           }
         ]
@@ -150,6 +152,7 @@ router.get(
               instagram: 'https://instagram.com/journey-bites',
               facebook: 'https://facebook.com/journey-bites',
             },
+            bio: 'Journey Bites is a travel blogger',
             isMutualFollow: true
           },
           {
@@ -162,6 +165,7 @@ router.get(
               instagram: 'https://instagram.com/journey-bites2',
               facebook: 'https://facebook.com/journey-bites2',
             },
+            bio: 'Journey Bites 2 is a travel blogger',
             isMutualFollow: true
           }
         ]

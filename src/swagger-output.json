@@ -792,6 +792,10 @@
                           }
                         }
                       },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
+                      },
                       "isMutualFollow": {
                         "type": "boolean",
                         "example": false
@@ -890,6 +894,10 @@
                             "example": "https://facebook.com/journey-bites2"
                           }
                         }
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
                       },
                       "isMutualFollow": {
                         "type": "boolean",
@@ -1192,7 +1200,7 @@
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事m"
+                  "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
                 },
                 "abstract": {
                   "type": "string",
@@ -1204,7 +1212,7 @@
                 },
                 "thumbnailUrl": {
                   "type": "string",
-                  "example": ""
+                  "example": "https://www.example.com"
                 },
                 "isNeedPay": {
                   "type": "boolean",
@@ -1605,6 +1613,10 @@
                           }
                         }
                       },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
+                      },
                       "isMutualFollow": {
                         "type": "boolean",
                         "example": false
@@ -1700,6 +1712,10 @@
                             "example": "https://facebook.com/journey-bites2"
                           }
                         }
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
                       },
                       "isMutualFollow": {
                         "type": "boolean",
@@ -1935,32 +1951,124 @@
     },
     "/category/": {
       "post": {
-        "description": "",
+        "tags": ["Category"],
+        "description": "Add a new category.",
         "parameters": [
           {
-            "name": "body",
+            "name": "payload",
             "in": "body",
+            "description": "Category details",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "description": {
-                  "example": "any"
-                },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "日本"
                 },
                 "path": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "/japan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Travel in Japan"
                 }
               }
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Category added successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category added successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 1003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while adding category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   }

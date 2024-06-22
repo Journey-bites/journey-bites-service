@@ -1,6 +1,14 @@
 import { Router } from 'express';
+import { z } from 'zod';
 
 import articleController from '@/controllers/articleController';
+import validateRequest from '@/middlewares/validateRequest';
+import { paginationSchema } from '@/validateSchema/pagination';
+
+const getCreatorsQuerySchema = paginationSchema.extend({
+  type: z.enum(['hot']).or(z.string()).optional(),
+  q: z.string().optional(),
+});
 
 const router = Router();
 
@@ -62,7 +70,7 @@ router.get(
       },
     }
   */
-
+  validateRequest(getCreatorsQuerySchema, 'query'),
   articleController.getArticles
 );
 

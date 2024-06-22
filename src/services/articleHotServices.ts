@@ -1,7 +1,7 @@
 import db from '@/db';
 
 const findArticleHotByCount = async (count: number) => {
-  return db.articles.findMany({
+  return db.article.findMany({
     include: {
       status: {
         select: {

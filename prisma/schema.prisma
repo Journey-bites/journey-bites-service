@@ -66,29 +66,29 @@ model Follow {
 }
 
 model ArticleStatus {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
-  views         Int
-  likes         Int
-  subscriptions Int
-  Articles      Articles[]
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  views         Int       @default(0)
+  likes         Int       @default(0)
+  subscriptions Int       @default(0)
+  article       Article[]
 }
 
-model Articles {
-  id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  creatorId    User          @relation(fields: [id], references: [id])
-  creator      String
+model Article {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   abstract     String
   content      String
   thumbnailUrl String
-  needsPay     Boolean
-  wordsCount   Int
-  readingTime  Int
-  status       ArticleStatus @relation(fields: [statusId], references: [id])
-  statusId     String        @db.ObjectId
+  isNeedPay    Boolean
+  wordCount    Int
+  readTime     Int
   tags         String[]
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
+  status       ArticleStatus? @relation(fields: [statusId], references: [id])
+  statusId     String?        @db.ObjectId
+  creator      User           @relation("UserArticle", fields: [creatorId], references: [id])
+  creatorId    String         @db.ObjectId
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
 }
 
 model Categories {
@@ -113,7 +113,7 @@ model User {
   billingId       String?        @db.ObjectId
   follows         Follow[]       @relation("UserFollows")
   followedBy      Follow[]       @relation("UserFollowedBy")
-  Articles        Articles[]
+  articles        Article[]      @relation("UserArticle")
   createdAt       DateTime       @default(now()) @map("created_at")
   updatedAt       DateTime       @updatedAt @map("updated_at")
 }

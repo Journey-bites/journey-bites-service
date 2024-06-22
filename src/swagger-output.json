@@ -1687,7 +1687,7 @@
     },
     "/category/": {
       "post": {
-        "tags": ["Categories"],
+        "tags": ["Category"],
         "description": "Add a new category.",
         "parameters": [
           {

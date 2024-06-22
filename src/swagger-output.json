@@ -792,6 +792,10 @@
                           }
                         }
                       },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
+                      },
                       "isMutualFollow": {
                         "type": "boolean",
                         "example": false
@@ -890,6 +894,10 @@
                             "example": "https://facebook.com/journey-bites2"
                           }
                         }
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
                       },
                       "isMutualFollow": {
                         "type": "boolean",
@@ -1341,6 +1349,10 @@
                           }
                         }
                       },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
+                      },
                       "isMutualFollow": {
                         "type": "boolean",
                         "example": false
@@ -1436,6 +1448,10 @@
                             "example": "https://facebook.com/journey-bites2"
                           }
                         }
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
                       },
                       "isMutualFollow": {
                         "type": "boolean",
@@ -1671,81 +1687,92 @@
     },
     "/category/": {
       "post": {
-        "description": "",
+        "tags": ["Categories"],
+        "description": "Add a new category.",
         "parameters": [
           {
-            "name": "body",
+            "name": "payload",
             "in": "body",
+            "description": "Category details",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "description": {
-                  "example": "any"
-                },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "日本"
                 },
                 "path": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "/japan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Travel in Japan"
                 }
               }
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "get": {
-        "tags": ["Category"],
-        "description": "Get all categories.",
-        "responses": {
-          "200": {
-            "description": "Categories",
+          "201": {
+            "description": "Category added successfully",
             "schema": {
               "type": "object",
               "properties": {
-                "statusCode": {
+                "httpCode": {
                   "type": "number",
-                  "example": 0
+                  "example": 201
                 },
                 "message": {
                   "type": "string",
-                  "example": "Getting Categories successfully"
+                  "example": "Category added successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 400
                 },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "66700fdd82ebeef8be8f9323"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "Japan"
-                      },
-                      "path": {
-                        "type": "string",
-                        "example": "/japan"
-                      },
-                      "description": {
-                        "type": "string",
-                        "example": "日本"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "example": "2024-06-16T10:28:45.135Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "example": "2024-06-17T18:28:45.135Z"
-                      }
-                    }
-                  }
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 1003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
                 }
               },
               "xml": {
@@ -1758,13 +1785,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "statusCode": {
+                "httpCode": {
                   "type": "number",
-                  "example": 9999
+                  "example": 500
                 },
                 "message": {
                   "type": "string",
-                  "example": "Error while getting Categories"
+                  "example": "Error while adding category"
                 }
               },
               "xml": {
@@ -1772,7 +1799,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   }

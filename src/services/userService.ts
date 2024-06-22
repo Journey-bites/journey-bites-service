@@ -162,6 +162,7 @@ const getUserFollowers = async (userId: string) => {
                         facebook: true,
                       },
                     },
+                    bio: true,
                   },
                 },
                 followedBy: {
@@ -213,6 +214,7 @@ const getUserFollowings = async (userId: string) => {
                         facebook: true,
                       },
                     },
+                    bio: true,
                   },
                 },
                 follows: {

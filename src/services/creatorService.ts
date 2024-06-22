@@ -4,11 +4,11 @@ import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
 import { isValidObjectId } from '@/utils/dbHelper';
 
-type getCreatorsPayload = {
+type GetCreatorsPayload = {
   page?: number;
   pageSize?: number;
   type?: 'common' | 'hot' | 'random';
-  searchName?: string;
+  keyword?: string;
 };
 
 const generateRandomOrder = () => (Math.random() > 0.5 ? 'asc' : 'desc');
@@ -57,7 +57,7 @@ const generateRandomOrderCondition = () => {
   }
 };
 
-const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchName = '' }: getCreatorsPayload) => {
+const getCreators = async ({ page = 1, pageSize = 10, type = 'common', keyword = '' }: GetCreatorsPayload) => {
   let orderBy: any = {};
 
   const randomOrderBy = generateRandomOrderCondition();
@@ -87,7 +87,7 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', searchNam
       where: {
         profile: {
           displayName: {
-            contains: searchName,
+            contains: keyword,
             mode: 'insensitive',
           },
         },

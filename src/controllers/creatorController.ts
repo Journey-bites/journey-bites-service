@@ -7,7 +7,6 @@ import userService from '@/services/userService';
 import { createResponse } from '@/utils/http';
 import { Pagination } from '@/validateSchema/pagination';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
-import authorityRepository from '@/repositories/authorityRepository';
 import { GetCreatorInfoData } from '@/types/comm';
 
 type GetCreatorsRequest = Request & {
@@ -43,7 +42,7 @@ const creatorController = {
         page,
         pageSize,
         type,
-        searchName: search?.trim(),
+        keyword: search?.trim(),
       });
 
       return createResponse(res, {

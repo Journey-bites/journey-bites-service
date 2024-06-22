@@ -50,7 +50,7 @@ router.get(
         message: 'success',
         data: [
           {
-            userId: 1,
+            userId: '1',
             email: 'journey-bites@gmail.com',
             displayName: 'Journey Bites',
             avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
@@ -95,7 +95,7 @@ router.get(
         message: 'success',
         data: [
           {
-            userId: 1,
+            userId: '1',
             email: 'journey-bites@gmail.com',
             displayName: 'Journey Bites',
             avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
@@ -108,7 +108,7 @@ router.get(
             isMutualFollow: true
           },
           {
-            userId: 2,
+            userId: '2',
             email: 'journey-bites2@gmail.com',
             displayName: 'Journey Bites 2',
             avatarImageUrl: 'https://journey-bites2.com/avatar.jpg',
@@ -143,7 +143,7 @@ router.get(
         message: 'success',
         data: [
           {
-            userId: 1,
+            userId: '1',
             email: 'journey-bites@gmail.com',
             displayName: 'Journey Bites',
             avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
@@ -156,7 +156,7 @@ router.get(
             isMutualFollow: true
           },
           {
-            userId: 2,
+            userId: '2',
             email: 'journey-bites2@gmail.com',
             displayName: 'Journey Bites 2',
             avatarImageUrl: 'https://journey-bites2.com/avatar.jpg',

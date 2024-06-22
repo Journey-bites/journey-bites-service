@@ -41,7 +41,7 @@ router.post(
   '/',
   /* 
   #swagger.security = [{'Bearer': []}]
-  #swagger.tags = ['Categories']
+  #swagger.tags = ['Category']
   #swagger.description = 'Add a new category.'
   #swagger.parameters['payload'] = {
     in: 'body',

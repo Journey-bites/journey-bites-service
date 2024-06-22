@@ -637,8 +637,8 @@
                     "type": "object",
                     "properties": {
                       "userId": {
-                        "type": "number",
-                        "example": 1
+                        "type": "string",
+                        "example": "1"
                       },
                       "email": {
                         "type": "string",
@@ -760,8 +760,8 @@
                     "type": "object",
                     "properties": {
                       "userId": {
-                        "type": "number",
-                        "example": 2
+                        "type": "string",
+                        "example": "2"
                       },
                       "email": {
                         "type": "string",
@@ -859,8 +859,8 @@
                     "type": "object",
                     "properties": {
                       "userId": {
-                        "type": "number",
-                        "example": 2
+                        "type": "string",
+                        "example": "2"
                       },
                       "email": {
                         "type": "string",
@@ -935,6 +935,11 @@
             "name": "creatorId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -1035,6 +1040,133 @@
                 "message": {
                   "type": "string",
                   "example": "Error while getting creator info"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Get articles.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search article by title or abstract",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type of search articles",
+            "required": false,
+            "type": "string",
+            "enum": ["hot"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Articles",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "creator": {
+                        "type": "string",
+                        "example": "666b4090cfc19969b955ca83"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望。分別在秋季、夏季踏上冰島的作者，比較兩者的旅行體驗差異，並帶來當地最真實的氣候、路況指南。"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "<p>123</p><p></p>"
+                      },
+                      "imageUrl": {
+                        "type": "string",
+                        "example": "https://cw-image-resizer.cwg.tw/resize/uri/https%3A%2F%2Fstorage.googleapis.com%2Fcrossing-cms-cwg-tw%2Farticle%2F202205%2Farticle-6274da3fed0eb.jpg/?w=1170&format=webp"
+                      },
+                      "needsPay": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "wordsCount": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "readingTime": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-18T15:49:16.006Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-18T15:49:16.006Z"
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "subscriptions": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               },
               "xml": {
@@ -1662,6 +1794,36 @@
             "Bearer": []
           }
         ]
+      }
+    },
+    "/category/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "path": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     }
   }

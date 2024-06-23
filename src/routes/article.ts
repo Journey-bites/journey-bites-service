@@ -66,27 +66,27 @@ router.get(
         statusCode: 0,
         message: 'Article found',
         data: {
-          articleId: '6671ac7cac8af0d4f5eaf2be',
+          id: '6671ac7cac8af0d4f5eaf2be',
           title: '冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事',
           abstract: '像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…',
           content: '<p>123</p><p></p>',
-          thumbnailUrl: 'https://www.example.com',
           isNeedPay: false,
-          wordCount: 123,
+          readTime: 1,
+          thumbnailUrl: 'https://www.example.com',
           tags: ['冰島', '旅遊'],
           createdAt: "2024-06-22T15:27:41.815Z",
           updatedAt: "2024-06-22T15:27:41.815Z",
-          status: {
-            views: 0,
-            likes: 0,
-            subscriptions: 0
-          },
           creator: {
             profile: {
               displayName: "Render Lai",
               avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",
               bio: "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
             }
+          },
+          status: {
+            views: 0,
+            likes: 0,
+            subscriptions: 0
           }
         }
       }

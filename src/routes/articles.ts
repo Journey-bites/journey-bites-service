@@ -50,20 +50,26 @@ router.get(
         data: [
           {
             id: '6671ac7cac8af0d4f5eaf2be',
-            creator: '666b4090cfc19969b955ca83',
             title: '冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事',
-            abstract: '像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望。分別在秋季、夏季踏上冰島的作者，比較兩者的旅行體驗差異，並帶來當地最真實的氣候、路況指南。',
+            abstract: '像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…',
             content: '<p>123</p><p></p>',
-            imageUrl: 'https://cw-image-resizer.cwg.tw/resize/uri/https%3A%2F%2Fstorage.googleapis.com%2Fcrossing-cms-cwg-tw%2Farticle%2F202205%2Farticle-6274da3fed0eb.jpg/?w=1170&format=webp',
-            needsPay: false,
-            wordsCount: 3,
-            readingTime: 1,
-            createdAt: '2024-06-18T15:49:16.006Z',
-            updatedAt: '2024-06-18T15:49:16.006Z',
+            isNeedPay: false,
+            readTime: 1,
+            thumbnailUrl: 'https://www.example.com',
+            tags: ['冰島', '旅遊'],
+            createdAt: "2024-06-22T15:27:41.815Z",
+            updatedAt: "2024-06-22T15:27:41.815Z",
+            creator: {
+              profile: {
+                displayName: "Render Lai",
+                avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",
+                bio: "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+              }
+            },
             status: {
-                views: 0,
-                likes: 0,
-                subscriptions: 0
+              views: 0,
+              likes: 0,
+              subscriptions: 0
             }
           },
         ]

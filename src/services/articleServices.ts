@@ -36,15 +36,28 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
           },
         ],
       },
-      omit: {
-        statusId: true,
-      },
       include: {
+        creator: {
+          select: {
+            profile: {
+              select: {
+                displayName: true,
+                avatarImageUrl: true,
+                bio: true,
+              },
+            },
+          },
+        },
         status: {
           omit: {
             id: true,
           },
         },
+      },
+      omit: {
+        wordCount: true,
+        statusId: true,
+        creatorId: true,
       },
       orderBy:
         type === 'hot'
@@ -99,13 +112,6 @@ const getArticleById = async (articleId: string) => {
         id: articleId,
       },
       include: {
-        status: {
-          select: {
-            views: true,
-            likes: true,
-            subscriptions: true,
-          },
-        },
         creator: {
           select: {
             profile: {
@@ -115,6 +121,11 @@ const getArticleById = async (articleId: string) => {
                 bio: true,
               },
             },
+          },
+        },
+        status: {
+          omit: {
+            id: true,
           },
         },
       },

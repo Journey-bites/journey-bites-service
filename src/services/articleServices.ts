@@ -207,6 +207,28 @@ const deleteArticle = async (creatorId: string, articleId: string) => {
   }
 };
 
+const createComment = async (userId: string, articleId: string, content: string) => {
+  try {
+    await db.comment.create({
+      data: {
+        content,
+        article: {
+          connect: {
+            id: articleId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while creating comment');
+  }
+};
+
 export default {
   getArticles,
   createArticle,
@@ -214,4 +236,5 @@ export default {
   getArticleByIdAndCreatorId,
   updateArticle,
   deleteArticle,
+  createComment,
 };

@@ -4,6 +4,7 @@ import articleController from '@/controllers/articleController';
 import authenticate from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
 import { createArticleBodySchema } from '@/validateSchema/createArticleRequest';
+import { createCommentBodySchema } from '@/validateSchema/createComment';
 
 const router = Router();
 
@@ -177,6 +178,49 @@ router.delete(
   */
   authenticate,
   articleController.deleteArticle
+);
+
+router.post(
+  '/:articleId/comment',
+  /*
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['Article']
+    #swagger.description = 'Create a comment.'
+    #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
+    #swagger.parameters['payload'] = {
+      in: 'body',
+      description: 'Comment data to create.',
+      required: true,
+      schema: {
+        content: '好文！'
+      }
+    }
+    #swagger.responses[201] = {
+      description: 'Comment',
+      schema: {
+        statusCode: 0,
+        message: 'Comment created successfully',
+        data: {
+          commentId: '6671ac7cac8af0d4f5eaf2be'
+        }
+      }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 1001, message: 'Unauthorized' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while creating comment' }
+    }
+  */
+  authenticate,
+  validateRequest(createCommentBodySchema, 'body'),
+  articleController.addComment
 );
 
 export default router;

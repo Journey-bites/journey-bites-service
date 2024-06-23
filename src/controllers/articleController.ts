@@ -30,6 +30,15 @@ interface UpdateArticleRequest extends Request {
   body: Partial<CreateArticleRequestBody>;
 }
 
+interface AddCommentRequest extends Request {
+  params: {
+    articleId: string;
+  };
+  body: {
+    content: string;
+  };
+}
+
 const articleController = {
   getArticles: asyncHandler(async (req: GetArticlesRequest, res: Response, next: NextFunction) => {
     const { page, pageSize, q, type } = req.query;
@@ -182,6 +191,36 @@ const articleController = {
       }
 
       throw new SystemException('Error while deleting article');
+    }
+  }),
+  addComment: asyncHandler(async (req: AddCommentRequest, res: Response, next: NextFunction) => {
+    const userId = req.user.id;
+    const articleId = req.params.articleId;
+    const { content } = req.body;
+
+    try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const result = await articleServices.getArticleById(articleId);
+
+      if (!result) {
+        throw new ResourceNotFoundException('Article not found');
+      }
+
+      await articleServices.createComment(userId, articleId, content);
+
+      return createResponse(res, {
+        message: 'Comment added successfully',
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while adding comment');
     }
   }),
 };

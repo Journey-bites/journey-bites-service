@@ -4,6 +4,7 @@ import { HttpException } from '@/exceptions/HttpException';
 import { ResourceNotFoundException } from '@/exceptions/ResourceNotFoundException';
 import { InvalidIdException } from '@/exceptions/InvalidIdException';
 import { SystemException } from '@/exceptions/SystemException';
+import categoryServices from '@/services/categoryServices';
 import articleServices from '@/services/articleServices';
 import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest';
 import { Pagination } from '@/validateSchema/pagination';
@@ -41,8 +42,13 @@ const articleController = {
         type,
       });
 
+      const formatArticles = articles.map((article) => ({
+        ...article,
+        category: article.category.name,
+      }));
+
       return createResponse(res, {
-        data: articles,
+        data: formatArticles,
       });
     } catch (error) {
       if (error instanceof HttpException) {
@@ -55,16 +61,20 @@ const articleController = {
   }),
   createArticle: asyncHandler(async (req: CreateArticleRequest, res: Response, next: NextFunction) => {
     const creatorId = req.user.id;
+    const { category, ...payload } = req.body;
 
     try {
-      const article = await articleServices.createArticle(creatorId, req.body);
+      const categoryDetail = await categoryServices.getCategoryByName(category);
+
+      if (!categoryDetail) {
+        throw new ResourceNotFoundException('Category not found');
+      }
+
+      await articleServices.createArticle(creatorId, { ...payload, categoryId: categoryDetail.id });
 
       return createResponse(res, {
         httpCode: 201,
         message: 'Article created successfully',
-        data: {
-          articleId: article.id,
-        },
       });
     } catch (error) {
       if (error instanceof HttpException) {
@@ -83,15 +93,18 @@ const articleController = {
         throw new InvalidIdException('Invalid article ID');
       }
 
-      const result = await articleServices.getArticleById(articleId);
+      const article = await articleServices.getArticleById(articleId);
 
-      if (!result) {
+      if (!article) {
         throw new ResourceNotFoundException('Article not found');
       }
 
       return createResponse(res, {
         message: 'Article found',
-        data: result,
+        data: {
+          ...article,
+          category: article.category.name,
+        },
       });
     } catch (error) {
       if (error instanceof HttpException) {
@@ -106,6 +119,7 @@ const articleController = {
     async (req: UpdateArticleRequest, res: Response, next: NextFunction) => {
       const creatorId = req.user.id;
       const articleId = req.params.articleId;
+      const { category, ...payload } = req.body;
 
       try {
         if (!isValidObjectId(articleId)) {
@@ -118,7 +132,17 @@ const articleController = {
           throw new ResourceNotFoundException('Article not found');
         }
 
-        await articleServices.updateArticle(creatorId, articleId, req.body);
+        let categoryId: string | undefined;
+        if (category) {
+          const categoryDetail = await categoryServices.getCategoryByName(category);
+
+          categoryId = categoryDetail?.id;
+          if (!categoryDetail) {
+            throw new ResourceNotFoundException('Category not found');
+          }
+        }
+
+        await articleServices.updateArticle(creatorId, articleId, { ...payload, categoryId });
 
         return createResponse(res, {
           message: 'Article updated successfully',

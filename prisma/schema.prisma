@@ -83,6 +83,8 @@ model Article {
   readTime     Int
   thumbnailUrl String         @default("")
   tags         String[]       @default([])
+  category     Category       @relation(fields: [categoryId], references: [id])
+  categoryId   String         @db.ObjectId
   status       ArticleStatus? @relation(fields: [statusId], references: [id])
   statusId     String?        @db.ObjectId
   creator      User           @relation("UserArticle", fields: [creatorId], references: [id])
@@ -91,13 +93,14 @@ model Article {
   updatedAt    DateTime       @updatedAt @map("updated_at")
 }
 
-model Categories {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+model Category {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
   path        String
   description String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  article     Article[]
 }
 
 model User {

@@ -56,6 +56,7 @@ router.get(
             isNeedPay: false,
             readTime: 1,
             thumbnailUrl: 'https://www.example.com',
+            category: "歐洲",
             tags: ['冰島', '旅遊'],
             createdAt: "2024-06-22T15:27:41.815Z",
             updatedAt: "2024-06-22T15:27:41.815Z",

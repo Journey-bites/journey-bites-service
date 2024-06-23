@@ -13,6 +13,7 @@ type CreateArticlePayload = {
   content: string;
   isNeedPay: boolean;
   wordCount: number;
+  categoryId: string;
   thumbnailUrl?: string;
   tags?: string[];
 };
@@ -48,6 +49,11 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
             },
           },
         },
+        category: {
+          select: {
+            name: true,
+          },
+        },
         status: {
           omit: {
             id: true,
@@ -56,6 +62,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
       },
       omit: {
         wordCount: true,
+        categoryId: true,
         statusId: true,
         creatorId: true,
       },
@@ -73,6 +80,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
 
     return articlesDetails;
   } catch (error) {
+    console.log(error);
     throw new Error('Error while getting articles');
   }
 };
@@ -83,11 +91,18 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
     return Math.ceil(payload.wordCount / wordsPerMinute);
   };
 
+  const { categoryId, ...articleInfo } = payload;
+
   try {
     const result = await db.article.create({
       data: {
-        ...payload,
+        ...articleInfo,
         readTime: readingTimes(),
+        category: {
+          connect: {
+            id: categoryId,
+          },
+        },
         status: {
           create: {},
         },
@@ -123,6 +138,11 @@ const getArticleById = async (articleId: string) => {
             },
           },
         },
+        category: {
+          select: {
+            name: true,
+          },
+        },
         status: {
           omit: {
             id: true,
@@ -131,6 +151,7 @@ const getArticleById = async (articleId: string) => {
       },
       omit: {
         wordCount: true,
+        categoryId: true,
         statusId: true,
         creatorId: true,
       },

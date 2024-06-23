@@ -6,6 +6,7 @@ export const createArticleBodySchema = z.object({
   content: z.string(),
   isNeedPay: z.boolean(),
   wordCount: z.number(),
+  category: z.string(),
   thumbnailUrl: z.string().url().optional(),
   tags: z.array(z.string()).optional(),
 });

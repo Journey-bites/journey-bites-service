@@ -102,4 +102,26 @@ router.patch(
   articleController.updateArticle
 );
 
+router.delete(
+  '/:articleId',
+  /*
+    #swagger.tags = ['Article']
+    #swagger.description = 'Delete an article.'
+    #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
+    #swagger.responses[204] = {
+      description: 'Article deleted successfully'
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 1001, message: 'Unauthorized' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while deleting article' }
+    }
+  */
+  authenticate,
+  articleController.deleteArticle
+);
+
 export default router;

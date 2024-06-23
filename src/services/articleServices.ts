@@ -94,10 +94,20 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
 
 const updateArticle = async (creatorId: string, articleId: string, payload: Partial<CreateArticlePayload>) => {
   try {
-    await db.article.update({
+    const article = await db.article.findFirst({
       where: {
         id: articleId,
         creatorId,
+      },
+    });
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    await db.article.update({
+      where: {
+        id: articleId,
       },
       data: {
         ...payload,
@@ -108,8 +118,33 @@ const updateArticle = async (creatorId: string, articleId: string, payload: Part
   }
 };
 
+const deleteArticle = async (creatorId: string, articleId: string) => {
+  try {
+    const article = await db.article.findFirst({
+      where: {
+        id: articleId,
+        creatorId,
+      },
+    });
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    await db.article.delete({
+      where: {
+        id: articleId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error while deleting article');
+  }
+};
+
 export default {
   getArticles,
   createArticle,
   updateArticle,
+  deleteArticle,
 };

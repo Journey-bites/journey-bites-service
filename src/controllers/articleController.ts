@@ -90,6 +90,23 @@ const articleController = {
       throw new SystemException('Error while updating article');
     }
   },
+  deleteArticle: async (req: Request, res: Response, next: NextFunction) => {
+    const creatorId = req.user.id;
+    const articleId = req.params.articleId;
+
+    try {
+      await articleServices.deleteArticle(creatorId, articleId);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while deleting article');
+    }
+  },
 };
 
 export default articleController;

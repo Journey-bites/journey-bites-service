@@ -4,8 +4,8 @@ import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
 import categoryService from '@/services/categoryServices';
 import { CategoryRequest } from '@/validateSchema/categoryRequest';
-import { createResponse } from '@/utils/http';
 import asyncHandler from '@/utils/asyncHandler';
+import { createResponse } from '@/utils/http';
 
 interface AddCategoryRequest extends Request {
   body: CategoryRequest;
@@ -27,6 +27,22 @@ const categoryController = {
         return;
       }
       next(new SystemException('Error while adding category'));
+    }
+  }),
+  getCategory: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const categories = await categoryService.getCategories();
+
+      return createResponse(res, {
+        message: 'Getting Categories successfully',
+        data: categories,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while getting categories'));
     }
   }),
 };

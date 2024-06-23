@@ -28,6 +28,22 @@ const categoryController = {
       next(new SystemException('Error while adding category'));
     }
   },
+  getCategory: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const categories = await categoryService.getCategories();
+
+      return createResponse(res, {
+        message: 'Getting Categories successfully',
+        data: categories,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while getting categories'));
+    }
+  },
 };
 
 export default categoryController;

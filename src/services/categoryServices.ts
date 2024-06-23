@@ -9,6 +9,24 @@ const addCategory = async (name: string, path: string, description?: string) => 
   }
 };
 
+const getCategories = async () => {
+  try {
+    const categoriesDetails = await db.categories.findMany();
+
+    const categories = categoriesDetails.map((category) => ({
+      id: category.id,
+      name: category.name,
+      path: category.path,
+      description: category.description,
+    }));
+
+    return categories;
+  } catch (error) {
+    throw new Error('Error while getting categories');
+  }
+};
+
 export default {
   addCategory,
+  getCategories,
 };

@@ -18,6 +18,13 @@ interface CreateArticleRequest extends Request {
   body: CreateArticleRequestBody;
 }
 
+interface UpdateArticleRequest extends Request {
+  params: {
+    articleId: string;
+  };
+  body: Partial<CreateArticleRequestBody>;
+}
+
 const articleController = {
   getArticles: async (req: GetArticlesRequest, res: Response, next: NextFunction) => {
     const { page, pageSize, q, type } = req.query;
@@ -62,6 +69,25 @@ const articleController = {
       }
 
       throw new SystemException('Error while creating article');
+    }
+  },
+  updateArticle: async (req: UpdateArticleRequest, res: Response, next: NextFunction) => {
+    const creatorId = req.user.id;
+    const articleId = req.params.articleId;
+
+    try {
+      await articleServices.updateArticle(creatorId, articleId, req.body);
+
+      return createResponse(res, {
+        message: 'Article updated successfully',
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while updating article');
     }
   },
 };

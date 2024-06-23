@@ -78,11 +78,11 @@ model Article {
   title        String
   abstract     String
   content      String
-  thumbnailUrl String
   isNeedPay    Boolean
   wordCount    Int
   readTime     Int
-  tags         String[]
+  thumbnailUrl String         @default("")
+  tags         String[]       @default([])
   status       ArticleStatus? @relation(fields: [statusId], references: [id])
   statusId     String?        @db.ObjectId
   creator      User           @relation("UserArticle", fields: [creatorId], references: [id])

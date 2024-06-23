@@ -11,10 +11,10 @@ type CreateArticlePayload = {
   title: string;
   abstract: string;
   content: string;
-  thumbnailUrl: string;
   isNeedPay: boolean;
   wordCount: number;
-  tags: string[];
+  thumbnailUrl?: string;
+  tags?: string[];
 };
 
 const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetArticlesPayload) => {
@@ -92,7 +92,24 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
   }
 };
 
+const updateArticle = async (creatorId: string, articleId: string, payload: Partial<CreateArticlePayload>) => {
+  try {
+    await db.article.update({
+      where: {
+        id: articleId,
+        creatorId,
+      },
+      data: {
+        ...payload,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while updating article');
+  }
+};
+
 export default {
   getArticles,
   createArticle,
+  updateArticle,
 };

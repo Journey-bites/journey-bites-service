@@ -1193,7 +1193,7 @@
           {
             "name": "payload",
             "in": "body",
-            "description": "User information",
+            "description": "Article data to create.",
             "required": true,
             "schema": {
               "type": "object",
@@ -1245,7 +1245,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "success"
+                  "example": "Article created successfully"
                 },
                 "data": {
                   "type": "object",
@@ -1312,6 +1312,150 @@
                 "message": {
                   "type": "string",
                   "example": "Error while creating article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/{articleId}": {
+      "patch": {
+        "tags": ["Article"],
+        "description": "Update an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Article data to update.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                },
+                "abstract": {
+                  "type": "string",
+                  "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "<p>123</p><p></p>"
+                },
+                "thumbnailUrl": {
+                  "type": "string",
+                  "example": "https://www.example.com"
+                },
+                "isNeedPay": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "wordCount": {
+                  "type": "number",
+                  "example": 123
+                },
+                "tags": {
+                  "type": "array",
+                  "example": ["冰島", "旅遊"],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article updated successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "articleId": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while updating article"
                 }
               },
               "xml": {

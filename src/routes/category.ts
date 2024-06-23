@@ -60,8 +60,6 @@ router.get(
                 "name": "Japan",
                 "path": "/japan",
                 "description": "日本",
-                "createdAt": "2024-06-16T10:28:45.135Z",
-                "updatedAt": "2024-06-17T18:28:45.135Z"
             }
           ]
       }

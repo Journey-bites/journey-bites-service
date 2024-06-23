@@ -1116,45 +1116,70 @@
                         "type": "string",
                         "example": "6671ac7cac8af0d4f5eaf2be"
                       },
-                      "creator": {
-                        "type": "string",
-                        "example": "666b4090cfc19969b955ca83"
-                      },
                       "title": {
                         "type": "string",
                         "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
                       },
                       "abstract": {
                         "type": "string",
-                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望。分別在秋季、夏季踏上冰島的作者，比較兩者的旅行體驗差異，並帶來當地最真實的氣候、路況指南。"
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
                       },
                       "content": {
                         "type": "string",
                         "example": "<p>123</p><p></p>"
                       },
-                      "imageUrl": {
-                        "type": "string",
-                        "example": "https://cw-image-resizer.cwg.tw/resize/uri/https%3A%2F%2Fstorage.googleapis.com%2Fcrossing-cms-cwg-tw%2Farticle%2F202205%2Farticle-6274da3fed0eb.jpg/?w=1170&format=webp"
-                      },
-                      "needsPay": {
+                      "isNeedPay": {
                         "type": "boolean",
                         "example": false
                       },
-                      "wordsCount": {
-                        "type": "number",
-                        "example": 3
-                      },
-                      "readingTime": {
+                      "readTime": {
                         "type": "number",
                         "example": 1
                       },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "歐洲"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["冰島", "旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
                       "createdAt": {
                         "type": "string",
-                        "example": "2024-06-18T15:49:16.006Z"
+                        "example": "2024-06-22T15:27:41.815Z"
                       },
                       "updatedAt": {
                         "type": "string",
-                        "example": "2024-06-18T15:49:16.006Z"
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Render Lai"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                              },
+                              "bio": {
+                                "type": "string",
+                                "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                              }
+                            }
+                          }
+                        }
                       },
                       "status": {
                         "type": "object",
@@ -1221,6 +1246,10 @@
                 "wordCount": {
                   "type": "number",
                   "example": 123
+                },
+                "category": {
+                  "type": "string",
+                  "example": "歐洲"
                 },
                 "tags": {
                   "type": "array",
@@ -1319,7 +1348,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/article/{articleId}": {
@@ -1352,7 +1386,7 @@
                 "data": {
                   "type": "object",
                   "properties": {
-                    "articleId": {
+                    "id": {
                       "type": "string",
                       "example": "6671ac7cac8af0d4f5eaf2be"
                     },
@@ -1368,17 +1402,21 @@
                       "type": "string",
                       "example": "<p>123</p><p></p>"
                     },
-                    "thumbnailUrl": {
-                      "type": "string",
-                      "example": "https://www.example.com"
-                    },
                     "isNeedPay": {
                       "type": "boolean",
                       "example": false
                     },
-                    "wordCount": {
+                    "readTime": {
                       "type": "number",
-                      "example": 123
+                      "example": 1
+                    },
+                    "thumbnailUrl": {
+                      "type": "string",
+                      "example": "https://www.example.com"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "歐洲"
                     },
                     "tags": {
                       "type": "array",
@@ -1394,23 +1432,6 @@
                     "updatedAt": {
                       "type": "string",
                       "example": "2024-06-22T15:27:41.815Z"
-                    },
-                    "status": {
-                      "type": "object",
-                      "properties": {
-                        "views": {
-                          "type": "number",
-                          "example": 0
-                        },
-                        "likes": {
-                          "type": "number",
-                          "example": 0
-                        },
-                        "subscriptions": {
-                          "type": "number",
-                          "example": 0
-                        }
-                      }
                     },
                     "creator": {
                       "type": "object",
@@ -1431,6 +1452,23 @@
                               "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
                             }
                           }
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "views": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "likes": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "subscriptions": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -1524,6 +1562,10 @@
                 "wordCount": {
                   "type": "number",
                   "example": 123
+                },
+                "category": {
+                  "type": "string",
+                  "example": "歐洲"
                 },
                 "tags": {
                   "type": "array",
@@ -1622,7 +1664,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
         "tags": ["Article"],
@@ -1678,7 +1725,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/user/": {
@@ -2310,32 +2362,124 @@
     },
     "/category/": {
       "post": {
-        "description": "",
+        "tags": ["Category"],
+        "description": "Add a new category.",
         "parameters": [
           {
-            "name": "body",
+            "name": "payload",
             "in": "body",
+            "description": "Category details",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "description": {
-                  "example": "any"
-                },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "日本"
                 },
                 "path": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "/japan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Travel in Japan"
                 }
               }
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Category added successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category added successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 1003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while adding category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "get": {
         "tags": ["Category"],
@@ -2374,14 +2518,6 @@
                       "description": {
                         "type": "string",
                         "example": "日本"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "example": "2024-06-16T10:28:45.135Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "example": "2024-06-17T18:28:45.135Z"
                       }
                     }
                   }

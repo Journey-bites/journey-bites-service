@@ -10,6 +10,7 @@ const router = Router();
 router.post(
   '/',
   /*
+    #swagger.security = [{'Bearer': []}]
     #swagger.tags = ['Article']
     #swagger.description = 'Create an article.'
     #swagger.parameters['payload'] = {
@@ -108,6 +109,7 @@ router.get(
 router.patch(
   '/:articleId',
   /*
+    #swagger.security = [{'Bearer': []}]
     #swagger.tags = ['Article']
     #swagger.description = 'Update an article.'
     #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
@@ -157,6 +159,7 @@ router.patch(
 router.delete(
   '/:articleId',
   /*
+    #swagger.security = [{'Bearer': []}]
     #swagger.tags = ['Article']
     #swagger.description = 'Delete an article.'
     #swagger.parameters['articleId'] = { description: 'Article ID', required: true }

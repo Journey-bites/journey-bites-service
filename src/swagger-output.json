@@ -1323,6 +1323,165 @@
       }
     },
     "/article/{articleId}": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Get an article by ID.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article found"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "articleId": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                    },
+                    "abstract": {
+                      "type": "string",
+                      "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "<p>123</p><p></p>"
+                    },
+                    "thumbnailUrl": {
+                      "type": "string",
+                      "example": "https://www.example.com"
+                    },
+                    "isNeedPay": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "wordCount": {
+                      "type": "number",
+                      "example": 123
+                    },
+                    "tags": {
+                      "type": "array",
+                      "example": ["冰島", "旅遊"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-06-22T15:27:41.815Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-06-22T15:27:41.815Z"
+                    },
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "views": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "likes": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "subscriptions": {
+                          "type": "number",
+                          "example": 0
+                        }
+                      }
+                    },
+                    "creator": {
+                      "type": "object",
+                      "properties": {
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "displayName": {
+                              "type": "string",
+                              "example": "Render Lai"
+                            },
+                            "avatarImageUrl": {
+                              "type": "string",
+                              "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                            },
+                            "bio": {
+                              "type": "string",
+                              "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
       "patch": {
         "tags": ["Article"],
         "description": "Update an article.",
@@ -1456,6 +1615,62 @@
                 "message": {
                   "type": "string",
                   "example": "Error while updating article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Article"],
+        "description": "Delete an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while deleting article"
                 }
               },
               "xml": {

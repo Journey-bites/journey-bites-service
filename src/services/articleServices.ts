@@ -92,6 +92,49 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
   }
 };
 
+const getArticleById = async (id: string) => {
+  try {
+    const article = await db.article.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        status: {
+          select: {
+            views: true,
+            likes: true,
+            subscriptions: true,
+          },
+        },
+        creator: {
+          select: {
+            profile: {
+              select: {
+                displayName: true,
+                avatarImageUrl: true,
+                bio: true,
+              },
+            },
+          },
+        },
+      },
+      omit: {
+        wordCount: true,
+        statusId: true,
+        creatorId: true,
+      },
+    });
+
+    if (!article) {
+      return null;
+    }
+
+    return article;
+  } catch (error) {
+    throw new Error('Error while getting article');
+  }
+};
+
 const updateArticle = async (creatorId: string, articleId: string, payload: Partial<CreateArticlePayload>) => {
   try {
     const article = await db.article.findFirst({
@@ -144,6 +187,7 @@ const deleteArticle = async (creatorId: string, articleId: string) => {
 export default {
   getArticles,
   createArticle,
+  getArticleById,
   updateArticle,
   deleteArticle,
 };

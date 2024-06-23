@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
+import { ResourceNotFoundException } from '@/exceptions/ResourceNotFoundException';
+import { InvalidIdException } from '@/exceptions/InvalidIdException';
 import { SystemException } from '@/exceptions/SystemException';
 import articleServices from '@/services/articleServices';
 import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest';
 import { Pagination } from '@/validateSchema/pagination';
 import { createResponse } from '@/utils/http';
 import { isValidObjectId } from '@/utils/dbHelper';
-import { InvalidIdException } from '@/exceptions/InvalidIdException';
 import asyncHandler from '@/utils/asyncHandler';
 
 type GetArticlesRequest = Request & {
@@ -72,6 +73,33 @@ const articleController = {
       }
 
       throw new SystemException('Error while creating article');
+    }
+  }),
+  getArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const articleId = req.params.articleId;
+
+    try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const result = await articleServices.getArticleById(articleId);
+
+      if (!result) {
+        throw new ResourceNotFoundException('Article not found');
+      }
+
+      return createResponse(res, {
+        message: 'Article found',
+        data: result,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting article');
     }
   }),
   updateArticle: asyncHandler<UpdateArticleRequest>(

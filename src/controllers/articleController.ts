@@ -6,6 +6,8 @@ import articleServices from '@/services/articleServices';
 import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest';
 import { Pagination } from '@/validateSchema/pagination';
 import { createResponse } from '@/utils/http';
+import { isValidObjectId } from '@/utils/dbHelper';
+import { InvalidIdException } from '@/exceptions/InvalidIdException';
 
 type GetArticlesRequest = Request & {
   query: Partial<Pagination> & {
@@ -76,6 +78,10 @@ const articleController = {
     const articleId = req.params.articleId;
 
     try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
       await articleServices.updateArticle(creatorId, articleId, req.body);
 
       return createResponse(res, {
@@ -95,6 +101,10 @@ const articleController = {
     const articleId = req.params.articleId;
 
     try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
       await articleServices.deleteArticle(creatorId, articleId);
 
       return createResponse(res, { httpCode: 204 });

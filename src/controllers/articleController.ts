@@ -112,6 +112,12 @@ const articleController = {
           throw new InvalidIdException('Invalid article ID');
         }
 
+        const result = await articleServices.getArticleByIdAndCreatorId(articleId, creatorId);
+
+        if (!result) {
+          throw new ResourceNotFoundException('Article not found');
+        }
+
         await articleServices.updateArticle(creatorId, articleId, req.body);
 
         return createResponse(res, {
@@ -134,6 +140,12 @@ const articleController = {
     try {
       if (!isValidObjectId(articleId)) {
         throw new InvalidIdException('Invalid article ID');
+      }
+
+      const result = await articleServices.getArticleByIdAndCreatorId(articleId, creatorId);
+
+      if (!result) {
+        throw new ResourceNotFoundException('Article not found');
       }
 
       await articleServices.deleteArticle(creatorId, articleId);

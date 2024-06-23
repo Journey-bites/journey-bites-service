@@ -92,11 +92,11 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
   }
 };
 
-const getArticleById = async (id: string) => {
+const getArticleById = async (articleId: string) => {
   try {
     const article = await db.article.findUnique({
       where: {
-        id,
+        id: articleId,
       },
       include: {
         status: {
@@ -125,9 +125,20 @@ const getArticleById = async (id: string) => {
       },
     });
 
-    if (!article) {
-      return null;
-    }
+    return article;
+  } catch (error) {
+    throw new Error('Error while getting article');
+  }
+};
+
+const getArticleByIdAndCreatorId = async (articleId: string, creatorId: string) => {
+  try {
+    const article = await db.article.findFirst({
+      where: {
+        id: articleId,
+        creatorId,
+      },
+    });
 
     return article;
   } catch (error) {
@@ -137,20 +148,10 @@ const getArticleById = async (id: string) => {
 
 const updateArticle = async (creatorId: string, articleId: string, payload: Partial<CreateArticlePayload>) => {
   try {
-    const article = await db.article.findFirst({
-      where: {
-        id: articleId,
-        creatorId,
-      },
-    });
-
-    if (!article) {
-      throw new Error('Article not found');
-    }
-
     await db.article.update({
       where: {
         id: articleId,
+        creatorId,
       },
       data: {
         ...payload,
@@ -163,20 +164,10 @@ const updateArticle = async (creatorId: string, articleId: string, payload: Part
 
 const deleteArticle = async (creatorId: string, articleId: string) => {
   try {
-    const article = await db.article.findFirst({
-      where: {
-        id: articleId,
-        creatorId,
-      },
-    });
-
-    if (!article) {
-      throw new Error('Article not found');
-    }
-
     await db.article.delete({
       where: {
         id: articleId,
+        creatorId,
       },
     });
   } catch (error) {
@@ -188,6 +179,7 @@ export default {
   getArticles,
   createArticle,
   getArticleById,
+  getArticleByIdAndCreatorId,
   updateArticle,
   deleteArticle,
 };

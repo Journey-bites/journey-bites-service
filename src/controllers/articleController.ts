@@ -19,6 +19,24 @@ interface CreateArticleRequest extends Request {
 }
 
 const articleController = {
+  getArticle: async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    try {
+      const article = await articleServices.getArticle(id);
+
+      return createResponse(res, {
+        message: 'Getting article successfully',
+        data: article,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+      next(new SystemException('Error while getting article'));
+    }
+  },
   getArticles: async (req: GetArticlesRequest, res: Response, next: NextFunction) => {
     const { page, pageSize, q, type } = req.query;
 

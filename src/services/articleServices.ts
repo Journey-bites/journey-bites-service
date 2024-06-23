@@ -17,6 +17,43 @@ type CreateArticlePayload = {
   tags: string[];
 };
 
+const getArticle = async (id: string) => {
+  try {
+    const article = await db.article.findUnique({
+      where: { id },
+      include: {
+        status: {
+          select: {
+            views: true,
+            likes: true,
+            subscriptions: true,
+          },
+        },
+        creator: {
+          select: {
+            profile: {
+              select: {
+                displayName: true,
+                avatarImageUrl: true,
+                bio: true,
+              },
+            },
+          },
+        },
+      },
+      omit: {
+        wordCount: true,
+        statusId: true,
+        creatorId: true,
+      },
+    });
+
+    return article;
+  } catch (error) {
+    throw new Error('Error while getting article');
+  }
+};
+
 const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetArticlesPayload) => {
   try {
     const articlesDetails = await db.article.findMany({
@@ -93,6 +130,7 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
 };
 
 export default {
+  getArticle,
   getArticles,
   createArticle,
 };

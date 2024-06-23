@@ -8,6 +8,7 @@ import { Pagination } from '@/validateSchema/pagination';
 import { createResponse } from '@/utils/http';
 import { isValidObjectId } from '@/utils/dbHelper';
 import { InvalidIdException } from '@/exceptions/InvalidIdException';
+import asyncHandler from '@/utils/asyncHandler';
 
 type GetArticlesRequest = Request & {
   query: Partial<Pagination> & {
@@ -28,7 +29,7 @@ interface UpdateArticleRequest extends Request {
 }
 
 const articleController = {
-  getArticles: async (req: GetArticlesRequest, res: Response, next: NextFunction) => {
+  getArticles: asyncHandler(async (req: GetArticlesRequest, res: Response, next: NextFunction) => {
     const { page, pageSize, q, type } = req.query;
 
     try {
@@ -50,8 +51,8 @@ const articleController = {
 
       throw new SystemException('Error while getting articles');
     }
-  },
-  createArticle: async (req: CreateArticleRequest, res: Response, next: NextFunction) => {
+  }),
+  createArticle: asyncHandler(async (req: CreateArticleRequest, res: Response, next: NextFunction) => {
     const creatorId = req.user.id;
 
     try {
@@ -72,31 +73,33 @@ const articleController = {
 
       throw new SystemException('Error while creating article');
     }
-  },
-  updateArticle: async (req: UpdateArticleRequest, res: Response, next: NextFunction) => {
-    const creatorId = req.user.id;
-    const articleId = req.params.articleId;
+  }),
+  updateArticle: asyncHandler<UpdateArticleRequest>(
+    async (req: UpdateArticleRequest, res: Response, next: NextFunction) => {
+      const creatorId = req.user.id;
+      const articleId = req.params.articleId;
 
-    try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
+      try {
+        if (!isValidObjectId(articleId)) {
+          throw new InvalidIdException('Invalid article ID');
+        }
+
+        await articleServices.updateArticle(creatorId, articleId, req.body);
+
+        return createResponse(res, {
+          message: 'Article updated successfully',
+        });
+      } catch (error) {
+        if (error instanceof HttpException) {
+          next(error);
+          return;
+        }
+
+        throw new SystemException('Error while updating article');
       }
-
-      await articleServices.updateArticle(creatorId, articleId, req.body);
-
-      return createResponse(res, {
-        message: 'Article updated successfully',
-      });
-    } catch (error) {
-      if (error instanceof HttpException) {
-        next(error);
-        return;
-      }
-
-      throw new SystemException('Error while updating article');
     }
-  },
-  deleteArticle: async (req: Request, res: Response, next: NextFunction) => {
+  ),
+  deleteArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const creatorId = req.user.id;
     const articleId = req.params.articleId;
 
@@ -116,7 +119,7 @@ const articleController = {
 
       throw new SystemException('Error while deleting article');
     }
-  },
+  }),
 };
 
 export default articleController;

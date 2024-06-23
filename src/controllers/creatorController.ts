@@ -8,6 +8,7 @@ import { createResponse } from '@/utils/http';
 import { Pagination } from '@/validateSchema/pagination';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { GetCreatorInfoData } from '@/types/comm';
+import asyncHandler from '@/utils/asyncHandler';
 
 type GetCreatorsRequest = Request & {
   query: Partial<Pagination> & {
@@ -35,7 +36,7 @@ type GetCreatorInfoRequest = Request & {
 };
 
 const creatorController = {
-  getCreators: async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
+  getCreators: asyncHandler(async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
     const { page, pageSize, type, search } = req.query;
     try {
       const creators = await creatorService.getCreators({
@@ -56,8 +57,8 @@ const creatorController = {
 
       throw new SystemException('Error while getting creators');
     }
-  },
-  getCreatorFollowers: async (req: GetCreatorFollowersRequest, res: Response, next: NextFunction) => {
+  }),
+  getCreatorFollowers: asyncHandler(async (req: GetCreatorFollowersRequest, res: Response, next: NextFunction) => {
     try {
       const followers = await userService.getUserFollowers(req.params.creatorId);
 
@@ -72,8 +73,8 @@ const creatorController = {
 
       throw new SystemException('Error while getting creator followers');
     }
-  },
-  getCreatorFollowings: async (req: GetCreatorFollowingsRequest, res: Response, next: NextFunction) => {
+  }),
+  getCreatorFollowings: asyncHandler(async (req: GetCreatorFollowingsRequest, res: Response, next: NextFunction) => {
     try {
       const followings = await userService.getUserFollowings(req.params.creatorId);
 
@@ -88,8 +89,8 @@ const creatorController = {
 
       throw new SystemException('Error while getting creator followings');
     }
-  },
-  getCreatorInfo: async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
+  }),
+  getCreatorInfo: asyncHandler(async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
     try {
       const creator = await creatorService.getCreatorById(req.params.creatorId);
 
@@ -124,7 +125,7 @@ const creatorController = {
 
       throw new SystemException('Error while getting creator info');
     }
-  },
+  }),
 };
 
 export default creatorController;

@@ -137,7 +137,6 @@ const deleteArticle = async (creatorId: string, articleId: string) => {
       },
     });
   } catch (error) {
-    console.log(error);
     throw new Error('Error while deleting article');
   }
 };

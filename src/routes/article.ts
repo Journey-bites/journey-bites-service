@@ -223,4 +223,49 @@ router.post(
   articleController.addComment
 );
 
+router.get(
+  '/:articleId/comments',
+  /*
+    #swagger.tags = ['Article']
+    #swagger.description = 'Get comments of an article.'
+    #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
+    #swagger.responses[200] = {
+      description: 'Comments',
+      schema: {
+        statusCode: 0,
+        message: 'Comments found',
+        data: [
+          {
+            id: '6671ac7cac8af0d4f5eaf2be',
+            content: '好文！',
+            likes: 2,
+            likedUserIds: [
+              '6671ac7cac8af0d4f5eaf2be',
+              '6671ac7cac8af0d4f5eaf2be'
+            ],
+            createdAt: "2024-06-22T15:27:41.815Z",
+            updatedAt: "2024-06-22T15:27:41.815Z",
+            creator: {
+              profile: {
+                displayName: "Render Lai",
+                avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",
+                bio: "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+              }
+            }
+          }
+        ]
+      }
+    }
+    #swagger.responses[404] = {
+      description: 'Comments not found',
+      schema: { statusCode: 1002, message: 'Comments not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting comments' }
+    }
+  */
+  articleController.getComments
+);
+
 export default router;

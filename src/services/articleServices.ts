@@ -229,6 +229,38 @@ const createComment = async (userId: string, articleId: string, content: string)
   }
 };
 
+const getComments = async (articleId: string) => {
+  try {
+    const comments = await db.comment.findMany({
+      where: {
+        articleId,
+      },
+      omit: {
+        articleId: true,
+        userId: true,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            profile: {
+              select: {
+                displayName: true,
+                avatarImageUrl: true,
+                bio: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return comments;
+  } catch (error) {
+    throw new Error('Error while getting comments');
+  }
+};
+
 export default {
   getArticles,
   createArticle,
@@ -237,4 +269,5 @@ export default {
   updateArticle,
   deleteArticle,
   createComment,
+  getComments,
 };

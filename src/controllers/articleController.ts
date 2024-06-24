@@ -223,6 +223,39 @@ const articleController = {
       throw new SystemException('Error while adding comment');
     }
   }),
+  getComments: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const articleId = req.params.articleId;
+
+    try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const result = await articleServices.getArticleById(articleId);
+
+      if (!result) {
+        throw new ResourceNotFoundException('Article not found');
+      }
+
+      const commentsDetails = await articleServices.getComments(articleId);
+
+      const comments = commentsDetails.map((comment) => ({
+        ...comment,
+        likes: comment.likedUserIds.length,
+      }));
+
+      return createResponse(res, {
+        data: comments,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting comments');
+    }
+  }),
 };
 
 export default articleController;

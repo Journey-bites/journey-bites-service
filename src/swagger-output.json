@@ -1733,6 +1733,259 @@
         ]
       }
     },
+    "/article/{articleId}/comment": {
+      "post": {
+        "tags": ["Article"],
+        "description": "Create a comment.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Comment data to create.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "好文！"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Comment",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comment created successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "commentId": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while creating comment"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/article/{articleId}/comments": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Get comments of an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comments found"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "好文！"
+                      },
+                      "likes": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "likedUserIds": {
+                        "type": "array",
+                        "example": ["6671ac7cac8af0d4f5eaf2be", "6671ac7cac8af0d4f5eaf2be"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Render Lai"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                              },
+                              "bio": {
+                                "type": "string",
+                                "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Comments not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comments not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting comments"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/": {
       "get": {
         "tags": ["User"],

@@ -8,6 +8,7 @@ import userService from '@/services/userService';
 import { UpdateUserRequest } from '@/validateSchema/updateUserRequest';
 import { createResponse } from '@/utils/http';
 import asyncHandler from '@/utils/asyncHandler';
+import articleServices from '@/services/articleServices';
 
 type UpdateUserProfileRequest = Request & {
   body: UpdateUserRequest;
@@ -160,6 +161,27 @@ const userController = {
         return;
       }
       throw new SystemException('Error while unfollowing user');
+    }
+  }),
+  getUserArticles: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const articles = await articleServices.getArticlesByCreatorId(req.user.id);
+
+      const formatArticles = articles.map((article) => ({
+        ...article,
+        category: article.category.name,
+      }));
+
+      return createResponse(res, {
+        data: formatArticles,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting user articles');
     }
   }),
 };

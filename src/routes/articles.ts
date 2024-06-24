@@ -77,6 +77,10 @@ router.get(
         ]
       },
     }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting articles' }
+    }
   */
   validateRequest(getCreatorsQuerySchema, 'query'),
   articleController.getArticles

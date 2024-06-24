@@ -84,6 +84,44 @@ router.get(
 );
 
 router.get(
+  '/:creatorId',
+  /* 
+    #swagger.tags = ['Creator']
+    #swagger.description = 'Get creator profile information.'
+    #swagger.responses[200] = {
+      description: 'Creator profile information',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: {
+          id: "12312312",
+          email: "journey-bites@gmail.com",
+          displayName: "Journey Bites",
+          avatarImageUrl: "https://journey-bites.com/avatar.jpg",
+          bio: "Journey Bites is a travel blogger",
+          socialLinks: {
+            website: 'https://journey-bites2.com',
+            instagram: 'https://instagram.com/journey-bites2',
+            facebook: 'https://facebook.com/journey-bites2',
+          },
+          followersCount: 55
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: 'Creator doesn\'t exist',
+      schema: { statusCode: 1001, message: 'Creator doesn\'t exist' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting creator info' }
+    }
+  */
+  optionalTokenAuthentication,
+  creatorController.getCreatorInfo
+);
+
+router.get(
   '/:creatorId/followers',
   /* 
     #swagger.tags = ['Creator']
@@ -180,41 +218,49 @@ router.get(
 );
 
 router.get(
-  '/:creatorId',
+  '/:creatorId/articles',
   /* 
     #swagger.tags = ['Creator']
-    #swagger.description = 'Get creator profile information.'
+    #swagger.description = 'Get creator articles.'
+    #swagger.parameters['pageSize'] = {
+      in: 'query',
+      description: 'Number of items per page',
+      required: false,
+      type: 'number'
+    }
     #swagger.responses[200] = {
-      description: 'Creator profile information',
+      description: 'Creator articles',
       schema: {
         statusCode: 0,
         message: 'success',
-        data: {
-          id: "12312312",
-          email: "journey-bites@gmail.com",
-          displayName: "Journey Bites",
-          avatarImageUrl: "https://journey-bites.com/avatar.jpg",
-          bio: "Journey Bites is a travel blogger",
-          socialLinks: {
-            website: 'https://journey-bites2.com',
-            instagram: 'https://instagram.com/journey-bites2',
-            facebook: 'https://facebook.com/journey-bites2',
+        data: [
+          {
+            id: '6671ac7cac8af0d4f5eaf2be',
+            title: '冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事',
+            abstract: '像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…',
+            content: '<p>123</p><p></p>',
+            isNeedPay: false,
+            readTime: 1,
+            thumbnailUrl: 'https://www.example.com',
+            category: "歐洲",
+            tags: ['冰島', '旅遊'],
+            createdAt: "2024-06-22T15:27:41.815Z",
+            updatedAt: "2024-06-22T15:27:41.815Z",
+            status: {
+              views: 0,
+              likes: 0,
+              subscriptions: 0
+            }
           },
-          followersCount: 55
-        }
+        ]
       }
-    }
-    #swagger.responses[404] = {
-      description: 'Creator doesn\'t exist',
-      schema: { statusCode: 1001, message: 'Creator doesn\'t exist' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
-      schema: { statusCode: 9999, message: 'Error while getting creator info' }
+      schema: { statusCode: 9999, message: 'Error while getting creator articles' }
     }
   */
-  optionalTokenAuthentication,
-  creatorController.getCreatorInfo
+  creatorController.getCreatorArticles
 );
 
 export default router;

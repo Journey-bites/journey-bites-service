@@ -728,6 +728,130 @@
         }
       }
     },
+    "/creator/{creatorId}": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get creator profile information.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creator profile information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "12312312"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "journey-bites@gmail.com"
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "example": "Journey Bites"
+                    },
+                    "avatarImageUrl": {
+                      "type": "string",
+                      "example": "https://journey-bites.com/avatar.jpg"
+                    },
+                    "bio": {
+                      "type": "string",
+                      "example": "Journey Bites is a travel blogger"
+                    },
+                    "socialLinks": {
+                      "type": "object",
+                      "properties": {
+                        "website": {
+                          "type": "string",
+                          "example": "https://journey-bites2.com"
+                        },
+                        "instagram": {
+                          "type": "string",
+                          "example": "https://instagram.com/journey-bites2"
+                        },
+                        "facebook": {
+                          "type": "string",
+                          "example": "https://facebook.com/journey-bites2"
+                        }
+                      }
+                    },
+                    "followersCount": {
+                      "type": "number",
+                      "example": 55
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting creator info"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/creator/{creatorId}/followers": {
       "get": {
         "tags": ["Creator"],
@@ -934,10 +1058,10 @@
         }
       }
     },
-    "/creator/{creatorId}": {
+    "/creator/{creatorId}/articles": {
       "get": {
         "tags": ["Creator"],
-        "description": "Get creator profile information.",
+        "description": "Get creator articles.",
         "parameters": [
           {
             "name": "creatorId",
@@ -946,14 +1070,16 @@
             "type": "string"
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "name": "pageSize",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "number"
           }
         ],
         "responses": {
           "200": {
-            "description": "Creator profile information",
+            "description": "Creator articles",
             "schema": {
               "type": "object",
               "properties": {
@@ -966,69 +1092,76 @@
                   "example": "success"
                 },
                 "data": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "12312312"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "journey-bites@gmail.com"
-                    },
-                    "displayName": {
-                      "type": "string",
-                      "example": "Journey Bites"
-                    },
-                    "avatarImageUrl": {
-                      "type": "string",
-                      "example": "https://journey-bites.com/avatar.jpg"
-                    },
-                    "bio": {
-                      "type": "string",
-                      "example": "Journey Bites is a travel blogger"
-                    },
-                    "socialLinks": {
-                      "type": "object",
-                      "properties": {
-                        "website": {
-                          "type": "string",
-                          "example": "https://journey-bites2.com"
-                        },
-                        "instagram": {
-                          "type": "string",
-                          "example": "https://instagram.com/journey-bites2"
-                        },
-                        "facebook": {
-                          "type": "string",
-                          "example": "https://facebook.com/journey-bites2"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "<p>123</p><p></p>"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "歐洲"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["冰島", "旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "subscriptions": {
+                            "type": "number",
+                            "example": 0
+                          }
                         }
                       }
-                    },
-                    "followersCount": {
-                      "type": "number",
-                      "example": 55
                     }
                   }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "404": {
-            "description": "Creator doesn't exist",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 1001
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Creator doesn't exist"
                 }
               },
               "xml": {
@@ -1047,7 +1180,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Error while getting creator info"
+                  "example": "Error while getting creator articles"
                 }
               },
               "xml": {
@@ -1204,6 +1337,25 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting articles"
                 }
               },
               "xml": {
@@ -2877,6 +3029,129 @@
                 "message": {
                   "type": "string",
                   "example": "Error while unfollowing user"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/articles": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user articles.",
+        "responses": {
+          "200": {
+            "description": "User articles",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "<p>123</p><p></p>"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "歐洲"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["冰島", "旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "subscriptions": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user articles"
                 }
               },
               "xml": {

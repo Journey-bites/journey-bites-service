@@ -82,7 +82,40 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
 
     return articlesDetails;
   } catch (error) {
-    console.log(error);
+    throw new Error('Error while getting articles');
+  }
+};
+
+const getArticlesByCreatorId = async (creatorId: string) => {
+  try {
+    const articles = await db.article.findMany({
+      where: {
+        creatorId,
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        status: {
+          select: {
+            views: true,
+            likes: true,
+            subscriptions: true,
+          },
+        },
+      },
+      omit: {
+        wordCount: true,
+        categoryId: true,
+        statusId: true,
+        creatorId: true,
+      },
+    });
+
+    return articles;
+  } catch (error) {
     throw new Error('Error while getting articles');
   }
 };
@@ -118,7 +151,6 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
 
     return result;
   } catch (error) {
-    console.log(error);
     throw new Error('Error while creating article');
   }
 };
@@ -177,7 +209,6 @@ const getArticleById = async (articleId: string) => {
 
     return article;
   } catch (error) {
-    console.log(error);
     throw new Error('Error while getting article');
   }
 };
@@ -363,6 +394,7 @@ const getComments = async (articleId: string) => {
 
 export default {
   getArticles,
+  getArticlesByCreatorId,
   createArticle,
   getArticleById,
   getArticleByIdAndCreatorId,

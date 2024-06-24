@@ -1162,6 +1162,10 @@
                       "creator": {
                         "type": "object",
                         "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "6671ac7a2e8af0d4f5e1c2be"
+                          },
                           "profile": {
                             "type": "object",
                             "properties": {
@@ -1436,6 +1440,10 @@
                     "creator": {
                       "type": "object",
                       "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "6671ac7a2e8af0d4f5e1c2be"
+                        },
                         "profile": {
                           "type": "object",
                           "properties": {
@@ -1469,6 +1477,35 @@
                         "subscriptions": {
                           "type": "number",
                           "example": 0
+                        },
+                        "likedUsers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "6671ac7cac8af0d4f5eaf2be"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "properties": {
+                                  "displayName": {
+                                    "type": "string",
+                                    "example": "Render Lai"
+                                  },
+                                  "avatarImageUrl": {
+                                    "type": "string",
+                                    "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                                  },
+                                  "bio": {
+                                    "type": "string",
+                                    "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -1645,6 +1682,25 @@
               }
             }
           },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found or you are not the creator of this article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -1706,6 +1762,25 @@
               }
             }
           },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found or you are not the creator of this article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -1718,6 +1793,130 @@
                 "message": {
                   "type": "string",
                   "example": "Error while deleting article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/article/{articleId}/like": {
+      "post": {
+        "tags": ["Article"],
+        "description": "Like an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article liked successfully"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Article"],
+        "description": "Unlike an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article unliked successfully"
+          },
+          "400": {
+            "description": "Article not liked",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1004
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not liked yet"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while unliking article"
                 }
               },
               "xml": {

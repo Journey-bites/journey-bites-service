@@ -71,6 +71,8 @@ model ArticleStatus {
   likes         Int       @default(0)
   subscriptions Int       @default(0)
   article       Article[]
+  likedUsers    User[]    @relation(fields: [likedUserIds], references: [id])
+  likedUserIds  String[]  @db.ObjectId
 }
 
 model Article {
@@ -118,22 +120,24 @@ model Comment {
 }
 
 model User {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  email           String         @unique
-  emailVerified   Boolean        @default(false)
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  email           String          @unique
+  emailVerified   Boolean         @default(false)
   password        String
-  profile         Profile?       @relation(fields: [profileId], references: [id])
-  profileId       String?        @db.ObjectId
-  oAuthProvider   OAuthProvider? @relation(fields: [oAuthProviderId], references: [id])
-  oAuthProviderId String?        @db.ObjectId
-  billing         Billing?       @relation(fields: [billingId], references: [id])
-  billingId       String?        @db.ObjectId
-  follows         Follow[]       @relation("UserFollows")
-  followedBy      Follow[]       @relation("UserFollowedBy")
-  articles        Article[]      @relation("UserArticle")
-  comment         Comment[]      @relation("UserComment")
-  likedComments   Comment[]      @relation(fields: [likedCommentIds], references: [id])
-  likedCommentIds String[]       @db.ObjectId
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
+  profile         Profile?        @relation(fields: [profileId], references: [id])
+  profileId       String?         @db.ObjectId
+  oAuthProvider   OAuthProvider?  @relation(fields: [oAuthProviderId], references: [id])
+  oAuthProviderId String?         @db.ObjectId
+  billing         Billing?        @relation(fields: [billingId], references: [id])
+  billingId       String?         @db.ObjectId
+  follows         Follow[]        @relation("UserFollows")
+  followedBy      Follow[]        @relation("UserFollowedBy")
+  articles        Article[]       @relation("UserArticle")
+  comment         Comment[]       @relation("UserComment")
+  likedComments   Comment[]       @relation(fields: [likedCommentIds], references: [id])
+  likedCommentIds String[]        @db.ObjectId
+  likedArticles   ArticleStatus[] @relation(fields: [likedArticleIds], references: [id])
+  likedArticleIds String[]        @db.ObjectId
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
 }

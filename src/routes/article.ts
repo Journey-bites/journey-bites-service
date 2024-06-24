@@ -81,6 +81,7 @@ router.get(
           createdAt: "2024-06-22T15:27:41.815Z",
           updatedAt: "2024-06-22T15:27:41.815Z",
           creator: {
+            id: '6671ac7a2e8af0d4f5e1c2be',
             profile: {
               displayName: "Render Lai",
               avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",
@@ -90,7 +91,17 @@ router.get(
           status: {
             views: 0,
             likes: 0,
-            subscriptions: 0
+            subscriptions: 0,
+            likedUsers: [
+              {
+                id: '6671ac7cac8af0d4f5eaf2be',
+                profile: {
+                  displayName: "Render Lai",
+                  avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",
+                  bio: "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                }
+              }              
+            ],
           }
         }
       }
@@ -147,6 +158,10 @@ router.patch(
       description: 'Unauthorized',
       schema: { statusCode: 1001, message: 'Unauthorized' }
     }
+    #swagger.responses[404] = {
+      description: 'Article not found',
+      schema: { statusCode: 1002, message: 'Article not found or you are not the creator of this article' }
+    }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while updating article' }
@@ -171,6 +186,10 @@ router.delete(
       description: 'Unauthorized',
       schema: { statusCode: 1001, message: 'Unauthorized' }
     }
+    #swagger.responses[404] = {
+      description: 'Article not found',
+      schema: { statusCode: 1002, message: 'Article not found or you are not the creator of this article' }
+    }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while deleting article' }
@@ -178,6 +197,68 @@ router.delete(
   */
   authenticate,
   articleController.deleteArticle
+);
+
+router.post(
+  '/:articleId/like',
+  /*
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['Article']
+    #swagger.description = 'Like an article.'
+    #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
+    #swagger.responses[204] = {
+      description: 'Article liked successfully'
+    }
+    #swagger.responses[400] = {
+      description: 'Article already liked',
+      schema: { statusCode: 1005, message: 'Article already liked' 
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 1001, message: 'Unauthorized' }
+    }
+    #swagger.responses[404] = {
+      description: 'Article not found',
+      schema: { statusCode: 1002, message: 'Article not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while liking article' }
+    }
+  */
+  authenticate,
+  articleController.likeArticle
+);
+
+router.delete(
+  '/:articleId/like',
+  /*
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['Article']
+    #swagger.description = 'Unlike an article.'
+    #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
+    #swagger.responses[204] = {
+      description: 'Article unliked successfully'
+    }
+    #swagger.responses[400] = {
+      description: 'Article not liked',
+      schema: { statusCode: 1004, message: 'Article not liked yet' }
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 1001, message: 'Unauthorized' }
+    }
+    #swagger.responses[404] = {
+      description: 'Article not found',
+      schema: { statusCode: 1002, message: 'Article not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while unliking article' }
+    }
+  */
+  authenticate,
+  articleController.unlikeArticle
 );
 
 router.post(

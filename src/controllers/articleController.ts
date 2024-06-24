@@ -138,7 +138,7 @@ const articleController = {
         const result = await articleServices.getArticleByIdAndCreatorId(articleId, creatorId);
 
         if (!result) {
-          throw new ResourceNotFoundException('Article not found');
+          throw new ResourceNotFoundException('Article not found or you are not the creator of this article');
         }
 
         let categoryId: string | undefined;
@@ -191,6 +191,78 @@ const articleController = {
       }
 
       throw new SystemException('Error while deleting article');
+    }
+  }),
+  likeArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user.id;
+    const articleId = req.params.articleId;
+
+    try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const result = await articleServices.getArticleById(articleId);
+
+      if (!result) {
+        throw new ResourceNotFoundException('Article not found');
+      }
+
+      const isLiked = await articleServices.checkIsArticleLiked(userId, articleId);
+
+      if (isLiked) {
+        return createResponse(res, {
+          httpCode: 400,
+          message: 'Article already liked',
+        });
+      }
+
+      await articleServices.likeArticle(userId, articleId);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while liking article');
+    }
+  }),
+  unlikeArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user.id;
+    const articleId = req.params.articleId;
+
+    try {
+      if (!isValidObjectId(articleId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const result = await articleServices.getArticleById(articleId);
+
+      if (!result) {
+        throw new ResourceNotFoundException('Article not found');
+      }
+
+      const isLiked = await articleServices.checkIsArticleLiked(userId, articleId);
+
+      if (!isLiked) {
+        return createResponse(res, {
+          httpCode: 400,
+          message: 'Article not liked yet',
+        });
+      }
+
+      await articleServices.unlikeArticle(userId, articleId);
+
+      return createResponse(res, { httpCode: 204 });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while unliking article');
     }
   }),
   addComment: asyncHandler(async (req: AddCommentRequest, res: Response, next: NextFunction) => {

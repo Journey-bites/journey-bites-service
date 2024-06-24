@@ -61,6 +61,7 @@ router.get(
             createdAt: "2024-06-22T15:27:41.815Z",
             updatedAt: "2024-06-22T15:27:41.815Z",
             creator: {
+              id: '6671ac7a2e8af0d4f5e1c2be',
               profile: {
                 displayName: "Render Lai",
                 avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",

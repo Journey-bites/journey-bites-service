@@ -40,6 +40,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
       include: {
         creator: {
           select: {
+            id: true,
             profile: {
               select: {
                 displayName: true,
@@ -57,6 +58,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
         status: {
           omit: {
             id: true,
+            likedUserIds: true,
           },
         },
       },
@@ -116,6 +118,7 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
 
     return result;
   } catch (error) {
+    console.log(error);
     throw new Error('Error while creating article');
   }
 };
@@ -129,6 +132,7 @@ const getArticleById = async (articleId: string) => {
       include: {
         creator: {
           select: {
+            id: true,
             profile: {
               select: {
                 displayName: true,
@@ -144,8 +148,22 @@ const getArticleById = async (articleId: string) => {
           },
         },
         status: {
-          omit: {
-            id: true,
+          select: {
+            views: true,
+            likes: true,
+            subscriptions: true,
+            likedUsers: {
+              select: {
+                id: true,
+                profile: {
+                  select: {
+                    displayName: true,
+                    avatarImageUrl: true,
+                    bio: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -159,6 +177,7 @@ const getArticleById = async (articleId: string) => {
 
     return article;
   } catch (error) {
+    console.log(error);
     throw new Error('Error while getting article');
   }
 };
@@ -204,6 +223,87 @@ const deleteArticle = async (creatorId: string, articleId: string) => {
     });
   } catch (error) {
     throw new Error('Error while deleting article');
+  }
+};
+
+const checkIsArticleLiked = async (userId: string, articleId: string) => {
+  try {
+    const article = await db.article.findUnique({
+      where: {
+        id: articleId,
+      },
+      include: {
+        status: {
+          select: {
+            likedUsers: {
+              where: {
+                id: userId,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!article?.status) {
+      throw new Error('Article not found');
+    }
+
+    return article.status.likedUsers.length > 0;
+  } catch (error) {
+    throw new Error('Error while checking if article is liked');
+  }
+};
+
+const likeArticle = async (userId: string, articleId: string) => {
+  try {
+    await db.article.update({
+      where: {
+        id: articleId,
+      },
+      data: {
+        status: {
+          update: {
+            likes: {
+              increment: 1,
+            },
+            likedUsers: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while liking article');
+  }
+};
+
+const unlikeArticle = async (userId: string, articleId: string) => {
+  try {
+    await db.article.update({
+      where: {
+        id: articleId,
+      },
+      data: {
+        status: {
+          update: {
+            likes: {
+              decrement: 1,
+            },
+            likedUsers: {
+              disconnect: {
+                id: userId,
+              },
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error('Error while unliking article');
   }
 };
 
@@ -268,6 +368,9 @@ export default {
   getArticleByIdAndCreatorId,
   updateArticle,
   deleteArticle,
+  checkIsArticleLiked,
+  likeArticle,
+  unlikeArticle,
   createComment,
   getComments,
 };

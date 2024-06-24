@@ -7,6 +7,8 @@ import { SystemException } from '@/exceptions/SystemException';
 import userService from '@/services/userService';
 import { UpdateUserRequest } from '@/validateSchema/updateUserRequest';
 import { createResponse } from '@/utils/http';
+import asyncHandler from '@/utils/asyncHandler';
+import articleServices from '@/services/articleServices';
 
 type UpdateUserProfileRequest = Request & {
   body: UpdateUserRequest;
@@ -25,7 +27,7 @@ type UnfollowUserRequest = Request & {
 };
 
 const userController = {
-  getUserInfo: async (req: Request, res: Response, next: NextFunction) => {
+  getUserInfo: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await userService.findUserById(req.user.id);
 
@@ -52,8 +54,8 @@ const userController = {
 
       throw new SystemException('Error while getting user info');
     }
-  },
-  updateUserProfile: async (req: UpdateUserProfileRequest, res: Response, next: NextFunction) => {
+  }),
+  updateUserProfile: asyncHandler(async (req: UpdateUserProfileRequest, res: Response, next: NextFunction) => {
     try {
       await userService.updateUserProfile(req.user.id, req.body);
 
@@ -69,8 +71,8 @@ const userController = {
 
       throw new SystemException('Error while updating user profile');
     }
-  },
-  getUserFollowers: async (req: Request, res: Response, next: NextFunction) => {
+  }),
+  getUserFollowers: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const followers = await userService.getUserFollowers(req.user.id);
 
@@ -85,8 +87,8 @@ const userController = {
 
       throw new SystemException('Error while getting user followers');
     }
-  },
-  getUserFollowings: async (req: Request, res: Response, next: NextFunction) => {
+  }),
+  getUserFollowings: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const followings = await userService.getUserFollowings(req.user.id);
 
@@ -101,8 +103,8 @@ const userController = {
 
       throw new SystemException('Error while getting user followings');
     }
-  },
-  followUser: async (req: FollowUserRequest, res: Response, next: NextFunction) => {
+  }),
+  followUser: asyncHandler(async (req: FollowUserRequest, res: Response, next: NextFunction) => {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
@@ -131,8 +133,8 @@ const userController = {
       }
       throw new SystemException('Error while following user');
     }
-  },
-  unfollowUser: async (req: UnfollowUserRequest, res: Response, next: NextFunction) => {
+  }),
+  unfollowUser: asyncHandler(async (req: UnfollowUserRequest, res: Response, next: NextFunction) => {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
@@ -161,7 +163,28 @@ const userController = {
       }
       throw new SystemException('Error while unfollowing user');
     }
-  },
+  }),
+  getUserArticles: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const articles = await articleServices.getArticlesByCreatorId(req.user.id);
+
+      const formatArticles = articles.map((article) => ({
+        ...article,
+        category: article.category.name,
+      }));
+
+      return createResponse(res, {
+        data: formatArticles,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting user articles');
+    }
+  }),
 };
 
 export default userController;

@@ -2,13 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
+import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
+import { InvalidIdException } from '@/exceptions/InvalidIdException';
+import articleServices from '@/services/articleServices';
 import creatorService from '@/services/creatorService';
 import userService from '@/services/userService';
-import { createResponse } from '@/utils/http';
-import { Pagination } from '@/validateSchema/pagination';
-import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
-import authorityRepository from '@/repositories/authorityRepository';
 import { GetCreatorInfoData } from '@/types/comm';
+import { Pagination } from '@/validateSchema/pagination';
+import asyncHandler from '@/utils/asyncHandler';
+import { isValidObjectId } from '@/utils/dbHelper';
+import { createResponse } from '@/utils/http';
 
 type GetCreatorsRequest = Request & {
   query: Partial<Pagination> & {
@@ -36,14 +39,14 @@ type GetCreatorInfoRequest = Request & {
 };
 
 const creatorController = {
-  getCreators: async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
+  getCreators: asyncHandler(async (req: GetCreatorsRequest, res: Response, next: NextFunction) => {
     const { page, pageSize, type, search } = req.query;
     try {
       const creators = await creatorService.getCreators({
         page,
         pageSize,
         type,
-        searchName: search?.trim(),
+        keyword: search?.trim(),
       });
 
       return createResponse(res, {
@@ -57,42 +60,15 @@ const creatorController = {
 
       throw new SystemException('Error while getting creators');
     }
-  },
-  getCreatorFollowers: async (req: GetCreatorFollowersRequest, res: Response, next: NextFunction) => {
-    try {
-      const followers = await userService.getUserFollowers(req.params.creatorId);
+  }),
+  getCreatorInfo: asyncHandler(async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
+    const { creatorId } = req.params;
 
-      return createResponse(res, {
-        data: followers,
-      });
-    } catch (error) {
-      if (error instanceof HttpException) {
-        next(error);
-        return;
+    try {
+      if (!isValidObjectId(creatorId)) {
+        throw new InvalidIdException('Invalid article ID');
       }
-
-      throw new SystemException('Error while getting creator followers');
-    }
-  },
-  getCreatorFollowings: async (req: GetCreatorFollowingsRequest, res: Response, next: NextFunction) => {
-    try {
-      const followings = await userService.getUserFollowings(req.params.creatorId);
-
-      return createResponse(res, {
-        data: followings,
-      });
-    } catch (error) {
-      if (error instanceof HttpException) {
-        next(error);
-        return;
-      }
-
-      throw new SystemException('Error while getting creator followings');
-    }
-  },
-  getCreatorInfo: async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
-    try {
-      const creator = await creatorService.getCreatorById(req.params.creatorId);
+      const creator = await creatorService.getCreatorById(creatorId);
 
       if (!creator) {
         throw new UserNotFoundException("Creator doesn't exist");
@@ -108,7 +84,7 @@ const creatorController = {
       };
 
       if (req.user?.id) {
-        const creatorFollowers = await userService.getUserFollowers(req.params.creatorId);
+        const creatorFollowers = await userService.getUserFollowers(creatorId);
         if (creatorFollowers) {
           data.userAlreadyFollowed = Boolean(creatorFollowers.find((follower) => follower.userId === req.user.id));
         }
@@ -125,7 +101,79 @@ const creatorController = {
 
       throw new SystemException('Error while getting creator info');
     }
-  },
+  }),
+  getCreatorFollowers: asyncHandler(async (req: GetCreatorFollowersRequest, res: Response, next: NextFunction) => {
+    const { creatorId } = req.params;
+
+    try {
+      if (!isValidObjectId(creatorId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const followers = await userService.getUserFollowers(creatorId);
+
+      return createResponse(res, {
+        data: followers,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting creator followers');
+    }
+  }),
+  getCreatorFollowings: asyncHandler(async (req: GetCreatorFollowingsRequest, res: Response, next: NextFunction) => {
+    const { creatorId } = req.params;
+
+    try {
+      if (!isValidObjectId(creatorId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const followings = await userService.getUserFollowings(creatorId);
+
+      return createResponse(res, {
+        data: followings,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting creator followings');
+    }
+  }),
+
+  getCreatorArticles: asyncHandler(async (req: GetCreatorInfoRequest, res: Response, next: NextFunction) => {
+    const { creatorId } = req.params;
+
+    try {
+      if (!isValidObjectId(creatorId)) {
+        throw new InvalidIdException('Invalid article ID');
+      }
+
+      const articles = await articleServices.getArticlesByCreatorId(creatorId);
+
+      const formatArticles = articles.map((article) => ({
+        ...article,
+        category: article.category.name,
+      }));
+
+      return createResponse(res, {
+        data: formatArticles,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting creator articles');
+    }
+  }),
 };
 
 export default creatorController;

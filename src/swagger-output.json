@@ -5,9 +5,9 @@
     "description": "for the journey bites app",
     "version": "1.0.0"
   },
-  "host": "dev-api-journey-bites.zeabur.app",
+  "host": "localhost:3005",
   "basePath": "/api/v1",
-  "schemes": ["https"],
+  "schemes": ["http"],
   "securityDefinitions": {
     "Bearer": {
       "type": "apiKey",
@@ -637,8 +637,8 @@
                     "type": "object",
                     "properties": {
                       "userId": {
-                        "type": "number",
-                        "example": 1
+                        "type": "string",
+                        "example": "1"
                       },
                       "email": {
                         "type": "string",
@@ -718,212 +718,6 @@
                 "message": {
                   "type": "string",
                   "example": "Error while getting creators"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/creator/{creatorId}/followers": {
-      "get": {
-        "tags": ["Creator"],
-        "description": "Get user followers.",
-        "parameters": [
-          {
-            "name": "creatorId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User followers",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 0
-                },
-                "message": {
-                  "type": "string",
-                  "example": "success"
-                },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "userId": {
-                        "type": "number",
-                        "example": 2
-                      },
-                      "email": {
-                        "type": "string",
-                        "example": "journey-bites2@gmail.com"
-                      },
-                      "displayName": {
-                        "type": "string",
-                        "example": "Journey Bites 2"
-                      },
-                      "avatarImageUrl": {
-                        "type": "string",
-                        "example": "https://journey-bites2.com/avatar.jpg"
-                      },
-                      "socialLinks": {
-                        "type": "object",
-                        "properties": {
-                          "website": {
-                            "type": "string",
-                            "example": "https://journey-bites2.com"
-                          },
-                          "instagram": {
-                            "type": "string",
-                            "example": "https://instagram.com/journey-bites2"
-                          },
-                          "facebook": {
-                            "type": "string",
-                            "example": "https://facebook.com/journey-bites2"
-                          }
-                        }
-                      },
-                      "bio": {
-                        "type": "string",
-                        "example": "Journey Bites 2 is a travel blogger"
-                      },
-                      "isMutualFollow": {
-                        "type": "boolean",
-                        "example": false
-                      }
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 9999
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Error while getting user followers"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/creator/{creatorId}/followings": {
-      "get": {
-        "tags": ["Creator"],
-        "description": "Get user followings.",
-        "parameters": [
-          {
-            "name": "creatorId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User followings",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 0
-                },
-                "message": {
-                  "type": "string",
-                  "example": "success"
-                },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "userId": {
-                        "type": "number",
-                        "example": 2
-                      },
-                      "email": {
-                        "type": "string",
-                        "example": "journey-bites2@gmail.com"
-                      },
-                      "displayName": {
-                        "type": "string",
-                        "example": "Journey Bites 2"
-                      },
-                      "avatarImageUrl": {
-                        "type": "string",
-                        "example": "https://journey-bites2.com/avatar.jpg"
-                      },
-                      "socialLinks": {
-                        "type": "object",
-                        "properties": {
-                          "website": {
-                            "type": "string",
-                            "example": "https://journey-bites2.com"
-                          },
-                          "instagram": {
-                            "type": "string",
-                            "example": "https://instagram.com/journey-bites2"
-                          },
-                          "facebook": {
-                            "type": "string",
-                            "example": "https://facebook.com/journey-bites2"
-                          }
-                        }
-                      },
-                      "bio": {
-                        "type": "string",
-                        "example": "Journey Bites 2 is a travel blogger"
-                      },
-                      "isMutualFollow": {
-                        "type": "boolean",
-                        "example": true
-                      }
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 9999
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Error while getting user followings"
                 }
               },
               "xml": {
@@ -1048,6 +842,1565 @@
                 "message": {
                   "type": "string",
                   "example": "Error while getting creator info"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creator/{creatorId}/followers": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get user followers.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followers",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "example": "2"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followers"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creator/{creatorId}/followings": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get user followings.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "example": "2"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "journey-bites2@gmail.com"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "example": "Journey Bites 2"
+                      },
+                      "avatarImageUrl": {
+                        "type": "string",
+                        "example": "https://journey-bites2.com/avatar.jpg"
+                      },
+                      "socialLinks": {
+                        "type": "object",
+                        "properties": {
+                          "website": {
+                            "type": "string",
+                            "example": "https://journey-bites2.com"
+                          },
+                          "instagram": {
+                            "type": "string",
+                            "example": "https://instagram.com/journey-bites2"
+                          },
+                          "facebook": {
+                            "type": "string",
+                            "example": "https://facebook.com/journey-bites2"
+                          }
+                        }
+                      },
+                      "bio": {
+                        "type": "string",
+                        "example": "Journey Bites 2 is a travel blogger"
+                      },
+                      "isMutualFollow": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user followings"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creator/{creatorId}/articles": {
+      "get": {
+        "tags": ["Creator"],
+        "description": "Get creator articles.",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Creator ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creator articles",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "<p>123</p><p></p>"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "歐洲"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["冰島", "旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "subscriptions": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting creator articles"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Get articles.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search article by title or abstract",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type of search articles",
+            "required": false,
+            "type": "string",
+            "enum": ["hot"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Articles",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "<p>123</p><p></p>"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "歐洲"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["冰島", "旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "6671ac7a2e8af0d4f5e1c2be"
+                          },
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Render Lai"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                              },
+                              "bio": {
+                                "type": "string",
+                                "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "subscriptions": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting articles"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/": {
+      "post": {
+        "tags": ["Article"],
+        "description": "Create an article.",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Article data to create.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                },
+                "abstract": {
+                  "type": "string",
+                  "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "<p>123</p><p></p>"
+                },
+                "thumbnailUrl": {
+                  "type": "string",
+                  "example": "https://www.example.com"
+                },
+                "isNeedPay": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "wordCount": {
+                  "type": "number",
+                  "example": 123
+                },
+                "category": {
+                  "type": "string",
+                  "example": "歐洲"
+                },
+                "tags": {
+                  "type": "array",
+                  "example": ["冰島", "旅遊"],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Article",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article created successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "articleId": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while creating article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/article/{articleId}": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Get an article by ID.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article found"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                    },
+                    "abstract": {
+                      "type": "string",
+                      "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "<p>123</p><p></p>"
+                    },
+                    "isNeedPay": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "readTime": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "thumbnailUrl": {
+                      "type": "string",
+                      "example": "https://www.example.com"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "歐洲"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "example": ["冰島", "旅遊"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-06-22T15:27:41.815Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-06-22T15:27:41.815Z"
+                    },
+                    "creator": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "6671ac7a2e8af0d4f5e1c2be"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "displayName": {
+                              "type": "string",
+                              "example": "Render Lai"
+                            },
+                            "avatarImageUrl": {
+                              "type": "string",
+                              "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                            },
+                            "bio": {
+                              "type": "string",
+                              "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "views": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "likes": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "subscriptions": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "likedUsers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "6671ac7cac8af0d4f5eaf2be"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "properties": {
+                                  "displayName": {
+                                    "type": "string",
+                                    "example": "Render Lai"
+                                  },
+                                  "avatarImageUrl": {
+                                    "type": "string",
+                                    "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                                  },
+                                  "bio": {
+                                    "type": "string",
+                                    "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Article"],
+        "description": "Update an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Article data to update.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                },
+                "abstract": {
+                  "type": "string",
+                  "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "<p>123</p><p></p>"
+                },
+                "thumbnailUrl": {
+                  "type": "string",
+                  "example": "https://www.example.com"
+                },
+                "isNeedPay": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "wordCount": {
+                  "type": "number",
+                  "example": 123
+                },
+                "category": {
+                  "type": "string",
+                  "example": "歐洲"
+                },
+                "tags": {
+                  "type": "array",
+                  "example": ["冰島", "旅遊"],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article updated successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "articleId": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found or you are not the creator of this article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while updating article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Article"],
+        "description": "Delete an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found or you are not the creator of this article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while deleting article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/article/{articleId}/like": {
+      "post": {
+        "tags": ["Article"],
+        "description": "Like an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article liked successfully"
+          },
+          "400": {
+            "description": "Article already liked",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1005
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article already liked"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while liking article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Article"],
+        "description": "Unlike an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Article unliked successfully"
+          },
+          "400": {
+            "description": "Article not liked",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1004
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not liked yet"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while unliking article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/article/{articleId}/comment": {
+      "post": {
+        "tags": ["Article"],
+        "description": "Create a comment.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Comment data to create.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "好文！"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Comment",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comment created successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "commentId": {
+                      "type": "string",
+                      "example": "6671ac7cac8af0d4f5eaf2be"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while creating comment"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/article/{articleId}/comments": {
+      "get": {
+        "tags": ["Article"],
+        "description": "Get comments of an article.",
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Article ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comments",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comments found"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "好文！"
+                      },
+                      "likes": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "likedUserIds": {
+                        "type": "array",
+                        "example": ["6671ac7cac8af0d4f5eaf2be", "6671ac7cac8af0d4f5eaf2be"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "6671ac7a2e8af0d4f5e1c2be"
+                          },
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Render Lai"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                              },
+                              "bio": {
+                                "type": "string",
+                                "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Comments not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comments not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting comments"
                 }
               },
               "xml": {
@@ -1685,34 +3038,249 @@
         ]
       }
     },
-    "/category/": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
+    "/user/articles": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user articles.",
+        "responses": {
+          "200": {
+            "description": "User articles",
             "schema": {
               "type": "object",
               "properties": {
-                "description": {
-                  "example": "any"
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
                 },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "<p>123</p><p></p>"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "歐洲"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["冰島", "旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-22T15:27:41.815Z"
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "subscriptions": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user articles"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/category/": {
+      "post": {
+        "tags": ["Category"],
+        "description": "Add a new category.",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Category details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "日本"
                 },
                 "path": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "/japan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Travel in Japan"
                 }
               }
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Category added successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category added successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 1003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while adding category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "get": {
         "tags": ["Category"],
@@ -1751,14 +3319,6 @@
                       "description": {
                         "type": "string",
                         "example": "日本"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "example": "2024-06-16T10:28:45.135Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "example": "2024-06-17T18:28:45.135Z"
                       }
                     }
                   }

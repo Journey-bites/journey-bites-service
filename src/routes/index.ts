@@ -5,6 +5,8 @@ import authenticate from '@/middlewares/authenticate';
 import authRouter from '@/routes/auth';
 import hotArticleRouter from '@/routes/articleHot';
 import creatorRouter from '@/routes/creator';
+import articlesRouter from '@/routes/articles';
+import articleRouter from '@/routes/article';
 import userRouter from '@/routes/user';
 import categoryRouter from '@/routes/category';
 import swaggerDocument from '@/swagger-output.json';
@@ -35,6 +37,8 @@ router.get(
 router.use('/auth', authRouter);
 router.use('/hot-articles', hotArticleRouter);
 router.use('/creator', creatorRouter);
+router.use('/articles', articlesRouter);
+router.use('/article', articleRouter);
 
 router.use('/user', authenticate, userRouter);
 router.use('/category', categoryRouter);

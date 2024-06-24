@@ -238,4 +238,45 @@ router.delete(
   userController.unfollowUser
 );
 
+router.get(
+  '/articles',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Get user articles.'
+    #swagger.responses[200] = {
+      description: 'User articles',
+      schema: {
+        statusCode: 0,
+        message: 'success',
+        data: [
+          {
+            id: '6671ac7cac8af0d4f5eaf2be',
+            title: '冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事',
+            abstract: '像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…',
+            content: '<p>123</p><p></p>',
+            isNeedPay: false,
+            readTime: 1,
+            thumbnailUrl: 'https://www.example.com',
+            category: "歐洲",
+            tags: ['冰島', '旅遊'],
+            createdAt: "2024-06-22T15:27:41.815Z",
+            updatedAt: "2024-06-22T15:27:41.815Z",
+            status: {
+              views: 0,
+              likes: 0,
+              subscriptions: 0
+            }
+          },
+        ]
+      }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while getting user articles' }
+    }
+  */
+  userController.getUserArticles
+);
+
 export default router;

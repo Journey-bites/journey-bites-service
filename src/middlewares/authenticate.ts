@@ -3,6 +3,7 @@ import { RequestHandler } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import { PermissionDeniedException } from '@/exceptions/PermissionDeniedException';
 import authorityRepository from '@/repositories/authorityRepository';
+import { isValidObjectId } from '@/utils/dbHelper';
 
 const authenticate: RequestHandler = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -18,6 +19,11 @@ const authenticate: RequestHandler = async (req, res, next) => {
 
     if (!authorityInfo) {
       throw new PermissionDeniedException('Token is invalid');
+    }
+
+    if (!isValidObjectId(authorityInfo.id)) {
+      authorityRepository.deleteAuthority(token);
+      throw new PermissionDeniedException('Authority ID is invalid');
     }
 
     req.user = {

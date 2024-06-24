@@ -2,16 +2,17 @@ import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
-import { CategoryRequest } from '@/validateSchema/categoryRequest';
-import { createResponse } from '@/utils/http';
 import categoryService from '@/services/categoryServices';
+import { CategoryRequest } from '@/validateSchema/categoryRequest';
+import asyncHandler from '@/utils/asyncHandler';
+import { createResponse } from '@/utils/http';
 
 interface AddCategoryRequest extends Request {
   body: CategoryRequest;
 }
 
 const categoryController = {
-  addCategory: async (req: AddCategoryRequest, res: Response, next: NextFunction) => {
+  addCategory: asyncHandler(async (req: AddCategoryRequest, res: Response, next: NextFunction) => {
     const { name, path } = req.body;
     try {
       await categoryService.addCategory(name, path, req.body.description);
@@ -27,8 +28,8 @@ const categoryController = {
       }
       next(new SystemException('Error while adding category'));
     }
-  },
-  getCategory: async (req: Request, res: Response, next: NextFunction) => {
+  }),
+  getCategory: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const categories = await categoryService.getCategories();
 
@@ -43,7 +44,7 @@ const categoryController = {
       }
       next(new SystemException('Error while getting categories'));
     }
-  },
+  }),
 };
 
 export default categoryController;

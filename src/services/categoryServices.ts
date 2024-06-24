@@ -1,8 +1,21 @@
 import db from '@/db';
 
-const addCategory = async (name: string, path: string, description?: string) => {
+const getCategoryByName = async (name: string) => {
   try {
-    const category = await db.categories.create({ data: { name, path, description: description || '' } });
+    const category = await db.category.findUnique({ where: { name } });
+    return category;
+  } catch (error) {
+    throw new Error('Error while checking category existence');
+  }
+};
+
+const addCategory = async (name: string, path: string, description: string = '') => {
+  try {
+    if (await getCategoryByName(name)) {
+      throw new Error('Category already exists');
+    }
+
+    const category = await db.category.create({ data: { name, path, description } });
     return category;
   } catch (error) {
     throw new Error('Error while adding category');
@@ -11,14 +24,12 @@ const addCategory = async (name: string, path: string, description?: string) => 
 
 const getCategories = async () => {
   try {
-    const categoriesDetails = await db.categories.findMany();
-
-    const categories = categoriesDetails.map((category) => ({
-      id: category.id,
-      name: category.name,
-      path: category.path,
-      description: category.description,
-    }));
+    const categories = await db.category.findMany({
+      omit: {
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
     return categories;
   } catch (error) {
@@ -28,5 +39,6 @@ const getCategories = async () => {
 
 export default {
   addCategory,
+  getCategoryByName,
   getCategories,
 };

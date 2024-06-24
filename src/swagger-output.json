@@ -1067,14 +1067,8 @@
             "name": "creatorId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "type": "number"
+            "type": "string",
+            "description": "Creator ID"
           }
         ],
         "responses": {

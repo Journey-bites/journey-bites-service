@@ -88,6 +88,7 @@ router.get(
   /* 
     #swagger.tags = ['Creator']
     #swagger.description = 'Get creator profile information.'
+    #swagger.parameters['creatorId'] = { description: 'Creator ID', required: true }
     #swagger.responses[200] = {
       description: 'Creator profile information',
       schema: {
@@ -126,6 +127,7 @@ router.get(
   /* 
     #swagger.tags = ['Creator']
     #swagger.description = 'Get user followers.'
+    #swagger.parameters['creatorId'] = { description: 'Creator ID', required: true }
     #swagger.responses[200] = {
       description: 'User followers',
       schema: {
@@ -174,6 +176,7 @@ router.get(
   /* 
     #swagger.tags = ['Creator']
     #swagger.description = 'Get user followings.'
+    #swagger.parameters['creatorId'] = { description: 'Creator ID', required: true }
     #swagger.responses[200] = {
       description: 'User followings',
       schema: {
@@ -222,12 +225,7 @@ router.get(
   /* 
     #swagger.tags = ['Creator']
     #swagger.description = 'Get creator articles.'
-    #swagger.parameters['pageSize'] = {
-      in: 'query',
-      description: 'Number of items per page',
-      required: false,
-      type: 'number'
-    }
+    #swagger.parameters['creatorId'] = { description: 'Creator ID', required: true }
     #swagger.responses[200] = {
       description: 'Creator articles',
       schema: {

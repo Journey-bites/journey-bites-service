@@ -37,6 +37,7 @@ const userController = {
 
       return createResponse(res, {
         data: {
+          id: req.user.id,
           email,
           emailVerified,
           profile,

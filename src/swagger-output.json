@@ -1824,6 +1824,82 @@
         "responses": {
           "204": {
             "description": "Article liked successfully"
+          },
+          "400": {
+            "description": "Article already liked",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1005
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article already liked"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Article not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while liking article"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         },
         "security": [
@@ -2116,6 +2192,10 @@
                       "creator": {
                         "type": "object",
                         "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "6671ac7a2e8af0d4f5e1c2be"
+                          },
                           "profile": {
                             "type": "object",
                             "properties": {

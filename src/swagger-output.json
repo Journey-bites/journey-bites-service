@@ -737,7 +737,8 @@
             "name": "creatorId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Creator ID"
           },
           {
             "name": "authorization",
@@ -861,7 +862,8 @@
             "name": "creatorId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Creator ID"
           }
         ],
         "responses": {
@@ -964,7 +966,8 @@
             "name": "creatorId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Creator ID"
           }
         ],
         "responses": {
@@ -2411,6 +2414,418 @@
         }
       }
     },
+    "/category/": {
+      "post": {
+        "tags": ["Category"],
+        "description": "Add a new category.",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Category details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "日本"
+                },
+                "path": {
+                  "type": "string",
+                  "example": "/japan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Travel in Japan"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Category added successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category added successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 1003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while adding category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": ["Category"],
+        "description": "Get all categories.",
+        "responses": {
+          "200": {
+            "description": "Categories",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Getting Categories successfully"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "66700fdd82ebeef8be8f9323"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Japan"
+                      },
+                      "path": {
+                        "type": "string",
+                        "example": "/japan"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "日本"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting Categories"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/{commentId}": {
+      "patch": {
+        "tags": ["Comment"],
+        "description": "Update a comment.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Comment ID"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Comment details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "This is a new comment"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comment updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comment updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 1003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Comment not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comment not found"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2004
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while updating comment"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Comment"],
+        "description": "Delete a comment.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Comment ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Comment deleted successfully"
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2003
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Comment not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Comment not found"
+                },
+                "errorCode": {
+                  "type": "number",
+                  "example": 2004
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "httpCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while deleting comment"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/": {
       "get": {
         "tags": ["User"],
@@ -3159,196 +3574,6 @@
             "Bearer": []
           }
         ]
-      }
-    },
-    "/category/": {
-      "post": {
-        "tags": ["Category"],
-        "description": "Add a new category.",
-        "parameters": [
-          {
-            "name": "payload",
-            "in": "body",
-            "description": "Category details",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "日本"
-                },
-                "path": {
-                  "type": "string",
-                  "example": "/japan"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Travel in Japan"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Category added successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "httpCode": {
-                  "type": "number",
-                  "example": 201
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Category added successfully"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid field (body)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "httpCode": {
-                  "type": "number",
-                  "example": 400
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Invalid field (body)"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 1003
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "401": {
-            "description": "Permission denied",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "httpCode": {
-                  "type": "number",
-                  "example": 401
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Permission denied"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 2003
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "httpCode": {
-                  "type": "number",
-                  "example": 500
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Error while adding category"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      },
-      "get": {
-        "tags": ["Category"],
-        "description": "Get all categories.",
-        "responses": {
-          "200": {
-            "description": "Categories",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 0
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Getting Categories successfully"
-                },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "66700fdd82ebeef8be8f9323"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "Japan"
-                      },
-                      "path": {
-                        "type": "string",
-                        "example": "/japan"
-                      },
-                      "description": {
-                        "type": "string",
-                        "example": "日本"
-                      }
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "statusCode": {
-                  "type": "number",
-                  "example": 9999
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Error while getting Categories"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        }
       }
     }
   }

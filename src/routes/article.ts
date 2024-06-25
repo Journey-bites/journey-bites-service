@@ -4,7 +4,7 @@ import articleController from '@/controllers/articleController';
 import authenticate from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
 import { createArticleBodySchema } from '@/validateSchema/createArticleRequest';
-import { createCommentBodySchema } from '@/validateSchema/createComment';
+import { commentRequestBodySchema } from '@/validateSchema/commentRequest';
 
 const router = Router();
 
@@ -300,7 +300,7 @@ router.post(
     }
   */
   authenticate,
-  validateRequest(createCommentBodySchema, 'body'),
+  validateRequest(commentRequestBodySchema, 'body'),
   articleController.addComment
 );
 

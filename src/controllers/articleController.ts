@@ -2,14 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
 import { ResourceNotFoundException } from '@/exceptions/ResourceNotFoundException';
-import { InvalidIdException } from '@/exceptions/InvalidIdException';
 import { SystemException } from '@/exceptions/SystemException';
 import categoryServices from '@/services/categoryServices';
 import articleServices from '@/services/articleServices';
 import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest';
 import { Pagination } from '@/validateSchema/pagination';
 import asyncHandler from '@/utils/asyncHandler';
-import { isValidObjectId } from '@/utils/dbHelper';
 import { createResponse } from '@/utils/http';
 
 type GetArticlesRequest = Request & {
@@ -19,21 +17,21 @@ type GetArticlesRequest = Request & {
   };
 };
 
+interface ArticlesRequest extends Request {
+  params: {
+    articleId: string;
+  };
+}
+
 interface CreateArticleRequest extends Request {
   body: CreateArticleRequestBody;
 }
 
-interface UpdateArticleRequest extends Request {
-  params: {
-    articleId: string;
-  };
+interface UpdateArticleRequest extends ArticlesRequest {
   body: Partial<CreateArticleRequestBody>;
 }
 
-interface AddCommentRequest extends Request {
-  params: {
-    articleId: string;
-  };
+interface AddCommentRequest extends ArticlesRequest {
   body: {
     content: string;
   };
@@ -69,7 +67,7 @@ const articleController = {
     }
   }),
   createArticle: asyncHandler(async (req: CreateArticleRequest, res: Response, next: NextFunction) => {
-    const creatorId = req.user.id;
+    const userId = req.user.id;
     const { category, ...payload } = req.body;
 
     try {
@@ -79,7 +77,7 @@ const articleController = {
         throw new ResourceNotFoundException('Category not found');
       }
 
-      await articleServices.createArticle(creatorId, { ...payload, categoryId: categoryDetail.id });
+      await articleServices.createArticle(userId, { ...payload, categoryId: categoryDetail.id });
 
       return createResponse(res, {
         httpCode: 201,
@@ -94,14 +92,10 @@ const articleController = {
       throw new SystemException('Error while creating article');
     }
   }),
-  getArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const articleId = req.params.articleId;
+  getArticle: asyncHandler(async (req: ArticlesRequest, res: Response, next: NextFunction) => {
+    const { articleId } = req.params;
 
     try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
-      }
-
       const article = await articleServices.getArticleById(articleId);
 
       if (!article) {
@@ -126,16 +120,12 @@ const articleController = {
   }),
   updateArticle: asyncHandler<UpdateArticleRequest>(
     async (req: UpdateArticleRequest, res: Response, next: NextFunction) => {
-      const creatorId = req.user.id;
-      const articleId = req.params.articleId;
+      const userId = req.user.id;
+      const { articleId } = req.params;
       const { category, ...payload } = req.body;
 
       try {
-        if (!isValidObjectId(articleId)) {
-          throw new InvalidIdException('Invalid article ID');
-        }
-
-        const result = await articleServices.getArticleByIdAndCreatorId(articleId, creatorId);
+        const result = await articleServices.getArticleByIdAndCreatorId(articleId, userId);
 
         if (!result) {
           throw new ResourceNotFoundException('Article not found or you are not the creator of this article');
@@ -145,13 +135,14 @@ const articleController = {
         if (category) {
           const categoryDetail = await categoryServices.getCategoryByName(category);
 
-          categoryId = categoryDetail?.id;
           if (!categoryDetail) {
             throw new ResourceNotFoundException('Category not found');
           }
+
+          categoryId = categoryDetail.id;
         }
 
-        await articleServices.updateArticle(creatorId, articleId, { ...payload, categoryId });
+        await articleServices.updateArticle(userId, articleId, { ...payload, categoryId });
 
         return createResponse(res, {
           message: 'Article updated successfully',
@@ -166,22 +157,16 @@ const articleController = {
       }
     }
   ),
-  deleteArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const creatorId = req.user.id;
-    const articleId = req.params.articleId;
+  deleteArticle: asyncHandler(async (req: ArticlesRequest, res: Response, next: NextFunction) => {
+    const userId = req.user.id;
+    const { articleId } = req.params;
 
     try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
-      }
-
-      const result = await articleServices.getArticleByIdAndCreatorId(articleId, creatorId);
+      const result = await articleServices.deleteArticle(userId, articleId);
 
       if (!result) {
-        throw new ResourceNotFoundException('Article not found');
+        throw new ResourceNotFoundException('Article not found or you are not the creator of this article');
       }
-
-      await articleServices.deleteArticle(creatorId, articleId);
 
       return createResponse(res, { httpCode: 204 });
     } catch (error) {
@@ -193,15 +178,11 @@ const articleController = {
       throw new SystemException('Error while deleting article');
     }
   }),
-  likeArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  likeArticle: asyncHandler(async (req: ArticlesRequest, res: Response, next: NextFunction) => {
     const userId = req.user.id;
-    const articleId = req.params.articleId;
+    const { articleId } = req.params;
 
     try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
-      }
-
       const result = await articleServices.getArticleById(articleId);
 
       if (!result) {
@@ -229,15 +210,11 @@ const articleController = {
       throw new SystemException('Error while liking article');
     }
   }),
-  unlikeArticle: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  unlikeArticle: asyncHandler(async (req: ArticlesRequest, res: Response, next: NextFunction) => {
     const userId = req.user.id;
-    const articleId = req.params.articleId;
+    const { articleId } = req.params;
 
     try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
-      }
-
       const result = await articleServices.getArticleById(articleId);
 
       if (!result) {
@@ -267,21 +244,15 @@ const articleController = {
   }),
   addComment: asyncHandler(async (req: AddCommentRequest, res: Response, next: NextFunction) => {
     const userId = req.user.id;
-    const articleId = req.params.articleId;
+    const { articleId } = req.params;
     const { content } = req.body;
 
     try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
-      }
-
-      const result = await articleServices.getArticleById(articleId);
+      const result = await articleServices.createComment(userId, articleId, content);
 
       if (!result) {
         throw new ResourceNotFoundException('Article not found');
       }
-
-      await articleServices.createComment(userId, articleId, content);
 
       return createResponse(res, {
         httpCode: 201,
@@ -296,14 +267,10 @@ const articleController = {
       throw new SystemException('Error while adding comment');
     }
   }),
-  getComments: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const articleId = req.params.articleId;
+  getComments: asyncHandler(async (req: ArticlesRequest, res: Response, next: NextFunction) => {
+    const { articleId } = req.params;
 
     try {
-      if (!isValidObjectId(articleId)) {
-        throw new InvalidIdException('Invalid article ID');
-      }
-
       const result = await articleServices.getArticleById(articleId);
 
       if (!result) {

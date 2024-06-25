@@ -3,6 +3,7 @@ import { Router } from 'express';
 import articleController from '@/controllers/articleController';
 import authenticate from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
+import validateParamsObjectIds from '@/middlewares/validateParamsObjectIds';
 import { createArticleBodySchema } from '@/validateSchema/createArticleRequest';
 import { commentRequestBodySchema } from '@/validateSchema/commentRequest';
 
@@ -115,6 +116,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting article' }
     }
   */
+  validateParamsObjectIds(['articleId']),
   articleController.getArticle
 );
 
@@ -168,6 +170,7 @@ router.patch(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   validateRequest(createArticleBodySchema.partial(), 'body'),
   articleController.updateArticle
 );
@@ -196,6 +199,7 @@ router.delete(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   articleController.deleteArticle
 );
 
@@ -227,6 +231,7 @@ router.post(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   articleController.likeArticle
 );
 
@@ -258,6 +263,7 @@ router.delete(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   articleController.unlikeArticle
 );
 
@@ -300,6 +306,7 @@ router.post(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   validateRequest(commentRequestBodySchema, 'body'),
   articleController.addComment
 );
@@ -347,6 +354,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting comments' }
     }
   */
+  validateParamsObjectIds(['articleId']),
   articleController.getComments
 );
 

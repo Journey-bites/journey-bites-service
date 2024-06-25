@@ -739,11 +739,6 @@
             "required": true,
             "type": "string",
             "description": "Creator ID"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -2474,7 +2469,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (body)"
+                  "example": "Category name already exists"
                 },
                 "errorCode": {
                   "type": "number",
@@ -2905,6 +2900,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "404": {
             "description": "User not found",
             "schema": {
@@ -3034,6 +3048,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -3127,6 +3160,25 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
                 }
               },
               "xml": {
@@ -3234,6 +3286,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -3305,6 +3376,25 @@
                 "message": {
                   "type": "string",
                   "example": "You cannot follow yourself"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
                 }
               },
               "xml": {
@@ -3400,6 +3490,25 @@
                 "message": {
                   "type": "string",
                   "example": "You cannot unfollow yourself"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
                 }
               },
               "xml": {
@@ -3542,6 +3651,25 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
                 }
               },
               "xml": {

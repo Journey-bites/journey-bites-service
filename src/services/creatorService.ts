@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import db from '@/db';
-import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
-import { isValidObjectId } from '@/utils/dbHelper';
 
 type GetCreatorsPayload = {
   page?: number;
@@ -141,14 +139,6 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', keyword =
 
 const getCreatorById = async (id: string) => {
   try {
-    if (!isValidObjectId(id)) {
-      throw new HttpException({
-        httpCode: 400,
-        message: 'Invalid creator id',
-        errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
-      });
-    }
-
     const creator = await db.user.findUnique({
       where: { id },
       select: {

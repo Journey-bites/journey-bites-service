@@ -4,26 +4,20 @@ import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
+import articleServices from '@/services/articleServices';
 import userService from '@/services/userService';
 import { UpdateUserRequest } from '@/validateSchema/updateUserRequest';
 import { createResponse } from '@/utils/http';
 import asyncHandler from '@/utils/asyncHandler';
-import articleServices from '@/services/articleServices';
 
+interface UserRequest extends Request {
+  params: {
+    userId: string;
+  };
+}
+// TODO
 type UpdateUserProfileRequest = Request & {
   body: UpdateUserRequest;
-};
-
-type FollowUserRequest = Request & {
-  params: {
-    userId: string;
-  };
-};
-
-type UnfollowUserRequest = Request & {
-  params: {
-    userId: string;
-  };
 };
 
 const userController = {
@@ -35,11 +29,11 @@ const userController = {
         throw new UserNotFoundException();
       }
 
-      const { email, emailVerified, profile, billing } = user;
+      const { id, email, emailVerified, profile, billing } = user;
 
       return createResponse(res, {
         data: {
-          id: req.user.id,
+          id,
           email,
           emailVerified,
           profile,
@@ -104,7 +98,7 @@ const userController = {
       throw new SystemException('Error while getting user followings');
     }
   }),
-  followUser: asyncHandler(async (req: FollowUserRequest, res: Response, next: NextFunction) => {
+  followUser: asyncHandler(async (req: UserRequest, res: Response, next: NextFunction) => {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 
@@ -134,7 +128,7 @@ const userController = {
       throw new SystemException('Error while following user');
     }
   }),
-  unfollowUser: asyncHandler(async (req: UnfollowUserRequest, res: Response, next: NextFunction) => {
+  unfollowUser: asyncHandler(async (req: UserRequest, res: Response, next: NextFunction) => {
     const followerUserId = req.user.id;
     const followingUserId = req.params.userId;
 

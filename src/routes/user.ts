@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import userController from '@/controllers/userController';
+import validateParamsObjectIds from '@/middlewares/validateParamsObjectIds';
 import validateRequest from '@/middlewares/validateRequest';
 import { updateUserRequestSchema } from '@/validateSchema/updateUserRequest';
 
@@ -37,6 +38,10 @@ router.get(
           }
         }
       }
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
     }
     #swagger.responses[404] = {
       description: 'User not found',
@@ -78,6 +83,10 @@ router.patch(
     #swagger.responses[400] = {
       description: 'Invalid field',
       schema: { statusCode: 1003, message: 'Invalid field (body)' }
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -129,6 +138,10 @@ router.get(
         ]
       }
     }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
+    }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting user followers' }
@@ -178,6 +191,10 @@ router.get(
         ]
       }
     }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
+    }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting user followings' }
@@ -200,6 +217,10 @@ router.post(
       description: 'Invalid field',
       schema: { statusCode: 1005, message: 'You cannot follow yourself' }
     }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
+    }
     #swagger.responses[404] = {
       description: 'User not found',
       schema: { statusCode: 1001, message: 'User not found' }
@@ -209,6 +230,7 @@ router.post(
       schema: { statusCode: 9999, message: 'Error while following user' }
     }
   */
+  validateParamsObjectIds(['userId']),
   userController.followUser
 );
 
@@ -226,6 +248,10 @@ router.delete(
       description: 'Invalid field',
       schema: { statusCode: 1005, message: 'You cannot unfollow yourself' }
     }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
+    }
     #swagger.responses[404] = {
       description: 'User not found',
       schema: { statusCode: 1001, message: 'User not found' }
@@ -235,6 +261,7 @@ router.delete(
       schema: { statusCode: 9999, message: 'Error while unfollowing user' }
     }
   */
+  validateParamsObjectIds(['userId']),
   userController.unfollowUser
 );
 
@@ -270,6 +297,10 @@ router.get(
           },
         ]
       }
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

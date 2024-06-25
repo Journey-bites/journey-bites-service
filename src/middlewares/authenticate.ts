@@ -28,7 +28,7 @@ const generateAuthenticate: (isOptional?: boolean) => RequestHandler =
 
       if (!isValidObjectId(authorityInfo.id)) {
         authorityRepository.deleteAuthority(token);
-        throw new PermissionDeniedException('Authority ID is invalid');
+        throw new PermissionDeniedException();
       }
 
       req.user = {

@@ -3,6 +3,7 @@ import { Router } from 'express';
 import articleController from '@/controllers/articleController';
 import authenticate from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
+import validateParamsObjectIds from '@/middlewares/validateParamsObjectIds';
 import { createArticleBodySchema } from '@/validateSchema/createArticleRequest';
 import { commentRequestBodySchema } from '@/validateSchema/commentRequest';
 
@@ -45,7 +46,7 @@ router.post(
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
-      schema: { statusCode: 1001, message: 'Unauthorized' }
+      schema: { statusCode: 1002, message: 'Unauthorized' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -108,13 +109,14 @@ router.get(
     }
     #swagger.responses[404] = {
       description: 'Article not found',
-      schema: { statusCode: 1002, message: 'Article not found' }
+      schema: { statusCode: 7, message: 'Article not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting article' }
     }
   */
+  validateParamsObjectIds(['articleId']),
   articleController.getArticle
 );
 
@@ -156,11 +158,11 @@ router.patch(
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
-      schema: { statusCode: 1001, message: 'Unauthorized' }
+      schema: { statusCode: 1002, message: 'Unauthorized' }
     }
     #swagger.responses[404] = {
       description: 'Article not found',
-      schema: { statusCode: 1002, message: 'Article not found or you are not the creator of this article' }
+      schema: { statusCode: 1007, message: 'Article not found or you are not the creator of this article' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -168,6 +170,7 @@ router.patch(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   validateRequest(createArticleBodySchema.partial(), 'body'),
   articleController.updateArticle
 );
@@ -184,11 +187,11 @@ router.delete(
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
-      schema: { statusCode: 1001, message: 'Unauthorized' }
+      schema: { statusCode: 1002, message: 'Unauthorized' }
     }
     #swagger.responses[404] = {
       description: 'Article not found',
-      schema: { statusCode: 1002, message: 'Article not found or you are not the creator of this article' }
+      schema: { statusCode: 1007, message: 'Article not found or you are not the creator of this article' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -196,6 +199,7 @@ router.delete(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   articleController.deleteArticle
 );
 
@@ -211,15 +215,15 @@ router.post(
     }
     #swagger.responses[400] = {
       description: 'Article already liked',
-      schema: { statusCode: 1005, message: 'Article already liked' }
+      schema: { statusCode: 1008, message: 'Article already liked' }
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
-      schema: { statusCode: 1001, message: 'Unauthorized' }
+      schema: { statusCode: 1002, message: 'Unauthorized' }
     }
     #swagger.responses[404] = {
       description: 'Article not found',
-      schema: { statusCode: 1002, message: 'Article not found' }
+      schema: { statusCode: 1007, message: 'Article not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -227,6 +231,7 @@ router.post(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   articleController.likeArticle
 );
 
@@ -242,15 +247,15 @@ router.delete(
     }
     #swagger.responses[400] = {
       description: 'Article not liked',
-      schema: { statusCode: 1004, message: 'Article not liked yet' }
+      schema: { statusCode: 1008, message: 'Article not liked yet' }
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
-      schema: { statusCode: 1001, message: 'Unauthorized' }
+      schema: { statusCode: 1002, message: 'Unauthorized' }
     }
     #swagger.responses[404] = {
       description: 'Article not found',
-      schema: { statusCode: 1002, message: 'Article not found' }
+      schema: { statusCode: 1007, message: 'Article not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -258,6 +263,7 @@ router.delete(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   articleController.unlikeArticle
 );
 
@@ -292,7 +298,7 @@ router.post(
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
-      schema: { statusCode: 1001, message: 'Unauthorized' }
+      schema: { statusCode: 1002, message: 'Unauthorized' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -300,6 +306,7 @@ router.post(
     }
   */
   authenticate,
+  validateParamsObjectIds(['articleId']),
   validateRequest(commentRequestBodySchema, 'body'),
   articleController.addComment
 );
@@ -340,13 +347,14 @@ router.get(
     }
     #swagger.responses[404] = {
       description: 'Comments not found',
-      schema: { statusCode: 1002, message: 'Comments not found' }
+      schema: { statusCode: 1007, message: 'Comments not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting comments' }
     }
   */
+  validateParamsObjectIds(['articleId']),
   articleController.getComments
 );
 

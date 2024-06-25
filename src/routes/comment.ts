@@ -24,23 +24,23 @@ router.patch(
     }
     #swagger.responses[200] = {
       description: 'Comment updated successfully',
-      schema: { httpCode: 200, message: 'Comment updated successfully' }
+      schema: { statusCode: 0, message: 'Comment updated successfully' }
     }
     #swagger.responses[400] = {
       description: 'Invalid field (body)',
-      schema: { httpCode: 400, message: 'Invalid field (body)', errorCode: 1003 }
+      schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
     #swagger.responses[401] = {
       description: 'Permission denied',
-      schema: { httpCode: 401, message: 'Permission denied', errorCode: 2003 }
+      schema: { statusCode: 2003, message: 'Permission denied' }
     }
     #swagger.responses[404] = {
       description: 'Comment not found',
-      schema: { httpCode: 404, message: 'Comment not found', errorCode: 2004 }
+      schema: { statusCode: 1007, message: 'Comment not found',  }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
-      schema: { httpCode: 500, message: 'Error while updating comment' }
+      schema: { statusCode: 500, message: 'Error while updating comment' }
     }
   */
   authenticate,
@@ -60,15 +60,15 @@ router.delete(
     }
     #swagger.responses[401] = {
       description: 'Permission denied',
-      schema: { httpCode: 401, message: 'Permission denied', errorCode: 2003 }
+      schema: { statusCode: 2003, message: 'Permission denied' }
     }
     #swagger.responses[404] = {
       description: 'Comment not found',
-      schema: { httpCode: 404, message: 'Comment not found', errorCode: 2004 }
+      schema: { statusCode: 1007, message: 'Comment not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
-      schema: { httpCode: 500, message: 'Error while deleting comment' }
+      schema: { statusCode: 9999, message: 'Error while deleting comment' }
     }
   */
   authenticate,

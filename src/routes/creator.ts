@@ -2,8 +2,9 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import creatorController from '@/controllers/creatorController';
+import { authenticateOptional } from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
-import { optionalTokenAuthentication } from '@/middlewares/authenticate';
+import validateParamsObjectIds from '@/middlewares/validateParamsObjectIds';
 import { paginationSchema } from '@/validateSchema/pagination';
 
 const router = Router();
@@ -111,14 +112,15 @@ router.get(
     }
     #swagger.responses[404] = {
       description: 'Creator doesn\'t exist',
-      schema: { statusCode: 1001, message: 'Creator doesn\'t exist' }
+      schema: { statusCode: 1007, message: 'Creator doesn\'t exist' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting creator info' }
     }
   */
-  optionalTokenAuthentication,
+  authenticateOptional,
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorInfo
 );
 
@@ -168,6 +170,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting user followers' }
     }
   */
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorFollowers
 );
 
@@ -217,6 +220,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting user followings' }
     }
   */
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorFollowings
 );
 
@@ -258,6 +262,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting creator articles' }
     }
   */
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorArticles
 );
 

@@ -25,19 +25,23 @@ router.post(
   }
   #swagger.responses[201] = {
     description: 'Category added successfully',
-    schema: { httpCode: 201, message: 'Category added successfully' }
+    schema: { statusCode: 0, message: 'Category added successfully' }
   }
   #swagger.responses[400] = {
     description: 'Invalid field (body)',
-    schema: { httpCode: 400, message: 'Invalid field (body)', errorCode: 1003 }
+    schema: { statusCode: 1003 , message: 'Invalid field (body)', }
+  }
+  #swagger.responses[400] = {
+    description: 'Invalid field (body)',
+    schema: { statusCode: 1003, message: 'Category name already exists' }
   }
   #swagger.responses[401] = {
     description: 'Permission denied',
-    schema: { httpCode: 401, message: 'Permission denied', errorCode: 2003 }
+    schema: { statusCode: 2003, message: 'Permission denied' }
   }
   #swagger.responses[500] = {
     description: 'Internal server error',
-    schema: { httpCode: 500, message: 'Error while adding category' }
+    schema: { statusCode: 9999, message: 'Error while adding category' }
   }
 */
   authenticate,

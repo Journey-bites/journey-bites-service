@@ -739,11 +739,6 @@
             "required": true,
             "type": "string",
             "description": "Creator ID"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -819,7 +814,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -1470,7 +1465,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1002
                 },
                 "message": {
                   "type": "string",
@@ -1673,7 +1668,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1002
+                  "example": 7
                 },
                 "message": {
                   "type": "string",
@@ -1819,7 +1814,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1002
                 },
                 "message": {
                   "type": "string",
@@ -1838,7 +1833,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1002
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -1899,7 +1894,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1002
                 },
                 "message": {
                   "type": "string",
@@ -1918,7 +1913,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1002
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -1981,7 +1976,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1005
+                  "example": 1008
                 },
                 "message": {
                   "type": "string",
@@ -2000,7 +1995,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1002
                 },
                 "message": {
                   "type": "string",
@@ -2019,7 +2014,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1002
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -2080,7 +2075,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1004
+                  "example": 1008
                 },
                 "message": {
                   "type": "string",
@@ -2099,7 +2094,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1002
                 },
                 "message": {
                   "type": "string",
@@ -2118,7 +2113,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1002
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -2240,7 +2235,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 1002
                 },
                 "message": {
                   "type": "string",
@@ -2380,7 +2375,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1002
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -2449,9 +2444,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 201
+                  "example": 0
                 },
                 "message": {
                   "type": "string",
@@ -2468,17 +2463,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 400
+                  "example": 1003
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (body)"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 1003
+                  "example": "Category name already exists"
                 }
               },
               "xml": {
@@ -2491,17 +2482,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 401
+                  "example": 2003
                 },
                 "message": {
                   "type": "string",
                   "example": "Permission denied"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 2003
                 }
               },
               "xml": {
@@ -2514,9 +2501,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 500
+                  "example": 9999
                 },
                 "message": {
                   "type": "string",
@@ -2638,9 +2625,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 200
+                  "example": 0
                 },
                 "message": {
                   "type": "string",
@@ -2657,17 +2644,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 400
+                  "example": 1003
                 },
                 "message": {
                   "type": "string",
                   "example": "Invalid field (body)"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 1003
                 }
               },
               "xml": {
@@ -2680,17 +2663,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 401
+                  "example": 2003
                 },
                 "message": {
                   "type": "string",
                   "example": "Permission denied"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 2003
                 }
               },
               "xml": {
@@ -2703,17 +2682,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 404
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
                   "example": "Comment not found"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 2004
                 }
               },
               "xml": {
@@ -2726,7 +2701,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
                   "example": 500
                 },
@@ -2763,17 +2738,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 401
+                  "example": 2003
                 },
                 "message": {
                   "type": "string",
                   "example": "Permission denied"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 2003
                 }
               },
               "xml": {
@@ -2786,17 +2757,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 404
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
                   "example": "Comment not found"
-                },
-                "errorCode": {
-                  "type": "number",
-                  "example": 2004
                 }
               },
               "xml": {
@@ -2809,9 +2776,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "httpCode": {
+                "statusCode": {
                   "type": "number",
-                  "example": 500
+                  "example": 9999
                 },
                 "message": {
                   "type": "string",
@@ -2905,6 +2872,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "404": {
             "description": "User not found",
             "schema": {
@@ -2912,7 +2898,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 2001
                 },
                 "message": {
                   "type": "string",
@@ -3034,6 +3020,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -3127,6 +3132,25 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
                 }
               },
               "xml": {
@@ -3234,6 +3258,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -3312,6 +3355,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "404": {
             "description": "User not found",
             "schema": {
@@ -3319,7 +3381,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 2001
                 },
                 "message": {
                   "type": "string",
@@ -3407,6 +3469,25 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "404": {
             "description": "User not found",
             "schema": {
@@ -3414,7 +3495,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1001
+                  "example": 2001
                 },
                 "message": {
                   "type": "string",
@@ -3542,6 +3623,25 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
                 }
               },
               "xml": {

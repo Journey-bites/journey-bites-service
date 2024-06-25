@@ -1,4 +1,7 @@
 import db from '@/db';
+import { Prisma } from '@prisma/client';
+
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 type GetArticlesPayload = {
   page?: number;
@@ -230,7 +233,7 @@ const getArticleByIdAndCreatorId = async (articleId: string, creatorId: string) 
 
 const updateArticle = async (creatorId: string, articleId: string, payload: Partial<CreateArticlePayload>) => {
   try {
-    await db.article.update({
+    const result = await db.article.update({
       where: {
         id: articleId,
         creatorId,
@@ -239,20 +242,38 @@ const updateArticle = async (creatorId: string, articleId: string, payload: Part
         ...payload,
       },
     });
+
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
+      return false;
+    }
+
     throw new Error('Error while updating article');
   }
 };
 
 const deleteArticle = async (creatorId: string, articleId: string) => {
   try {
-    await db.article.delete({
+    const result = await db.article.delete({
       where: {
         id: articleId,
         creatorId,
       },
     });
+
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
+      return false;
+    }
+
     throw new Error('Error while deleting article');
   }
 };
@@ -288,7 +309,7 @@ const checkIsArticleLiked = async (userId: string, articleId: string) => {
 
 const likeArticle = async (userId: string, articleId: string) => {
   try {
-    await db.article.update({
+    const result = await db.article.update({
       where: {
         id: articleId,
       },
@@ -307,14 +328,23 @@ const likeArticle = async (userId: string, articleId: string) => {
         },
       },
     });
+
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
+      return false;
+    }
+
     throw new Error('Error while liking article');
   }
 };
 
 const unlikeArticle = async (userId: string, articleId: string) => {
   try {
-    await db.article.update({
+    const result = await db.article.update({
       where: {
         id: articleId,
       },
@@ -333,14 +363,23 @@ const unlikeArticle = async (userId: string, articleId: string) => {
         },
       },
     });
+
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
+      return false;
+    }
+
     throw new Error('Error while unliking article');
   }
 };
 
 const createComment = async (userId: string, articleId: string, content: string) => {
   try {
-    await db.comment.create({
+    const result = await db.comment.create({
       data: {
         content,
         article: {
@@ -355,7 +394,16 @@ const createComment = async (userId: string, articleId: string, content: string)
         },
       },
     });
+
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
+      return false;
+    }
+
     throw new Error('Error while creating comment');
   }
 };

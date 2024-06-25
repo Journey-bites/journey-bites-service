@@ -1,46 +1,47 @@
 import { Request, Response, NextFunction } from 'express';
 
-import userService from '@/services/userService';
 import ErrorCode from '@/exceptions/ErrorCode';
 import { SystemException } from '@/exceptions/SystemException';
 import { HttpException } from '@/exceptions/HttpException';
-import { createResponse } from '@/utils/http';
-import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
-import { generateToken } from '@/utils/tokenHelper';
+import userService from '@/services/userService';
 import authorityRepository from '@/repositories/authorityRepository';
 import asyncHandler from '@/utils/asyncHandler';
+import { hashPassword, comparePassword } from '@/utils/encryptionHelper';
+import { createResponse } from '@/utils/http';
+import { generateToken } from '@/utils/tokenHelper';
 
-type RegisterRequest = Request & {
+interface RegisterRequest extends Request {
   body: {
     email: string;
     password: string;
     displayName: string;
   };
-};
+}
 
-type LoginRequest = Request & {
+interface LoginRequest extends Request {
   body: {
     email: string;
     password: string;
   };
-};
+}
 
-type VerifyEmailRequest = Request & {
+interface VerifyEmailRequest extends Request {
   body: {
     email: string;
   };
-};
+}
 
-type ResetPasswordRequest = Request & {
+interface ResetPasswordRequest extends Request {
   body: {
     password: string;
   };
-};
+}
 
 const authController = {
   register: asyncHandler(async (req: RegisterRequest, res: Response, next: NextFunction) => {
+    const { email, password, displayName } = req.body;
+
     try {
-      const { email, password, displayName } = req.body;
       const foundUser = await userService.findUserByEmail(email);
 
       if (foundUser) {

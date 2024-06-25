@@ -2,8 +2,9 @@ import { Router } from 'express';
 import { z } from 'zod';
 
 import creatorController from '@/controllers/creatorController';
+import { authenticateOptional } from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
-import { optionalTokenAuthentication } from '@/middlewares/authenticate';
+import validateParamsObjectIds from '@/middlewares/validateParamsObjectIds';
 import { paginationSchema } from '@/validateSchema/pagination';
 
 const router = Router();
@@ -118,7 +119,8 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting creator info' }
     }
   */
-  optionalTokenAuthentication,
+  authenticateOptional,
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorInfo
 );
 
@@ -168,6 +170,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting user followers' }
     }
   */
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorFollowers
 );
 
@@ -217,6 +220,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting user followings' }
     }
   */
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorFollowings
 );
 
@@ -258,6 +262,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting creator articles' }
     }
   */
+  validateParamsObjectIds(['creatorId']),
   creatorController.getCreatorArticles
 );
 

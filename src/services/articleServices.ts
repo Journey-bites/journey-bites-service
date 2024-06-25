@@ -1,6 +1,8 @@
 import db from '@/db';
 import { Prisma } from '@prisma/client';
 
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+
 type GetArticlesPayload = {
   page?: number;
   pageSize?: number;
@@ -243,7 +245,10 @@ const updateArticle = async (creatorId: string, articleId: string, payload: Part
 
     return result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 
@@ -262,7 +267,10 @@ const deleteArticle = async (creatorId: string, articleId: string) => {
 
     return result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 
@@ -323,7 +331,10 @@ const likeArticle = async (userId: string, articleId: string) => {
 
     return result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 
@@ -355,7 +366,10 @@ const unlikeArticle = async (userId: string, articleId: string) => {
 
     return result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 
@@ -383,7 +397,10 @@ const createComment = async (userId: string, articleId: string, content: string)
 
     return result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 

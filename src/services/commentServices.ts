@@ -1,6 +1,8 @@
 import db from '@/db';
 import { Prisma } from '@prisma/client';
 
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+
 const updateComment = async (userId: string, commentId: string, content: string) => {
   try {
     const result = await db.comment.update({
@@ -15,7 +17,10 @@ const updateComment = async (userId: string, commentId: string, content: string)
 
     return !!result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 
@@ -34,7 +39,10 @@ const deleteComment = async (userId: string, commentId: string) => {
 
     return !!result;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
       return false;
     }
 

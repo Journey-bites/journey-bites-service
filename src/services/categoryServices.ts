@@ -1,6 +1,8 @@
 import db from '@/db';
 import { Prisma } from '@prisma/client';
 
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+
 const getCategoryByName = async (name: string) => {
   try {
     const result = await db.category.findFirst({ where: { name } });
@@ -23,8 +25,10 @@ const createCategory = async (name: string, path: string, description: string = 
 
     return result;
   } catch (error) {
-    // Category_name_key is a unique constraint in the database
-    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.UniqueConstraintError
+    ) {
       return false;
     }
 

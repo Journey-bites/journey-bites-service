@@ -4,8 +4,8 @@ import { HttpException } from '@/exceptions/HttpException';
 import ErrorCode from '@/exceptions/ErrorCode';
 import { ResourceNotFoundException } from '@/exceptions/ResourceNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
-import categoryServices from '@/services/categoryServices';
-import articleServices from '@/services/articleServices';
+import categoryServices from '@/services/categoryService';
+import articleService from '@/services/articleService';
 import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest';
 import { Pagination } from '@/validateSchema/pagination';
 import asyncHandler from '@/utils/asyncHandler';
@@ -43,7 +43,7 @@ const articleController = {
     const { page, pageSize, q, type } = req.query;
 
     try {
-      const articles = await articleServices.getArticles({
+      const articles = await articleService.getArticles({
         page,
         pageSize,
         keyword: q?.trim(),
@@ -78,7 +78,7 @@ const articleController = {
         throw new ResourceNotFoundException('Category not found');
       }
 
-      await articleServices.createArticle(userId, { ...payload, categoryId: categoryDetail.id });
+      await articleService.createArticle(userId, { ...payload, categoryId: categoryDetail.id });
 
       return createResponse(res, {
         httpCode: 201,
@@ -97,7 +97,7 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const article = await articleServices.getArticleById(articleId);
+      const article = await articleService.getArticleById(articleId);
 
       if (!article) {
         throw new ResourceNotFoundException('Article not found');
@@ -126,7 +126,7 @@ const articleController = {
       const { category, ...payload } = req.body;
 
       try {
-        const result = await articleServices.getArticleByIdAndCreatorId(articleId, userId);
+        const result = await articleService.getArticleByIdAndCreatorId(articleId, userId);
 
         if (!result) {
           throw new ResourceNotFoundException('Article not found or you are not the creator of this article');
@@ -143,7 +143,7 @@ const articleController = {
           categoryId = categoryDetail.id;
         }
 
-        await articleServices.updateArticle(userId, articleId, { ...payload, categoryId });
+        await articleService.updateArticle(userId, articleId, { ...payload, categoryId });
 
         return createResponse(res, {
           message: 'Article updated successfully',
@@ -163,7 +163,7 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const result = await articleServices.deleteArticle(userId, articleId);
+      const result = await articleService.deleteArticle(userId, articleId);
 
       if (!result) {
         throw new ResourceNotFoundException('Article not found or you are not the creator of this article');
@@ -184,13 +184,13 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const result = await articleServices.getArticleById(articleId);
+      const result = await articleService.getArticleById(articleId);
 
       if (!result) {
         throw new ResourceNotFoundException('Article not found');
       }
 
-      const isLiked = await articleServices.checkIsArticleLiked(userId, articleId);
+      const isLiked = await articleService.checkIsArticleLiked(userId, articleId);
 
       if (isLiked) {
         return createResponse(res, {
@@ -200,7 +200,7 @@ const articleController = {
         });
       }
 
-      await articleServices.likeArticle(userId, articleId);
+      await articleService.likeArticle(userId, articleId);
 
       return createResponse(res, { httpCode: 204 });
     } catch (error) {
@@ -217,13 +217,13 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const result = await articleServices.getArticleById(articleId);
+      const result = await articleService.getArticleById(articleId);
 
       if (!result) {
         throw new ResourceNotFoundException('Article not found');
       }
 
-      const isLiked = await articleServices.checkIsArticleLiked(userId, articleId);
+      const isLiked = await articleService.checkIsArticleLiked(userId, articleId);
 
       if (!isLiked) {
         return createResponse(res, {
@@ -233,7 +233,7 @@ const articleController = {
         });
       }
 
-      await articleServices.unlikeArticle(userId, articleId);
+      await articleService.unlikeArticle(userId, articleId);
 
       return createResponse(res, { httpCode: 204 });
     } catch (error) {
@@ -251,7 +251,7 @@ const articleController = {
     const { content } = req.body;
 
     try {
-      const result = await articleServices.createComment(userId, articleId, content);
+      const result = await articleService.createComment(userId, articleId, content);
 
       if (!result) {
         throw new ResourceNotFoundException('Article not found');
@@ -274,13 +274,13 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const result = await articleServices.getArticleById(articleId);
+      const result = await articleService.getArticleById(articleId);
 
       if (!result) {
         throw new ResourceNotFoundException('Article not found');
       }
 
-      const commentsDetails = await articleServices.getComments(articleId);
+      const commentsDetails = await articleService.getComments(articleId);
 
       const comments = commentsDetails.map((comment) => ({
         ...comment,

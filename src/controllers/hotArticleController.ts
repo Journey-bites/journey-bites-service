@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
-import hotArticleServices from '@/services/articleHotServices';
+import hotArticleService from '@/services/articleHotService';
 import { SystemException } from '@/exceptions/SystemException';
 import { createResponse } from '@/utils/http';
 import ErrorCode from '@/exceptions/ErrorCode';
@@ -34,7 +34,7 @@ const hotArticleController = {
         });
       }
 
-      const hotArticle = await hotArticleServices.findHotArticleByCount(countNum);
+      const hotArticle = await hotArticleService.findHotArticleByCount(countNum);
 
       return createResponse(res, {
         data: hotArticle,

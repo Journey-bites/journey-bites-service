@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
-import categoryService from '@/services/categoryServices';
+import categoryService from '@/services/categoryService';
 import { CategoryRequest } from '@/validateSchema/categoryRequest';
 import asyncHandler from '@/utils/asyncHandler';
 import { createResponse } from '@/utils/http';

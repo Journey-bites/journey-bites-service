@@ -4,7 +4,7 @@ import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
-import articleServices from '@/services/articleServices';
+import articleServices from '@/services/articleService';
 import userService from '@/services/userService';
 import { UpdateUserRequest } from '@/validateSchema/updateUserRequest';
 import { createResponse } from '@/utils/http';

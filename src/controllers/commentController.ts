@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import { ResourceNotFoundException } from '@/exceptions/ResourceNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
-import commentServices from '@/services/commentServices';
+import commentService from '@/services/commentService';
 import asyncHandler from '@/utils/asyncHandler';
 import { createResponse } from '@/utils/http';
 import { CommentRequestBody } from '@/validateSchema/commentRequest';
@@ -22,7 +22,7 @@ const commentController = {
     const { content } = req.body;
 
     try {
-      const result = await commentServices.updateComment(userId, commentId, content);
+      const result = await commentService.updateComment(userId, commentId, content);
 
       if (!result) {
         throw new ResourceNotFoundException('Comment not found');
@@ -43,7 +43,7 @@ const commentController = {
     const { commentId } = req.params;
 
     try {
-      const result = await commentServices.deleteComment(userId, commentId);
+      const result = await commentService.deleteComment(userId, commentId);
 
       if (!result) {
         throw new ResourceNotFoundException('Comment not found');

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
 import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
-import articleServices from '@/services/articleServices';
+import articleServices from '@/services/articleService';
 import creatorService from '@/services/creatorService';
 import userService from '@/services/userService';
 import { GetCreatorInfoData } from '@/types/comm';

@@ -8,6 +8,7 @@ type GetArticlesPayload = {
   pageSize?: number;
   keyword?: string;
   type?: 'hot';
+  category?: string;
 };
 
 type CreateArticlePayload = {
@@ -21,7 +22,7 @@ type CreateArticlePayload = {
   tags?: string[];
 };
 
-const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetArticlesPayload) => {
+const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, category }: GetArticlesPayload) => {
   try {
     const articlesDetails = await db.article.findMany({
       where: {
@@ -39,6 +40,13 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type }: GetA
             },
           },
         ],
+        AND: {
+          category: {
+            name: {
+              equals: category,
+            },
+          },
+        },
       },
       include: {
         creator: {

@@ -284,6 +284,7 @@ const articleController = {
       await articleServices.createComment(userId, articleId, content);
 
       return createResponse(res, {
+        httpCode: 201,
         message: 'Comment added successfully',
       });
     } catch (error) {

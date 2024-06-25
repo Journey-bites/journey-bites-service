@@ -1,7 +1,7 @@
 import db from '@/db';
 import { Prisma } from '@prisma/client';
 
-import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+import { PrismaClientErrorCode } from '@/types/pprismaClientErrorCode';
 
 type GetArticlesPayload = {
   page?: number;

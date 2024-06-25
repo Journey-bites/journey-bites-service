@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpException } from '@/exceptions/HttpException';
+import ErrorCode from '@/exceptions/ErrorCode';
 import { ResourceNotFoundException } from '@/exceptions/ResourceNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
 import categoryServices from '@/services/categoryServices';
@@ -194,6 +195,7 @@ const articleController = {
       if (isLiked) {
         return createResponse(res, {
           httpCode: 400,
+          errorCode: ErrorCode.BAD_REQUEST,
           message: 'Article already liked',
         });
       }
@@ -226,6 +228,7 @@ const articleController = {
       if (!isLiked) {
         return createResponse(res, {
           httpCode: 400,
+          errorCode: ErrorCode.BAD_REQUEST,
           message: 'Article not liked yet',
         });
       }

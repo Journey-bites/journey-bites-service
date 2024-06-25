@@ -45,7 +45,7 @@ router.get(
     }
     #swagger.responses[404] = {
       description: 'User not found',
-      schema: { statusCode: 1001, message: 'User not found' }
+      schema: { statusCode: 2001, message: 'User not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -223,7 +223,7 @@ router.post(
     }
     #swagger.responses[404] = {
       description: 'User not found',
-      schema: { statusCode: 1001, message: 'User not found' }
+      schema: { statusCode: 2001, message: 'User not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -254,7 +254,7 @@ router.delete(
     }
     #swagger.responses[404] = {
       description: 'User not found',
-      schema: { statusCode: 1001, message: 'User not found' }
+      schema: { statusCode: 2001, message: 'User not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

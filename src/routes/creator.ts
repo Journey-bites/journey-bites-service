@@ -112,7 +112,7 @@ router.get(
     }
     #swagger.responses[404] = {
       description: 'Creator doesn\'t exist',
-      schema: { statusCode: 1001, message: 'Creator doesn\'t exist' }
+      schema: { statusCode: 1007, message: 'Creator doesn\'t exist' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

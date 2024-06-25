@@ -1,44 +1,54 @@
 import db from '@/db';
+import { Prisma } from '@prisma/client';
 
 const getCategoryByName = async (name: string) => {
   try {
-    const category = await db.category.findUnique({ where: { name } });
-    return category;
+    const result = await db.category.findFirst({ where: { name } });
+
+    return result;
   } catch (error) {
     throw new Error('Error while checking category existence');
   }
 };
 
-const addCategory = async (name: string, path: string, description: string = '') => {
+const createCategory = async (name: string, path: string, description: string = '') => {
   try {
-    if (await getCategoryByName(name)) {
-      throw new Error('Category already exists');
+    const result = await db.category.create({
+      data: {
+        name,
+        path,
+        description,
+      },
+    });
+
+    return result;
+  } catch (error) {
+    // Category_name_key is a unique constraint in the database
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      return false;
     }
 
-    const category = await db.category.create({ data: { name, path, description } });
-    return category;
-  } catch (error) {
     throw new Error('Error while adding category');
   }
 };
 
 const getCategories = async () => {
   try {
-    const categories = await db.category.findMany({
+    const result = await db.category.findMany({
       omit: {
         createdAt: true,
         updatedAt: true,
       },
     });
 
-    return categories;
+    return result;
   } catch (error) {
     throw new Error('Error while getting categories');
   }
 };
 
 export default {
-  addCategory,
+  createCategory,
   getCategoryByName,
   getCategories,
 };

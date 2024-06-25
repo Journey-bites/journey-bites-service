@@ -31,6 +31,10 @@ router.post(
     description: 'Invalid field (body)',
     schema: { httpCode: 400, message: 'Invalid field (body)', errorCode: 1003 }
   }
+  #swagger.responses[400] = {
+    description: 'Invalid field (body)',
+    schema: { httpCode: 400, message: 'Category name already exists', errorCode: 1003 }
+  }
   #swagger.responses[401] = {
     description: 'Permission denied',
     schema: { httpCode: 401, message: 'Permission denied', errorCode: 2003 }

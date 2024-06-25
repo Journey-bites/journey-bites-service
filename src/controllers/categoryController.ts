@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
 import categoryService from '@/services/categoryServices';
@@ -13,9 +14,17 @@ interface AddCategoryRequest extends Request {
 
 const categoryController = {
   addCategory: asyncHandler(async (req: AddCategoryRequest, res: Response, next: NextFunction) => {
-    const { name, path } = req.body;
+    const { name, path, description } = req.body;
     try {
-      await categoryService.addCategory(name, path, req.body.description);
+      const result = await categoryService.createCategory(name, path, description);
+
+      if (!result) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PAYLOAD,
+          message: 'Category name already exists',
+        });
+      }
 
       return createResponse(res, {
         httpCode: 201,

@@ -91,6 +91,10 @@ const creatorController = {
     try {
       const followers = await userService.getUserFollowers(creatorId);
 
+      if (!followers) {
+        throw new UserNotFoundException("Creator doesn't exist");
+      }
+
       return createResponse(res, {
         data: followers,
       });
@@ -108,6 +112,10 @@ const creatorController = {
 
     try {
       const followings = await userService.getUserFollowings(creatorId);
+
+      if (!followings) {
+        throw new UserNotFoundException("Creator doesn't exist");
+      }
 
       return createResponse(res, {
         data: followings,

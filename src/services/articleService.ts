@@ -67,16 +67,16 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, catego
           },
         },
         status: {
-          omit: {
-            id: true,
-            likedUserIds: true,
+          select: {
+            views: true,
+            likes: true,
+            subscriptions: true,
           },
         },
       },
       omit: {
         wordCount: true,
         categoryId: true,
-        statusId: true,
         creatorId: true,
       },
       orderBy:
@@ -97,6 +97,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, catego
   }
 };
 
+// TODO need check is creatorId exist
 const getArticlesByCreatorId = async (creatorId: string) => {
   try {
     const articles = await db.article.findMany({
@@ -120,7 +121,6 @@ const getArticlesByCreatorId = async (creatorId: string) => {
       omit: {
         wordCount: true,
         categoryId: true,
-        statusId: true,
         creatorId: true,
       },
     });
@@ -207,13 +207,24 @@ const getArticleById = async (articleId: string) => {
                 },
               },
             },
+            favoriteBy: {
+              select: {
+                id: true,
+                profile: {
+                  select: {
+                    displayName: true,
+                    avatarImageUrl: true,
+                    bio: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
       omit: {
         wordCount: true,
         categoryId: true,
-        statusId: true,
         creatorId: true,
       },
     });

@@ -807,6 +807,25 @@
               }
             }
           },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "404": {
             "description": "Creator doesn't exist",
             "schema": {
@@ -814,7 +833,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1007
+                  "example": 2001
                 },
                 "message": {
                   "type": "string",
@@ -930,6 +949,44 @@
               }
             }
           },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -1027,6 +1084,44 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
                 }
               },
               "xml": {
@@ -1161,6 +1256,44 @@
               }
             }
           },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -1216,6 +1349,13 @@
             "required": false,
             "type": "string",
             "enum": ["hot"]
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Category of articles",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1623,6 +1763,35 @@
                           "example": 0
                         },
                         "likedUsers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "6671ac7cac8af0d4f5eaf2be"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "properties": {
+                                  "displayName": {
+                                    "type": "string",
+                                    "example": "Render Lai"
+                                  },
+                                  "avatarImageUrl": {
+                                    "type": "string",
+                                    "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                                  },
+                                  "bio": {
+                                    "type": "string",
+                                    "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "favoriteBy": {
                           "type": "array",
                           "items": {
                             "type": "object",
@@ -2814,6 +2983,10 @@
                 "data": {
                   "type": "object",
                   "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "667b20205e32661530d68501"
+                    },
                     "email": {
                       "type": "string",
                       "example": "journey-bites@gmail.com"
@@ -2859,9 +3032,18 @@
                     "billing": {
                       "type": "object",
                       "properties": {
-                        "bankCode": {},
-                        "bankAccount": {},
-                        "bankAccountOwner": {}
+                        "bankCode": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "bankAccount": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "bankAccountOwner": {
+                          "type": "string",
+                          "example": ""
+                        }
                       }
                     }
                   }

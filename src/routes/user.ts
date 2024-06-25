@@ -19,6 +19,7 @@ router.get(
         statusCode: 0,
         message: 'success',
         data: {
+          id: "667b20205e32661530d68501",
           email: "journey-bites@gmail.com",
           emailVerified: true,
           profile: {
@@ -32,9 +33,9 @@ router.get(
             }
           },
           billing: {
-            bankCode: null,
-            bankAccount: null,
-            bankAccountOwner: null
+            bankCode: "",
+            bankAccount: "",
+            bankAccountOwner: ""
           }
         }
       }

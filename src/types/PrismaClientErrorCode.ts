@@ -28,6 +28,7 @@ export const enum PrismaClientErrorCode {
   NullConstraintViolationError = 'P2011',
   MissingRequiredValueError = 'P2012',
   MissingRequiredArgumentError = 'P2013',
+  /** The change you are trying to make would violate the required relation '{relation_name}' between the {model_a_name} and {model_b_name} models. */
   RelationViolationError = 'P2014',
   RelatedRecordNotFoundError = 'P2015',
   QueryInterpretationError = 'P2016',

@@ -102,6 +102,16 @@ router.get(
                   bio: "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
                 }
               }              
+            ],
+            favoriteBy: [
+              {
+                id: '6671ac7cac8af0d4f5eaf2be',
+                profile: {
+                  displayName: "Render Lai",
+                  avatarImageUrl: "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a",
+                  bio: "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                }
+              }   
             ]
           }
         }

@@ -1,7 +1,7 @@
 import db from '@/db';
 import { Prisma } from '@prisma/client';
 
-import { PrismaClientErrorCode } from '@/types/pprismaClientErrorCode';
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 const getCategoryByName = async (name: string) => {
   try {

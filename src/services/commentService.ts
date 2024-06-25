@@ -1,7 +1,7 @@
 import db from '@/db';
 import { Prisma } from '@prisma/client';
 
-import { PrismaClientErrorCode } from '@/types/pprismaClientErrorCode';
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 const updateComment = async (userId: string, commentId: string, content: string) => {
   try {

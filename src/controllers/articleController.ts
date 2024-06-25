@@ -15,6 +15,7 @@ type GetArticlesRequest = Request & {
   query: Partial<Pagination> & {
     q?: string;
     type?: 'hot';
+    category?: string;
   };
 };
 
@@ -40,7 +41,7 @@ interface AddCommentRequest extends ArticlesRequest {
 
 const articleController = {
   getArticles: asyncHandler(async (req: GetArticlesRequest, res: Response, next: NextFunction) => {
-    const { page, pageSize, q, type } = req.query;
+    const { page, pageSize, q, type, category } = req.query;
 
     try {
       const articles = await articleService.getArticles({
@@ -48,6 +49,7 @@ const articleController = {
         pageSize,
         keyword: q?.trim(),
         type,
+        category,
       });
 
       const formatArticles = articles.map((article) => ({

@@ -6,8 +6,9 @@ import validateRequest from '@/middlewares/validateRequest';
 import { paginationSchema } from '@/validateSchema/pagination';
 
 const getCreatorsQuerySchema = paginationSchema.extend({
-  type: z.enum(['hot']).or(z.string()).optional(),
   q: z.string().optional(),
+  type: z.enum(['hot']).or(z.string()).optional(),
+  category: z.string().optional(),
 });
 
 const router = Router();
@@ -41,6 +42,12 @@ router.get(
       required: false,
       type: 'string',
       enum: ['hot']
+    }
+    #swagger.parameters['category'] = {
+      in: 'query',
+      description: 'Category of articles',
+      required: false,
+      type: 'string'
     }
     #swagger.responses[200] = {
       description: 'Articles',

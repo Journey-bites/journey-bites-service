@@ -21,7 +21,7 @@ router.get(
         data: {
           id: "667b20205e32661530d68501",
           email: "journey-bites@gmail.com",
-          emailVerified: true,
+          isEmailVerified: true,
           profile: {
             displayName: "Journey",
             avatarImageUrl: "https://journey-bites.com/avatar.jpg",

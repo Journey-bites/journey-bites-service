@@ -30,6 +30,10 @@ router.patch(
       description: 'Invalid field (body)',
       schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[401] = {
       description: 'Permission denied',
       schema: { statusCode: 2003, message: 'Permission denied' }
@@ -57,6 +61,10 @@ router.delete(
     #swagger.parameters['commentId'] = { description: 'Comment ID' }
     #swagger.responses[204] = {
       description: 'Comment deleted successfully'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[401] = {
       description: 'Permission denied',

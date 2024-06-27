@@ -218,6 +218,10 @@ router.post(
       description: 'Invalid field',
       schema: { statusCode: 1005, message: 'You cannot follow yourself' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 2003, message: 'Permission denied' }
@@ -248,6 +252,10 @@ router.delete(
     #swagger.responses[400] = {
       description: 'Invalid field',
       schema: { statusCode: 1005, message: 'You cannot unfollow yourself' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',

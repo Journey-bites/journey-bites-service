@@ -117,9 +117,13 @@ router.get(
         }
       }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[404] = {
       description: 'Article not found',
-      schema: { statusCode: 7, message: 'Article not found' }
+      schema: { statusCode: 1007, message: 'Article not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -166,6 +170,10 @@ router.patch(
       description: 'Invalid field',
       schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 1002, message: 'Unauthorized' }
@@ -195,6 +203,10 @@ router.delete(
     #swagger.responses[204] = {
       description: 'Article deleted successfully'
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 1002, message: 'Unauthorized' }
@@ -222,6 +234,10 @@ router.post(
     #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
     #swagger.responses[204] = {
       description: 'Article liked successfully'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[400] = {
       description: 'Article already liked',
@@ -254,6 +270,10 @@ router.delete(
     #swagger.parameters['articleId'] = { description: 'Article ID', required: true }
     #swagger.responses[204] = {
       description: 'Article unliked successfully'
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[400] = {
       description: 'Article not liked',
@@ -306,6 +326,10 @@ router.post(
       description: 'Invalid field',
       schema: { statusCode: 1003, message: 'Invalid field (body)' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 1002, message: 'Unauthorized' }
@@ -354,6 +378,10 @@ router.get(
           }
         ]
       }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[404] = {
       description: 'Comments not found',

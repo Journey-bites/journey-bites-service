@@ -237,10 +237,12 @@ const getArticleById = async (articleId: string) => {
 
 const getArticleByIdAndCreatorId = async (articleId: string, creatorId: string) => {
   try {
-    const article = await db.article.findFirst({
+    const article = await db.article.findUnique({
       where: {
-        id: articleId,
-        creatorId,
+        id_creatorId: {
+          id: articleId,
+          creatorId,
+        },
       },
     });
 

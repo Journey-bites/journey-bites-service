@@ -80,13 +80,13 @@ const articleController = {
         throw new ResourceNotFoundException('Category not found');
       }
 
-      const newArticle = await articleService.createArticle(userId, { ...payload, categoryId: categoryDetail.id });
+      const article = await articleService.createArticle(userId, { ...payload, categoryId: categoryDetail.id });
 
       return createResponse(res, {
         httpCode: 201,
         message: 'Article created successfully',
         data: {
-          id: newArticle.id,
+          articleId: article.id,
         },
       });
     } catch (error) {

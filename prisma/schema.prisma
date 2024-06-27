@@ -60,11 +60,11 @@ model SocialLinks {
 }
 
 model OAuthProvider {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  googleId   String? @unique @default("")
-  facebookId String? @unique @default("")
-  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String  @unique @db.ObjectId
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  googleId   String @default("")
+  facebookId String @default("")
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String @unique @db.ObjectId
 }
 
 model Billing {
@@ -94,6 +94,8 @@ model Article {
   status       ArticleStatus? @relation("ArticleStatus")
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  @@unique([id, creatorId])
 }
 
 model ArticleStatus {
@@ -120,14 +122,14 @@ model Category {
 model Comment {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   content      String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
   likedBy      User[]   @relation("UserLikedComments", fields: [likedUserIds], references: [id])
   likedUserIds String[] @db.ObjectId
   article      Article  @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
   articleId    String   @db.ObjectId
   user         User     @relation("UserComments", fields: [userId], references: [id])
   userId       String   @db.ObjectId
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
 }
 
 model Follow {
@@ -140,15 +142,15 @@ model Follow {
 
 model Subscription {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  subscribedTo   User     @relation("UserSubscribers", fields: [subscribedToId], references: [id], onDelete: Cascade)
-  subscribedToId String   @unique @db.ObjectId
-  subscriber     User     @relation("UserSubscriptions", fields: [subscriberId], references: [id], onDelete: Cascade)
-  subscriberId   String   @unique @db.ObjectId
   orderId        Order?
   startDate      DateTime @default(now())
   endDate        DateTime
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
+  subscribedTo   User     @relation("UserSubscribers", fields: [subscribedToId], references: [id], onDelete: Cascade)
+  subscribedToId String   @unique @db.ObjectId
+  subscriber     User     @relation("UserSubscriptions", fields: [subscriberId], references: [id], onDelete: Cascade)
+  subscriberId   String   @unique @db.ObjectId
 }
 
 model Order {
@@ -161,12 +163,12 @@ model Order {
   paymentMethod  String
   paymentStatus  PaymentStatus
   paymentDate    DateTime
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
   subscription   Subscription  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   subscriptionId String        @unique @db.ObjectId
   user           User          @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
   userId         String        @unique @db.ObjectId
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @updatedAt @map("updated_at")
 }
 
 enum OrderStatus {

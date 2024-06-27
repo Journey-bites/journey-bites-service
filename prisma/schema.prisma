@@ -86,7 +86,7 @@ model Article {
   readTime     Int
   thumbnailUrl String         @default("")
   tags         String[]       @default([])
-  category     Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category     Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   categoryId   String         @db.ObjectId
   creator      User           @relation("UserArticles", fields: [creatorId], references: [id])
   creatorId    String         @db.ObjectId

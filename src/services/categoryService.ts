@@ -38,7 +38,7 @@ const createCategory = async (name: string, path: string, description: string = 
 
 const getCategories = async () => {
   try {
-    const result = await db.category.findMany({});
+    const result = await db.category.findMany();
 
     return result;
   } catch (error) {

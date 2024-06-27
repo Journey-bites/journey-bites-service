@@ -18,7 +18,7 @@ type CreateArticlePayload = {
   isNeedPay: boolean;
   wordCount: number;
   categoryId: string;
-  thumbnailUrl?: string;
+  thumbnailUrl?: string | null;
   tags?: string[];
 };
 
@@ -137,12 +137,13 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
     return Math.ceil(payload.wordCount / wordsPerMinute);
   };
 
-  const { categoryId, ...articleInfo } = payload;
+  const { categoryId, thumbnailUrl, ...articleInfo } = payload;
 
   try {
     const result = await db.article.create({
       data: {
         ...articleInfo,
+        thumbnailUrl: thumbnailUrl || '',
         readTime: readingTimes(),
         category: {
           connect: {
@@ -261,6 +262,7 @@ const updateArticle = async (creatorId: string, articleId: string, payload: Part
       },
       data: {
         ...payload,
+        thumbnailUrl: payload.thumbnailUrl || '',
       },
     });
 

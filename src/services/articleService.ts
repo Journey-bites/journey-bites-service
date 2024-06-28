@@ -18,7 +18,7 @@ type CreateArticlePayload = {
   isNeedPay: boolean;
   wordCount: number;
   categoryId: string;
-  thumbnailUrl?: string | null;
+  thumbnailUrl?: string;
   tags?: string[];
 };
 

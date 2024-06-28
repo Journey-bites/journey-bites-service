@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-const urlOrEmptyString = z.string().refine((val) => val === '' || z.string().url().safeParse(val).success);
-
 export const createArticleBodySchema = z.object({
   title: z.string().min(1),
   abstract: z.string(),
@@ -9,7 +7,7 @@ export const createArticleBodySchema = z.object({
   isNeedPay: z.boolean(),
   wordCount: z.number(),
   category: z.string(),
-  thumbnailUrl: urlOrEmptyString.optional().nullable(),
+  thumbnailUrl: z.string().url().or(z.literal('')).optional(),
   tags: z.array(z.string()).optional(),
 });
 

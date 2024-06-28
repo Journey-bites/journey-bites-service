@@ -11,11 +11,28 @@ const findUserById = async (id: string, isIncludePassword = false) => {
           displayName: true,
           avatarImageUrl: true,
           bio: true,
-          socialLinks: true,
+          socialLinks: {
+            select: {
+              website: true,
+              instagram: true,
+              facebook: true,
+            },
+          },
         },
       },
-      oAuthProvider: true,
-      billing: true,
+      oAuthProvider: {
+        select: {
+          googleId: true,
+          facebookId: true,
+        },
+      },
+      billing: {
+        select: {
+          bankCode: true,
+          bankAccount: true,
+          bankAccountOwner: true,
+        },
+      },
     },
     omit: {
       password: !isIncludePassword,
@@ -34,11 +51,28 @@ const findUserByEmail = async (email: string, isIncludePassword = false) => {
           displayName: true,
           avatarImageUrl: true,
           bio: true,
-          socialLinks: true,
+          socialLinks: {
+            select: {
+              website: true,
+              instagram: true,
+              facebook: true,
+            },
+          },
         },
       },
-      oAuthProvider: true,
-      billing: true,
+      oAuthProvider: {
+        select: {
+          googleId: true,
+          facebookId: true,
+        },
+      },
+      billing: {
+        select: {
+          bankCode: true,
+          bankAccount: true,
+          bankAccountOwner: true,
+        },
+      },
     },
     omit: {
       password: !isIncludePassword,
@@ -184,7 +218,7 @@ const getUserFollowers = async (userId: string) => {
       isMutualFollow: follower.followedBy.some(({ followerId }) => followerId === userId),
     }));
 
-    return followers ?? [];
+    return followers;
   } catch (error) {
     throw new Error('Error while getting user followers');
   }
@@ -236,7 +270,7 @@ const getUserFollowings = async (userId: string) => {
       isMutualFollow: following.follows.some(({ followingId }) => followingId === userId),
     }));
 
-    return followings ?? [];
+    return followings;
   } catch (error) {
     throw new Error('Error while getting user followings');
   }

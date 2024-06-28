@@ -19,8 +19,9 @@ router.get(
         statusCode: 0,
         message: 'success',
         data: {
+          id: "667b20205e32661530d68501",
           email: "journey-bites@gmail.com",
-          emailVerified: true,
+          isEmailVerified: true,
           profile: {
             displayName: "Journey",
             avatarImageUrl: "https://journey-bites.com/avatar.jpg",
@@ -32,9 +33,9 @@ router.get(
             }
           },
           billing: {
-            bankCode: null,
-            bankAccount: null,
-            bankAccountOwner: null
+            bankCode: "",
+            bankAccount: "",
+            bankAccountOwner: ""
           }
         }
       }
@@ -217,6 +218,10 @@ router.post(
       description: 'Invalid field',
       schema: { statusCode: 1005, message: 'You cannot follow yourself' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 2003, message: 'Permission denied' }
@@ -247,6 +252,10 @@ router.delete(
     #swagger.responses[400] = {
       description: 'Invalid field',
       schema: { statusCode: 1005, message: 'You cannot unfollow yourself' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',

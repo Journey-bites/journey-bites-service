@@ -29,13 +29,13 @@ const userController = {
         throw new UserNotFoundException();
       }
 
-      const { id, email, emailVerified, profile, billing } = user;
+      const { id, email, isEmailVerified, profile, billing } = user;
 
       return createResponse(res, {
         data: {
           id,
           email,
-          emailVerified,
+          isEmailVerified,
           profile,
           billing,
         },

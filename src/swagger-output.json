@@ -807,6 +807,25 @@
               }
             }
           },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "404": {
             "description": "Creator doesn't exist",
             "schema": {
@@ -814,7 +833,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1007
+                  "example": 2001
                 },
                 "message": {
                   "type": "string",
@@ -930,6 +949,44 @@
               }
             }
           },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -1027,6 +1084,44 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
                 }
               },
               "xml": {
@@ -1161,6 +1256,44 @@
               }
             }
           },
+          "400": {
+            "description": "Creator ID is invalid",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid param: creatorId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Creator doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Creator doesn't exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "schema": {
@@ -1216,6 +1349,13 @@
             "required": false,
             "type": "string",
             "enum": ["hot"]
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Category of articles",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1650,10 +1790,58 @@
                               }
                             }
                           }
+                        },
+                        "favoriteBy": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "6671ac7cac8af0d4f5eaf2be"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "properties": {
+                                  "displayName": {
+                                    "type": "string",
+                                    "example": "Render Lai"
+                                  },
+                                  "avatarImageUrl": {
+                                    "type": "string",
+                                    "example": "https://firebasestorage.googleapis.com/v0/b/journey-bites-frontend.appspot.com/o/userAvatar%2Frender3%40gmail.com%2Favatar-2.jpg?alt=media&token=e6477384-5601-48bf-8c85-e984637ece3a"
+                                  },
+                                  "bio": {
+                                    "type": "string",
+                                    "example": "嗨，大家好！我是 Render，一位熱愛旅行、探索世界的旅遊部落客。透過我的部落格，我將帶領你踏上一場充滿冒險、驚喜和文化交流的旅程。"
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {
@@ -1668,7 +1856,7 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 7
+                  "example": 1007
                 },
                 "message": {
                   "type": "string",
@@ -1795,11 +1983,11 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1003
+                  "example": 1006
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (body)"
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {
@@ -1886,6 +2074,25 @@
         "responses": {
           "204": {
             "description": "Article deleted successfully"
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (param)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized",
@@ -2216,11 +2423,11 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1003
+                  "example": 1006
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (body)"
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {
@@ -2361,6 +2568,25 @@
                       }
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {
@@ -2591,6 +2817,255 @@
         }
       }
     },
+    "/category/{categoryId}": {
+      "put": {
+        "tags": ["Category"],
+        "description": "Update a category.",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "Category ID",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Category details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "日本"
+                },
+                "path": {
+                  "type": "string",
+                  "example": "/japan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Travel in Japan"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field (body)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (body)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1007
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while updating category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Category"],
+        "description": "Delete a category.",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "Category ID",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Category deleted successfully"
+          },
+          "400": {
+            "description": "Invalid field (param)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (param)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Permission denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1007
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while deleting category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/comment/{commentId}": {
       "patch": {
         "tags": ["Comment"],
@@ -2640,17 +3115,17 @@
             }
           },
           "400": {
-            "description": "Invalid field (body)",
+            "description": "Invalid field",
             "schema": {
               "type": "object",
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1003
+                  "example": 1006
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (body)"
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {
@@ -2733,6 +3208,25 @@
           "204": {
             "description": "Comment deleted successfully"
           },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (param)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
           "401": {
             "description": "Permission denied",
             "schema": {
@@ -2814,11 +3308,15 @@
                 "data": {
                   "type": "object",
                   "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "667b20205e32661530d68501"
+                    },
                     "email": {
                       "type": "string",
                       "example": "journey-bites@gmail.com"
                     },
-                    "emailVerified": {
+                    "isEmailVerified": {
                       "type": "boolean",
                       "example": true
                     },
@@ -2859,9 +3357,18 @@
                     "billing": {
                       "type": "object",
                       "properties": {
-                        "bankCode": {},
-                        "bankAccount": {},
-                        "bankAccountOwner": {}
+                        "bankCode": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "bankAccount": {
+                          "type": "string",
+                          "example": ""
+                        },
+                        "bankAccountOwner": {
+                          "type": "string",
+                          "example": ""
+                        }
                       }
                     }
                   }
@@ -3343,11 +3850,11 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1005
+                  "example": 1006
                 },
                 "message": {
                   "type": "string",
-                  "example": "You cannot follow yourself"
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {
@@ -3457,11 +3964,11 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1005
+                  "example": 1006
                 },
                 "message": {
                   "type": "string",
-                  "example": "You cannot unfollow yourself"
+                  "example": "Invalid field (param)"
                 }
               },
               "xml": {

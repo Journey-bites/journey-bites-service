@@ -14,65 +14,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model SocialLinks {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  website   String?
-  instagram String?
-  facebook  String?
-  Profile   Profile[]
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+model User {
+  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
+  email              String          @unique
+  isEmailVerified    Boolean         @default(false)
+  password           String
+  lastPasswordChange DateTime        @default(now())
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
+  profile            Profile?
+  oAuthProvider      OAuthProvider?
+  billing            Billing?
+  articles           Article[]       @relation("UserArticles")
+  comments           Comment[]       @relation("UserComments")
+  likedComments      Comment[]       @relation("UserLikedComments", fields: [likedCommentIds], references: [id])
+  likedCommentIds    String[]        @db.ObjectId
+  likedArticles      ArticleStatus[] @relation("UserLikedArticles", fields: [likedArticleIds], references: [id])
+  likedArticleIds    String[]        @db.ObjectId
+  favoriteArticles   ArticleStatus[] @relation("UserFavoriteArticles", fields: [favoriteArticleIds], references: [id])
+  favoriteArticleIds String[]        @db.ObjectId
+  follows            Follow[]        @relation("UserFollows")
+  followedBy         Follow[]        @relation("UserFollowedBy")
+  subscriptions      Subscription[]  @relation("UserSubscriptions")
+  subscribers        Subscription[]  @relation("UserSubscribers")
+  order              Order[]         @relation("UserOrders")
 }
 
 model Profile {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
   displayName    String
-  avatarImageUrl String?
-  bio            String?
-  socialLinks    SocialLinks? @relation(fields: [socialLinksId], references: [id])
-  socialLinksId  String?      @db.ObjectId
-  User           User[]
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
+  avatarImageUrl String       @default("")
+  bio            String       @default("")
+  socialLinks    SocialLinks?
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String       @unique @db.ObjectId
+}
+
+model SocialLinks {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  website   String  @default("")
+  instagram String  @default("")
+  facebook  String  @default("")
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique @db.ObjectId
 }
 
 model OAuthProvider {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  googleId   String?
-  facebookId String?
-  User       User[]
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  googleId   String @default("")
+  facebookId String @default("")
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String @unique @db.ObjectId
 }
 
 model Billing {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  bankCode         String?
-  bankAccount      String?
-  bankAccountOwner String?
-  User             User[]
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-}
-
-model Follow {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  followerId  String   @db.ObjectId
-  followingId String   @db.ObjectId
-  follower    User     @relation("UserFollows", fields: [followerId], references: [id])
-  following   User     @relation("UserFollowedBy", fields: [followingId], references: [id])
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-}
-
-model ArticleStatus {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  views         Int       @default(0)
-  likes         Int       @default(0)
-  subscriptions Int       @default(0)
-  article       Article[]
-  likedUsers    User[]    @relation(fields: [likedUserIds], references: [id])
-  likedUserIds  String[]  @db.ObjectId
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  bankCode         String @default("")
+  bankAccount      String @default("")
+  bankAccountOwner String @default("")
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String @unique @db.ObjectId
 }
 
 model Article {
@@ -85,15 +86,29 @@ model Article {
   readTime     Int
   thumbnailUrl String         @default("")
   tags         String[]       @default([])
-  category     Category       @relation(fields: [categoryId], references: [id])
+  category     Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   categoryId   String         @db.ObjectId
-  status       ArticleStatus? @relation(fields: [statusId], references: [id])
-  statusId     String?        @db.ObjectId
-  creator      User           @relation("UserArticle", fields: [creatorId], references: [id])
+  creator      User           @relation("UserArticles", fields: [creatorId], references: [id])
   creatorId    String         @db.ObjectId
-  comments     Comment[]      @relation("ArticleComment")
+  comments     Comment[]      @relation("ArticleComments")
+  status       ArticleStatus? @relation("ArticleStatus")
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  @@unique([id, creatorId])
+}
+
+model ArticleStatus {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  views           Int      @default(0)
+  likes           Int      @default(0)
+  subscriptions   Int      @default(0)
+  article         Article  @relation("ArticleStatus", fields: [articleId], references: [id], onDelete: Cascade)
+  articleId       String   @unique @db.ObjectId
+  likedUsers      User[]   @relation("UserLikedArticles", fields: [likedUserIds], references: [id])
+  likedUserIds    String[] @db.ObjectId
+  favoriteBy      User[]   @relation("UserFavoriteArticles", fields: [favoriteUserIds], references: [id])
+  favoriteUserIds String[] @db.ObjectId
 }
 
 model Category {
@@ -101,43 +116,79 @@ model Category {
   name        String    @unique
   path        String
   description String?
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
   article     Article[]
 }
 
 model Comment {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   content      String
-  likedBy      User[]   @relation(fields: [likedUserIds], references: [id])
-  likedUserIds String[] @db.ObjectId
-  article      Article  @relation("ArticleComment", fields: [articleId], references: [id])
-  articleId    String   @db.ObjectId
-  user         User     @relation("UserComment", fields: [userId], references: [id])
-  userId       String   @db.ObjectId
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
+  likedBy      User[]   @relation("UserLikedComments", fields: [likedUserIds], references: [id])
+  likedUserIds String[] @db.ObjectId
+  article      Article  @relation("ArticleComments", fields: [articleId], references: [id], onDelete: Cascade)
+  articleId    String   @db.ObjectId
+  user         User     @relation("UserComments", fields: [userId], references: [id])
+  userId       String   @db.ObjectId
 }
 
-model User {
-  id              String          @id @default(auto()) @map("_id") @db.ObjectId
-  email           String          @unique
-  emailVerified   Boolean         @default(false)
-  password        String
-  profile         Profile?        @relation(fields: [profileId], references: [id])
-  profileId       String?         @db.ObjectId
-  oAuthProvider   OAuthProvider?  @relation(fields: [oAuthProviderId], references: [id])
-  oAuthProviderId String?         @db.ObjectId
-  billing         Billing?        @relation(fields: [billingId], references: [id])
-  billingId       String?         @db.ObjectId
-  follows         Follow[]        @relation("UserFollows")
-  followedBy      Follow[]        @relation("UserFollowedBy")
-  articles        Article[]       @relation("UserArticle")
-  comment         Comment[]       @relation("UserComment")
-  likedComments   Comment[]       @relation(fields: [likedCommentIds], references: [id])
-  likedCommentIds String[]        @db.ObjectId
-  likedArticles   ArticleStatus[] @relation(fields: [likedArticleIds], references: [id])
-  likedArticleIds String[]        @db.ObjectId
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
+model Follow {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  follower    User   @relation("UserFollows", fields: [followerId], references: [id])
+  followerId  String @db.ObjectId
+  following   User   @relation("UserFollowedBy", fields: [followingId], references: [id])
+  followingId String @db.ObjectId
+}
+
+model Subscription {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId        Order?
+  startDate      DateTime @default(now())
+  endDate        DateTime
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  subscribedTo   User     @relation("UserSubscribers", fields: [subscribedToId], references: [id], onDelete: Cascade)
+  subscribedToId String   @unique @db.ObjectId
+  subscriber     User     @relation("UserSubscriptions", fields: [subscriberId], references: [id], onDelete: Cascade)
+  subscriberId   String   @unique @db.ObjectId
+}
+
+model Order {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  status         OrderStatus   @default(PENDING)
+  note           String        @default("")
+  amount         Float
+  transactionId  String
+  paymentId      String
+  paymentMethod  String
+  paymentStatus  PaymentStatus
+  paymentDate    DateTime
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  subscription   Subscription  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscriptionId String        @unique @db.ObjectId
+  user           User          @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
+  userId         String        @unique @db.ObjectId
+}
+
+enum OrderStatus {
+  PENDING // 待處理
+  VALID // 已成立
+  TRACKING // 任務進行中
+  COMPLETED // 任務完成
+  CANCELED // 訂單已取消
+  INVALID // 訂單不成立
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  APPLE_PAY
+  GOOGLE_PAY
+  LINE_PAY
+  PAYPAL
+}
+
+enum PaymentStatus {
+  SUCCESS
+  FAILURE
 }

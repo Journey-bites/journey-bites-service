@@ -110,9 +110,13 @@ router.get(
         }
       }
     }
+    #swagger.responses[400] = {
+      description: 'Creator ID is invalid',
+      schema: { statusCode: 1006, message: 'Invalid param: creatorId' }
+    }
     #swagger.responses[404] = {
       description: 'Creator doesn\'t exist',
-      schema: { statusCode: 1007, message: 'Creator doesn\'t exist' }
+      schema: { statusCode: 2001, message: 'Creator doesn\'t exist' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -165,6 +169,14 @@ router.get(
         ]
       }
     }
+    #swagger.responses[400] = {
+      description: 'Creator ID is invalid',
+      schema: { statusCode: 1006, message: 'Invalid param: creatorId' }
+    }
+    #swagger.responses[404] = {
+      description: 'Creator doesn\'t exist',
+      schema: { statusCode: 2001, message: 'Creator doesn\'t exist' }
+    }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting user followers' }
@@ -215,6 +227,14 @@ router.get(
         ]
       }
     }
+    #swagger.responses[400] = {
+      description: 'Creator ID is invalid',
+      schema: { statusCode: 1006, message: 'Invalid param: creatorId' }
+    }
+    #swagger.responses[404] = {
+      description: 'Creator doesn\'t exist',
+      schema: { statusCode: 2001, message: 'Creator doesn\'t exist' }
+    }
     #swagger.responses[500] = {
       description: 'Internal server error',
       schema: { statusCode: 9999, message: 'Error while getting user followings' }
@@ -256,6 +276,14 @@ router.get(
           },
         ]
       }
+    }
+    #swagger.responses[400] = {
+      description: 'Creator ID is invalid',
+      schema: { statusCode: 1006, message: 'Invalid param: creatorId' }
+    }
+    #swagger.responses[404] = {
+      description: 'Creator doesn\'t exist',
+      schema: { statusCode: 2001, message: 'Creator doesn\'t exist' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

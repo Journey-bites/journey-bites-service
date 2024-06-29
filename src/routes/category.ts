@@ -66,6 +66,7 @@ router.get(
                 "name": "Japan",
                 "path": "/japan",
                 "description": "日本",
+                "articleCount": 3
             }
           ]
       }

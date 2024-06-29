@@ -4,6 +4,7 @@ import ErrorCode from '@/exceptions/ErrorCode';
 import { HttpException } from '@/exceptions/HttpException';
 import { SystemException } from '@/exceptions/SystemException';
 import categoryService from '@/services/categoryService';
+import articleService from '@/services/articleService';
 import { CategoryRequest as CategoryRequestBody } from '@/validateSchema/categoryRequest';
 import asyncHandler from '@/utils/asyncHandler';
 import { createResponse } from '@/utils/http';
@@ -53,9 +54,16 @@ const categoryController = {
     try {
       const categories = await categoryService.getCategories();
 
+      const categoriesWithArticleCount = await Promise.all(
+        categories.map(async (category) => {
+          const categoryArticles = await articleService.getArticles({ category: category.name });
+          return { ...category, articleCount: categoryArticles.length };
+        })
+      );
+
       return createResponse(res, {
         message: 'Getting Categories successfully',
-        data: categories,
+        data: categoriesWithArticleCount,
       });
     } catch (error) {
       if (error instanceof HttpException) {

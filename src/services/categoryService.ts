@@ -40,9 +40,26 @@ const createCategory = async (payload: Category) => {
 
 const getCategories = async () => {
   try {
-    const result = await db.category.findMany();
+    const result = await db.category.findMany({
+      include: {
+        _count: {
+          select: {
+            article: true,
+          },
+        },
+      },
+    });
 
-    return result;
+    const formatCategories = result.map((category) => {
+      const { _count, ...rest } = category;
+
+      return {
+        ...rest,
+        articleCount: _count.article,
+      };
+    });
+
+    return formatCategories;
   } catch (error) {
     throw new Error('Error while getting categories');
   }

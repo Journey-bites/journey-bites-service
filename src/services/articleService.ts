@@ -86,7 +86,9 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, catego
                 likes: 'desc',
               },
             }
-          : undefined,
+          : {
+              createdAt: 'desc',
+            },
       skip: (page - 1) * pageSize,
       take: pageSize,
     });
@@ -122,6 +124,9 @@ const getArticlesByCreatorId = async (creatorId: string) => {
         wordCount: true,
         categoryId: true,
         creatorId: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 

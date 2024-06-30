@@ -1,4 +1,4 @@
-import { OAuthProvider } from '@prisma/client';
+import { type OAuthProvider } from '@prisma/client';
 import db from '@/db';
 import { UserProfile } from '@/types/comm';
 
@@ -33,6 +33,8 @@ const findUserById = async (id: string, isIncludePassword = false) => {
           bankAccountOwner: true,
         },
       },
+      subscriptions: true,
+      subscribers: true,
     },
     omit: {
       password: !isIncludePassword,

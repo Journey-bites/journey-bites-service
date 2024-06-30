@@ -9,7 +9,9 @@ import articlesRouter from '@/routes/articles';
 import articleRouter from '@/routes/article';
 import commentRouter from '@/routes/comment';
 import categoryRouter from '@/routes/category';
+import paymentRouter from '@/routes/payment';
 import userRouter from '@/routes/user';
+import orderRouter from '@/routes/order';
 import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
 
@@ -42,7 +44,9 @@ router.use('/articles', articlesRouter);
 router.use('/article', articleRouter);
 router.use('/category', categoryRouter);
 router.use('/comment', commentRouter);
+router.use('payment', paymentRouter);
 
 router.use('/user', authenticate, userRouter);
+router.use('/order', authenticate, orderRouter);
 
 export default router;

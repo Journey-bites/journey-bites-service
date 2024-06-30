@@ -2,6 +2,7 @@ import db from '@/db';
 import { Prisma } from '@prisma/client';
 
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+import { generateOrderNo } from '@/utils/comm';
 import { NewebpayReturnData } from '@/utils/newebpay';
 
 const getOrderByUserIdAndOrderNo = async (userId: string, orderNo: string) => {
@@ -21,7 +22,7 @@ const getOrderByUserIdAndOrderNo = async (userId: string, orderNo: string) => {
 
 const createOrder = async (userId: string, sellerId: string) => {
   try {
-    const orderNo = `ORDER_${Date.now()}`;
+    const orderNo = generateOrderNo();
 
     const newOrder = await db.order.create({
       data: {

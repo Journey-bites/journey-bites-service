@@ -33,8 +33,16 @@ const findUserById = async (id: string, isIncludePassword = false) => {
           bankAccountOwner: true,
         },
       },
-      subscriptions: true,
-      subscribers: true,
+      subscriptions: {
+        select: {
+          subscribedToId: true,
+        },
+      },
+      subscribers: {
+        select: {
+          subscriberId: true,
+        },
+      },
     },
     omit: {
       password: !isIncludePassword,
@@ -73,6 +81,16 @@ const findUserByEmail = async (email: string, isIncludePassword = false) => {
           bankCode: true,
           bankAccount: true,
           bankAccountOwner: true,
+        },
+      },
+      subscriptions: {
+        select: {
+          subscribedToId: true,
+        },
+      },
+      subscribers: {
+        select: {
+          subscriberId: true,
         },
       },
     },

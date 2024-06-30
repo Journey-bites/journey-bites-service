@@ -40,8 +40,8 @@ const userController = {
           isEmailVerified,
           profile,
           billing,
-          subscriptions,
-          subscribers,
+          subscriptions: subscriptions.map((subscription) => subscription.subscribedToId),
+          subscribers: subscribers.map((subscriber) => subscriber.subscriberId),
         },
       });
     } catch (error) {

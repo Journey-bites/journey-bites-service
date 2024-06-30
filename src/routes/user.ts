@@ -36,7 +36,9 @@ router.get(
             bankCode: "",
             bankAccount: "",
             bankAccountOwner: ""
-          }
+          },
+          subscriptions: ["667b20205e32661530d68501"],
+          subscribers: ["667b20205e32661530d68501"]
         }
       }
     }

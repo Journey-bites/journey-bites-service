@@ -64,7 +64,7 @@ const orderController = {
     const orderNo = orderInfo.Result.MerchantOrderNo;
     const isSuccess = orderInfo.Status === 'SUCCESS';
 
-    res.redirect(`${process.env.CLIENT_URL}/manageorder?orderNo=${orderNo}&success=${isSuccess}`);
+    res.redirect(`${process.env.CLIENT_URL}/manage/orders?orderNo=${orderNo}&success=${isSuccess}`);
   },
 };
 

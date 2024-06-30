@@ -32,7 +32,7 @@ router.get(
           },
           user: {
             userId: '1',
-            email: '
+            email: 'test1@gmail.com',
             displayName: 'Journey Bites',
             avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
             bio: 'Journey Bites is a travel blogger',

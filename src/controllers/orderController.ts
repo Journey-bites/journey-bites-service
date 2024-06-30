@@ -29,6 +29,8 @@ const orderController = {
         return;
       }
 
+      console.log(error);
+
       throw new SystemException('Error while getting order');
     }
   }),

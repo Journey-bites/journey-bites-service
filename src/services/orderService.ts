@@ -96,6 +96,7 @@ const updateOrder = async (orderNo: string, payload: NewebpayReturnData) => {
     ) {
       return false;
     }
+    console.log(error);
 
     throw new Error('Error while updating order');
   }

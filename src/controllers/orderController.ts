@@ -29,8 +29,6 @@ const orderController = {
         return;
       }
 
-      console.log(error);
-
       throw new SystemException('Error while getting order');
     }
   }),
@@ -54,6 +52,7 @@ const orderController = {
         next(error);
         return;
       }
+      console.log(error);
 
       throw new SystemException('Error while create order for subscription');
     }

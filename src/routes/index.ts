@@ -44,7 +44,7 @@ router.use('/articles', articlesRouter);
 router.use('/article', articleRouter);
 router.use('/category', categoryRouter);
 router.use('/comment', commentRouter);
-router.use('payment', paymentRouter);
+router.use('/payment', paymentRouter);
 
 router.use('/user', authenticate, userRouter);
 router.use('/order', authenticate, orderRouter);

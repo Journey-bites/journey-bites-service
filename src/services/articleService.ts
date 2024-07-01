@@ -66,6 +66,11 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, catego
             name: true,
           },
         },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
         status: {
           select: {
             views: true,
@@ -93,7 +98,16 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, catego
       take: pageSize,
     });
 
-    return articlesDetails;
+    const formatArticlesDetails = articlesDetails.map((article) => {
+      const { _count, ...rest } = article;
+
+      return {
+        ...rest,
+        commentCount: _count.comments,
+      };
+    });
+
+    return formatArticlesDetails;
   } catch (error) {
     throw new Error('Error while getting articles');
   }
@@ -119,6 +133,11 @@ const getArticlesByCreatorId = async (creatorId: string) => {
             subscriptions: true,
           },
         },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
       omit: {
         wordCount: true,
@@ -130,9 +149,17 @@ const getArticlesByCreatorId = async (creatorId: string) => {
       },
     });
 
-    return articles;
+    const formatArticles = articles.map((article) => {
+      const { _count, ...rest } = article;
+      return {
+        ...rest,
+        commentCount: _count.comments,
+      };
+    });
+
+    return formatArticles;
   } catch (error) {
-    throw new Error('Error while getting articles');
+    throw new Error('Error while getting user articles');
   }
 };
 

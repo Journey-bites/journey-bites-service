@@ -224,6 +224,10 @@ router.post(
       description: 'Invalid field',
       schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 3001, message: 'You have already followed this user' }
+    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 2003, message: 'Permission denied' }
@@ -258,6 +262,10 @@ router.delete(
     #swagger.responses[400] = {
       description: 'Invalid field',
       schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'You have not followed this user' }
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',
@@ -347,11 +355,11 @@ router.post(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1005, message: 'You have already subscribed this use' }
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
-      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+      schema: { statusCode: 3002, message: 'You have already subscribed this use' }
     }
     #swagger.responses[401] = {
       description: 'Unauthorized',

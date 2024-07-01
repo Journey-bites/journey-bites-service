@@ -1,6 +1,8 @@
-import { type OAuthProvider } from '@prisma/client';
+import { Prisma, type OAuthProvider } from '@prisma/client';
+
 import db from '@/db';
 import { UserProfile } from '@/types/comm';
+import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 const findUserById = async (id: string, isIncludePassword = false) => {
   const user = await db.user.findUnique({
@@ -298,48 +300,44 @@ const getUserFollowings = async (userId: string) => {
 
 const followUser = async (followerUserId: string, followingUserId: string) => {
   try {
-    const isFollowed = await db.follow.findFirst({
-      where: {
-        followerId: followerUserId,
-        followingId: followingUserId,
-      },
-    });
-
-    if (isFollowed) {
-      return;
-    }
-
-    await db.follow.create({
+    const result = await db.follow.create({
       data: {
         followerId: followerUserId,
         followingId: followingUserId,
       },
     });
+
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.UniqueConstraintError
+    ) {
+      return false;
+    }
     throw new Error('Error while following user');
   }
 };
 
 const unfollowUser = async (followerUserId: string, followingUserId: string) => {
   try {
-    const isFollowed = await db.follow.findFirst({
+    const result = await db.follow.delete({
       where: {
-        followerId: followerUserId,
-        followingId: followingUserId,
+        followerId_followingId: {
+          followerId: followerUserId,
+          followingId: followingUserId,
+        },
       },
     });
 
-    if (!isFollowed) {
-      return;
-    }
-
-    await db.follow.deleteMany({
-      where: {
-        followerId: followerUserId,
-        followingId: followingUserId,
-      },
-    });
+    return result;
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === PrismaClientErrorCode.OperationFailedError
+    ) {
+      return false;
+    }
     throw new Error('Error while unfollowing user');
   }
 };

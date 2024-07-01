@@ -199,7 +199,7 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
   }
 };
 
-const getArticleById = async (articleId: string) => {
+const getArticleById = async (articleId: string, userId?: string) => {
   try {
     const article = await db.article.findUnique({
       where: {
@@ -262,15 +262,13 @@ const getArticleById = async (articleId: string) => {
       },
     });
 
-    if (!article?.isNeedPay) {
-      return article;
-    }
+    if (article?.creator?.id === userId) return article;
+
+    if (!article?.isNeedPay) return article;
 
     const content = truncate(article?.content, { length: 100, stripTags: false });
 
     return { ...article, content };
-
-    // return article;
   } catch (error) {
     throw new Error('Error while getting article');
   }

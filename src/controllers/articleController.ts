@@ -100,9 +100,10 @@ const articleController = {
   }),
   getArticle: asyncHandler(async (req: ArticlesRequest, res: Response, next: NextFunction) => {
     const { articleId } = req.params;
+    const userId = req?.user?.id;
 
     try {
-      const article = await articleService.getArticleById(articleId);
+      const article = await articleService.getArticleById(articleId, userId);
 
       if (!article) {
         throw new ResourceNotFoundException('Article not found');
@@ -247,7 +248,7 @@ const articleController = {
         return;
       }
 
-      throw new SystemException('Error while unliking article');
+      throw new SystemException('Error while unlinking article');
     }
   }),
   addComment: asyncHandler(async (req: AddCommentRequest, res: Response, next: NextFunction) => {

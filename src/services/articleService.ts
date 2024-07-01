@@ -1,6 +1,6 @@
-import db from '@/db';
 import { Prisma } from '@prisma/client';
 
+import db from '@/db';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 type GetArticlesPayload = {

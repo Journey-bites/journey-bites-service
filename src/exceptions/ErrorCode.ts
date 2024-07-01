@@ -34,6 +34,10 @@ const enum ErrorCode {
   USER_NOT_VERIFIED_PHONE = 2007,
   /** User's password does not match */
   USER_PASSWORD_NOT_MATCH = 2008,
+  /** User duplicate follow */
+  DUPLICATE_FOLLOW = 3001,
+  /** User  duplicate subscription */
+  DUPLICATE_SUBSCRIPTION = 3002,
   /** An unspecified internal server error has occurred */
   INTERNAL_SERVER_ERROR = 9999,
 }

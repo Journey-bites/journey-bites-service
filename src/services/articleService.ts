@@ -2,6 +2,7 @@ import db from '@/db';
 import { Prisma } from '@prisma/client';
 
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+import truncate from 'truncate-html';
 
 type GetArticlesPayload = {
   page?: number;
@@ -229,7 +230,15 @@ const getArticleById = async (articleId: string) => {
       },
     });
 
-    return article;
+    if (!article?.isNeedPay) {
+      return article;
+    }
+
+    const content = truncate(article?.content, { length: 100, stripTags: false });
+
+    return { ...article, content };
+
+    // return article;
   } catch (error) {
     throw new Error('Error while getting article');
   }

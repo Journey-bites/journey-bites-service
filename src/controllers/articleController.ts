@@ -112,7 +112,7 @@ const articleController = {
         message: 'Article found',
         data: {
           ...article,
-          category: article.category.name,
+          category: article?.category?.name,
         },
       });
     } catch (error) {

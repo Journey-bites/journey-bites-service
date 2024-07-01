@@ -346,6 +346,10 @@ router.post(
     }
     #swagger.responses[400] = {
       description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You have already subscribed this use' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
       schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
     #swagger.responses[401] = {
@@ -354,7 +358,7 @@ router.post(
     }
     #swagger.responses[404] = {
       description: 'Target user not found',
-      schema: { statusCode: 2001, message: 'Target user not found' }
+      schema: { statusCode: 2001, message: 'Subscription user not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

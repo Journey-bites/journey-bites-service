@@ -344,6 +344,19 @@ const unfollowUser = async (followerUserId: string, followingUserId: string) => 
   }
 };
 
+const checkIsUserSubscribed = async (userId: string, creatorId: string) => {
+  const subscription = await db.subscription.findUnique({
+    where: {
+      subscribedToId_subscriberId: {
+        subscriberId: userId,
+        subscribedToId: creatorId,
+      },
+    },
+  });
+
+  return subscription;
+};
+
 export default {
   findUserById,
   findUserByEmail,
@@ -355,4 +368,5 @@ export default {
   getUserFollowings,
   followUser,
   unfollowUser,
+  checkIsUserSubscribed,
 };

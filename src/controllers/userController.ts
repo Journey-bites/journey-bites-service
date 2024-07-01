@@ -199,7 +199,17 @@ const userController = {
       const targetUser = await userService.findUserById(subscriptionTargetId);
 
       if (!targetUser) {
-        throw new UserNotFoundException('Target user not found');
+        throw new UserNotFoundException('Subscription user not found');
+      }
+
+      const isSubscribed = await userService.checkIsUserSubscribed(userId, subscriptionTargetId);
+
+      if (isSubscribed) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You have already subscribed this user',
+        });
       }
 
       const order = await orderService.createOrder(userId, targetUser.id);

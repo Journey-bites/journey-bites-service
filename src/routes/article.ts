@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import articleController from '@/controllers/articleController';
-import authenticate from '@/middlewares/authenticate';
+import authenticate, { authenticateOptional } from '@/middlewares/authenticate';
 import validateRequest from '@/middlewares/validateRequest';
 import validateParamsObjectIds from '@/middlewares/validateParamsObjectIds';
 import { createArticleBodySchema } from '@/validateSchema/createArticleRequest';
@@ -130,6 +130,7 @@ router.get(
       schema: { statusCode: 9999, message: 'Error while getting article' }
     }
   */
+  authenticateOptional,
   validateParamsObjectIds(['articleId']),
   articleController.getArticle
 );

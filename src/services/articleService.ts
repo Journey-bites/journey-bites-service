@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 
 import db from '@/db';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
+import truncate from 'truncate-html';
 
 type GetArticlesPayload = {
   page?: number;
@@ -198,7 +199,7 @@ const createArticle = async (creatorId: string, payload: CreateArticlePayload) =
   }
 };
 
-const getArticleById = async (articleId: string) => {
+const getArticleById = async (articleId: string, userId?: string) => {
   try {
     const article = await db.article.findUnique({
       where: {
@@ -261,7 +262,13 @@ const getArticleById = async (articleId: string) => {
       },
     });
 
-    return article;
+    if (article?.creator?.id === userId) return article;
+
+    if (!article?.isNeedPay) return article;
+
+    const content = truncate(article?.content, { length: 100, stripTags: false });
+
+    return { ...article, content };
   } catch (error) {
     throw new Error('Error while getting article');
   }

@@ -79,7 +79,8 @@ router.get(
               views: 0,
               likes: 0,
               subscriptions: 0
-            }
+            },
+            commentCount: 8
           },
         ]
       },

@@ -2785,6 +2785,10 @@
                       "description": {
                         "type": "string",
                         "example": "日本"
+                      },
+                      "articleCount": {
+                        "type": "number",
+                        "example": 3
                       }
                     }
                   }
@@ -3287,6 +3291,42 @@
         }
       }
     },
+    "/payment/newebpay/notify": {
+      "post": {
+        "tags": ["payment"],
+        "description": "Newebpay notify",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/payment/newebpay/return": {
+      "post": {
+        "tags": ["payment"],
+        "description": "Newebpay return",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "TradeInfo": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/user/": {
       "get": {
         "tags": ["User"],
@@ -3369,6 +3409,20 @@
                           "type": "string",
                           "example": ""
                         }
+                      }
+                    },
+                    "subscriptions": {
+                      "type": "array",
+                      "example": ["667b20205e32661530d68501"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "subscribers": {
+                      "type": "array",
+                      "example": ["667b20205e32661530d68501"],
+                      "items": {
+                        "type": "string"
                       }
                     }
                   }
@@ -4181,6 +4235,340 @@
             "Bearer": []
           }
         ]
+      }
+    },
+    "/user/{userId}/subscribe": {
+      "post": {
+        "tags": ["User"],
+        "description": "Subscribe to a user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create order successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User subscribed successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "MerchantID": {
+                      "type": "string",
+                      "example": "MSxxxxxxxxx"
+                    },
+                    "TradeInfo": {
+                      "type": "string",
+                      "example": "bc24c3030cdc2c5fecb725acca25fc1a964744a397d5cefb5340a754e9e88c222931bdd44ee1edafa2b7633307c348d397e5c8374c35b986ca332bebfc00a8cccc1668a415c8e91c43480813b3d0e55c357117cf913aa709587b905e0d10189bacb2ef89a8cf7059d4c4d27234653c78a7503d7e86c29047ca745318f27c2998d4f69f852f0c23d4416454253b7ed1bcabf9314462c807066b4bf1ae6360b1e53efe59a7c0fc442c0a0ed96f7db26472"
+                    },
+                    "TradeSha": {
+                      "type": "string",
+                      "example": "3AEF71536B5B9DCD5A5A40F5732750A1D80163B3DD8E0523EC7B708FAAC31110"
+                    },
+                    "Version": {
+                      "type": "string",
+                      "example": "2.0"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid field",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1006
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid field (param)"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Target user not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2001
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Target user not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while create order for subscription"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/order/ticket/{orderNo}": {
+      "get": {
+        "tags": ["Order"],
+        "description": "Get order by order number.",
+        "parameters": [
+          {
+            "name": "orderNo",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Order number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "orderNo": {
+                      "type": "string",
+                      "example": "1"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "pending"
+                    },
+                    "ticket": {
+                      "type": "object",
+                      "properties": {
+                        "ticketNo": {
+                          "type": "string",
+                          "example": "1"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Ticket 1"
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 100
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "total": {
+                          "type": "number",
+                          "example": 200
+                        }
+                      }
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "string",
+                          "example": "1"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "test1@gmail.com"
+                        },
+                        "displayName": {
+                          "type": "string",
+                          "example": "Journey Bites"
+                        },
+                        "avatarImageUrl": {
+                          "type": "string",
+                          "example": "https://journey-bites.com/avatar.jpg"
+                        },
+                        "bio": {
+                          "type": "string",
+                          "example": "Journey Bites is a travel blogger"
+                        },
+                        "socialLinks": {
+                          "type": "object",
+                          "properties": {
+                            "website": {
+                              "type": "string",
+                              "example": "https://journey-bites.com"
+                            },
+                            "instagram": {
+                              "type": "string",
+                              "example": "https://instagram.com/journey-bites"
+                            },
+                            "facebook": {
+                              "type": "string",
+                              "example": "https://facebook.com/journey-bites"
+                            }
+                          }
+                        },
+                        "followers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "followerId": {
+                                "type": "number",
+                                "example": 2
+                              }
+                            }
+                          }
+                        },
+                        "followings": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "followingId": {
+                                "type": "number",
+                                "example": 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1002
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 1007
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Order not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting order"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     }
   }

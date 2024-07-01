@@ -36,7 +36,9 @@ router.get(
             bankCode: "",
             bankAccount: "",
             bankAccountOwner: ""
-          }
+          },
+          subscriptions: ["667b20205e32661530d68501"],
+          subscribers: ["667b20205e32661530d68501"]
         }
       }
     }
@@ -302,7 +304,8 @@ router.get(
               views: 0,
               likes: 0,
               subscriptions: 0
-            }
+            },
+            commentCount: 8
           },
         ]
       }
@@ -317,6 +320,54 @@ router.get(
     }
   */
   userController.getUserArticles
+);
+
+router.post(
+  '/:userId/subscribe',
+  /* 
+    #swagger.security = [{'Bearer': []}]
+    #swagger.tags = ['User']
+    #swagger.description = 'Subscribe to a user.'
+    #swagger.responses[201] = {
+      description: 'Create order successfully',
+      schema: { 
+        statusCode: 0, 
+        message: 'User subscribed successfully',
+        data: {
+          MerchantID: 'MSxxxxxxxxx',
+          TradeInfo: 'bc24c3030cdc2c5fecb725acca25fc1a964744a397d5cefb5340a754e9e88c222931bdd44ee1edafa2b7633307c348d397e5c8374c35b986ca332bebfc00a8cccc1668a415c8e91c43480813b3d0e55c357117cf913aa709587b905e0d10189bacb2ef89a8cf7059d4c4d27234653c78a7503d7e86c29047ca745318f27c2998d4f69f852f0c23d4416454253b7ed1bcabf9314462c807066b4bf1ae6360b1e53efe59a7c0fc442c0a0ed96f7db26472',
+          TradeSha: '3AEF71536B5B9DCD5A5A40F5732750A1D80163B3DD8E0523EC7B708FAAC31110',
+          Version: '2.0'
+        }
+      }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You cannot subscribe yourself' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1005, message: 'You have already subscribed this use' }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid field',
+      schema: { statusCode: 1006, message: 'Invalid field (param)' }
+    }
+    #swagger.responses[401] = {
+      description: 'Unauthorized',
+      schema: { statusCode: 2003, message: 'Permission denied' }
+    }
+    #swagger.responses[404] = {
+      description: 'Target user not found',
+      schema: { statusCode: 2001, message: 'Subscription user not found' }
+    }
+    #swagger.responses[500] = {
+      description: 'Internal server error',
+      schema: { statusCode: 9999, message: 'Error while create order for subscription' }
+    }
+  */
+  validateParamsObjectIds(['userId']),
+  userController.subscribeUser
 );
 
 export default router;

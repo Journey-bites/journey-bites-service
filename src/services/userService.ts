@@ -1,4 +1,4 @@
-import { OAuthProvider } from '@prisma/client';
+import { type OAuthProvider } from '@prisma/client';
 import db from '@/db';
 import { UserProfile } from '@/types/comm';
 
@@ -31,6 +31,16 @@ const findUserById = async (id: string, isIncludePassword = false) => {
           bankCode: true,
           bankAccount: true,
           bankAccountOwner: true,
+        },
+      },
+      subscriptions: {
+        select: {
+          subscribedToId: true,
+        },
+      },
+      subscribers: {
+        select: {
+          subscriberId: true,
         },
       },
     },
@@ -71,6 +81,16 @@ const findUserByEmail = async (email: string, isIncludePassword = false) => {
           bankCode: true,
           bankAccount: true,
           bankAccountOwner: true,
+        },
+      },
+      subscriptions: {
+        select: {
+          subscribedToId: true,
+        },
+      },
+      subscribers: {
+        select: {
+          subscriberId: true,
         },
       },
     },
@@ -324,6 +344,19 @@ const unfollowUser = async (followerUserId: string, followingUserId: string) => 
   }
 };
 
+const checkIsUserSubscribed = async (userId: string, creatorId: string) => {
+  const subscription = await db.subscription.findUnique({
+    where: {
+      subscribedToId_subscriberId: {
+        subscriberId: userId,
+        subscribedToId: creatorId,
+      },
+    },
+  });
+
+  return subscription;
+};
+
 export default {
   findUserById,
   findUserByEmail,
@@ -335,4 +368,5 @@ export default {
   getUserFollowings,
   followUser,
   unfollowUser,
+  checkIsUserSubscribed,
 };

@@ -6,9 +6,11 @@ import { UserNotFoundException } from '@/exceptions/UserNotFoundException';
 import { SystemException } from '@/exceptions/SystemException';
 import articleServices from '@/services/articleService';
 import userService from '@/services/userService';
+import orderService from '@/services/orderService';
 import { UpdateUserRequest } from '@/validateSchema/updateUserRequest';
 import { createResponse } from '@/utils/http';
 import asyncHandler from '@/utils/asyncHandler';
+import { createMpgAesEncrypt, createMpgShaEncrypt } from '@/utils/newebpay';
 
 interface UserRequest extends Request {
   params: {
@@ -29,7 +31,7 @@ const userController = {
         throw new UserNotFoundException();
       }
 
-      const { id, email, isEmailVerified, profile, billing } = user;
+      const { id, email, isEmailVerified, profile, billing, subscriptions, subscribers } = user;
 
       return createResponse(res, {
         data: {
@@ -38,6 +40,8 @@ const userController = {
           isEmailVerified,
           profile,
           billing,
+          subscriptions: subscriptions.map((subscription) => subscription.subscribedToId),
+          subscribers: subscribers.map((subscriber) => subscriber.subscriberId),
         },
       });
     } catch (error) {
@@ -177,6 +181,67 @@ const userController = {
       }
 
       throw new SystemException('Error while getting user articles');
+    }
+  }),
+  subscribeUser: asyncHandler(async (req: UserRequest, res: Response, next: NextFunction) => {
+    const { id: userId, email: userEmail } = req.user;
+    const subscriptionTargetId = req.params.userId;
+
+    try {
+      if (userId === subscriptionTargetId) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You cannot subscribe yourself',
+        });
+      }
+
+      const targetUser = await userService.findUserById(subscriptionTargetId);
+
+      if (!targetUser) {
+        throw new UserNotFoundException('Subscription user not found');
+      }
+
+      const isSubscribed = await userService.checkIsUserSubscribed(userId, subscriptionTargetId);
+
+      if (isSubscribed) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You have already subscribed this user',
+        });
+      }
+
+      const order = await orderService.createOrder(userId, targetUser.id);
+      const timeStamp = Math.round(new Date().getTime() / 1000);
+
+      const aesEncrypt = createMpgAesEncrypt({
+        MerchantOrderNo: order.orderNo,
+        TimeStamp: timeStamp,
+        Amt: 60,
+        ItemDesc: 'Subscription',
+        Email: userEmail,
+      });
+
+      const shaEncrypt = createMpgShaEncrypt(aesEncrypt);
+
+      return createResponse(res, {
+        httpCode: 201,
+        message: 'Create order successfully',
+        data: {
+          MerchantID: process.env.NEWEBPAY_MERCHANT_ID,
+          TradeInfo: aesEncrypt,
+          TradeSha: shaEncrypt,
+          Version: process.env.NEWEBPAY_VERSION,
+        },
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while create order for subscription');
     }
   }),
 };

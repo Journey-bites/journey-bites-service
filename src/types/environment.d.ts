@@ -10,5 +10,9 @@ declare namespace NodeJS {
     GOOGLE_LOGIN_CALL_BACK_URL: string;
     CLIENT_URL: string;
     HOST: string;
+    NEWEBPAY_VERSION: string;
+    NEWEBPAY_MERCHANT_ID: string;
+    NEWEBPAY_HASH_KEY: string;
+    NEWEBPAY_HASH_IV: string;
   }
 }

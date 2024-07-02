@@ -10,6 +10,8 @@ import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest'
 import { Pagination } from '@/validateSchema/pagination';
 import asyncHandler from '@/utils/asyncHandler';
 import { createResponse } from '@/utils/http';
+import truncate from 'truncate-html';
+import userService from '@/services/userService';
 
 type GetArticlesRequest = Request & {
   query: Partial<Pagination> & {
@@ -103,17 +105,31 @@ const articleController = {
     const userId = req?.user?.id;
 
     try {
-      const article = await articleService.getArticleById(articleId, userId);
+      const article = await articleService.getArticleById(articleId);
 
       if (!article) {
         throw new ResourceNotFoundException('Article not found');
       }
 
+      let result;
+
+      const isSubscribed = await userService.checkIsUserSubscribed(userId, article.creator.id);
+
+      if (article.creator.id === userId || !article.isNeedPay || isSubscribed) {
+        result = article;
+      } else {
+        const content = truncate(article?.content, { length: 100, stripTags: false });
+        result = {
+          ...article,
+          content,
+        };
+      }
+
       return createResponse(res, {
         message: 'Article found',
         data: {
-          ...article,
-          category: article?.category?.name,
+          ...result,
+          category: article.category.name,
         },
       });
     } catch (error) {

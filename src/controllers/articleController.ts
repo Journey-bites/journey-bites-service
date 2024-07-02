@@ -112,13 +112,16 @@ const articleController = {
       }
 
       let result;
+      let isSubscribed;
 
-      const isSubscribed = await userService.checkIsUserSubscribed(userId, article.creator.id);
+      if (userId) {
+        isSubscribed = await userService.checkIsUserSubscribed(userId, article.creator.id);
+      }
 
       if (article.creator.id === userId || !article.isNeedPay || isSubscribed) {
         result = article;
       } else {
-        const content = truncate(article?.content, { length: 100, stripTags: false });
+        const content = truncate(article.content, { length: 100, stripTags: false });
         result = {
           ...article,
           content,

@@ -10,7 +10,7 @@ import { CreateArticleRequestBody } from '@/validateSchema/createArticleRequest'
 import { Pagination } from '@/validateSchema/pagination';
 import asyncHandler from '@/utils/asyncHandler';
 import { createResponse } from '@/utils/http';
-import truncate from 'truncate-html';
+import { truncateHtml } from '@/utils/truncate';
 import userService from '@/services/userService';
 
 type GetArticlesRequest = Request & {
@@ -114,18 +114,22 @@ const articleController = {
       let result;
       let isSubscribed;
 
-      if (userId) {
-        isSubscribed = await userService.checkIsUserSubscribed(userId, article.creator.id);
-      }
-
-      if (article.creator.id === userId || !article.isNeedPay || isSubscribed) {
+      if (article.creator.id === userId || !article.isNeedPay) {
         result = article;
       } else {
-        const content = truncate(article.content, { length: 100, stripTags: false });
-        result = {
-          ...article,
-          content,
-        };
+        if (userId) {
+          isSubscribed = await userService.checkIsUserSubscribed(userId, article.creator.id);
+        }
+
+        if (isSubscribed) {
+          result = article;
+        } else {
+          const content = truncateHtml(article.content);
+          result = {
+            ...article,
+            content,
+          };
+        }
       }
 
       return createResponse(res, {
@@ -267,7 +271,7 @@ const articleController = {
         return;
       }
 
-      throw new SystemException('Error while unlinking article');
+      throw new SystemException('Error while unliking article');
     }
   }),
   addComment: asyncHandler(async (req: AddCommentRequest, res: Response, next: NextFunction) => {

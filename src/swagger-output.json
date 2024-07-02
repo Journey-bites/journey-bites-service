@@ -1246,6 +1246,10 @@
                             "example": 0
                           }
                         }
+                      },
+                      "commentCount": {
+                        "type": "number",
+                        "example": 8
                       }
                     }
                   }
@@ -1466,6 +1470,10 @@
                             "example": 0
                           }
                         }
+                      },
+                      "commentCount": {
+                        "type": "number",
+                        "example": 8
                       }
                     }
                   }
@@ -3904,11 +3912,11 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1006
+                  "example": 3001
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (param)"
+                  "example": "You have already followed this user"
                 }
               },
               "xml": {
@@ -4022,7 +4030,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (param)"
+                  "example": "You have not followed this user"
                 }
               },
               "xml": {
@@ -4181,6 +4189,10 @@
                             "example": 0
                           }
                         }
+                      },
+                      "commentCount": {
+                        "type": "number",
+                        "example": 8
                       }
                     }
                   }
@@ -4297,11 +4309,11 @@
               "properties": {
                 "statusCode": {
                   "type": "number",
-                  "example": 1006
+                  "example": 3002
                 },
                 "message": {
                   "type": "string",
-                  "example": "Invalid field (param)"
+                  "example": "You have already subscribed this use"
                 }
               },
               "xml": {
@@ -4339,7 +4351,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Target user not found"
+                  "example": "Subscription user not found"
                 }
               },
               "xml": {

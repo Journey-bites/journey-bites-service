@@ -121,7 +121,15 @@ const userController = {
         throw new UserNotFoundException();
       }
 
-      await userService.followUser(followerUserId, followingUserId);
+      const result = await userService.followUser(followerUserId, followingUserId);
+
+      if (!result) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.DUPLICATE_FOLLOW,
+          message: 'You have already followed this user',
+        });
+      }
 
       return createResponse(res, { httpCode: 204 });
     } catch (error) {
@@ -151,7 +159,15 @@ const userController = {
         throw new UserNotFoundException();
       }
 
-      await userService.unfollowUser(followerUserId, followingUserId);
+      const result = await userService.unfollowUser(followerUserId, followingUserId);
+
+      if (!result) {
+        throw new HttpException({
+          httpCode: 400,
+          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          message: 'You have not followed this user',
+        });
+      }
 
       return createResponse(res, { httpCode: 204 });
     } catch (error) {
@@ -207,7 +223,7 @@ const userController = {
       if (isSubscribed) {
         throw new HttpException({
           httpCode: 400,
-          errorCode: ErrorCode.ILLEGAL_PATH_PARAMETER,
+          errorCode: ErrorCode.DUPLICATE_SUBSCRIPTION,
           message: 'You have already subscribed this user',
         });
       }

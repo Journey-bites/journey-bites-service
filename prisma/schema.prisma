@@ -138,6 +138,8 @@ model Follow {
   followerId  String @db.ObjectId
   following   User   @relation("UserFollowedBy", fields: [followingId], references: [id])
   followingId String @db.ObjectId
+
+  @@unique([followerId, followingId])
 }
 
 model Subscription {
@@ -150,6 +152,8 @@ model Subscription {
   subscriberId   String   @unique @db.ObjectId
   order          Order?   @relation(fields: [orderId], references: [id])
   orderId        String   @unique @db.ObjectId
+
+  @@unique([subscribedToId, subscriberId])
 }
 
 model Payment {

@@ -11,6 +11,7 @@ const router = Router();
 router.patch(
   '/:commentId',
   /*
+    #swagger.security = [{'Bearer': []}]
     #swagger.tags = ['Comment']
     #swagger.description = 'Update a comment.'
     #swagger.parameters['commentId'] = { description: 'Comment ID' }
@@ -56,6 +57,7 @@ router.patch(
 router.delete(
   '/:commentId',
   /*
+    #swagger.security = [{'Bearer': []}]
     #swagger.tags = ['Comment']
     #swagger.description = 'Delete a comment.'
     #swagger.parameters['commentId'] = { description: 'Comment ID' }

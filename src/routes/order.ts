@@ -7,6 +7,7 @@ const router = Router();
 router.get(
   '/ticket/:orderNo',
   /*
+    #swagger.security = [{'Bearer': []}]
     #swagger.tags = ['Order']
     #swagger.description = 'Get order by order number.'
     #swagger.parameters['orderNo'] = {

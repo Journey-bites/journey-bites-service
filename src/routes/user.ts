@@ -38,7 +38,9 @@ router.get(
             bankAccountOwner: ""
           },
           subscriptions: ["667b20205e32661530d68501"],
-          subscribers: ["667b20205e32661530d68501"]
+          subscribers: ["667b20205e32661530d68501"],
+          follows: ["667b20205e32661530d68501"],
+          likedArticles: ["667b20205e32661530d68501"],
         }
       }
     }

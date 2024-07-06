@@ -45,6 +45,16 @@ const findUserById = async (id: string, isIncludePassword = false) => {
           subscriberId: true,
         },
       },
+      follows: {
+        select: {
+          followingId: true,
+        },
+      },
+      likedArticles: {
+        select: {
+          articleId: true,
+        },
+      },
     },
     omit: {
       password: !isIncludePassword,

@@ -31,7 +31,7 @@ const userController = {
         throw new UserNotFoundException();
       }
 
-      const { id, email, isEmailVerified, profile, billing, subscriptions, subscribers } = user;
+      const { id, email, isEmailVerified, profile, billing, subscriptions, subscribers, follows, likedArticles } = user;
 
       return createResponse(res, {
         data: {
@@ -42,6 +42,8 @@ const userController = {
           billing,
           subscriptions: subscriptions.map((subscription) => subscription.subscribedToId),
           subscribers: subscribers.map((subscriber) => subscriber.subscriberId),
+          follows: follows.map((follow) => follow.followingId),
+          likedArticles: likedArticles.map((likedArticle) => likedArticle.articleId),
         },
       });
     } catch (error) {

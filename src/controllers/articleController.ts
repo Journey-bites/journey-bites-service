@@ -46,13 +46,19 @@ const articleController = {
     const { page, pageSize, q, type, category } = req.query;
 
     try {
-      const articles = await articleService.getArticles({
-        page,
-        pageSize,
-        keyword: q?.trim(),
-        type,
-        category,
-      });
+      const articles =
+        type === 'hot'
+          ? await articleService.getPopularArticles({
+              page,
+              pageSize,
+              category,
+            })
+          : await articleService.getArticles({
+              page,
+              pageSize,
+              keyword: q?.trim(),
+              category,
+            });
 
       const formatArticles = articles.map((article) => ({
         ...article,
@@ -60,7 +66,7 @@ const articleController = {
       }));
 
       return createResponse(res, {
-        data: formatArticles,
+        data: formatArticles.map((article) => ({ id: article.id, likes: article.status?.likes })),
       });
     } catch (error) {
       if (error instanceof HttpException) {

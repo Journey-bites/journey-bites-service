@@ -7,7 +7,6 @@ type GetArticlesPayload = {
   page?: number;
   pageSize?: number;
   keyword?: string;
-  type?: 'hot';
   category?: string;
 };
 
@@ -22,7 +21,7 @@ type CreateArticlePayload = {
   tags?: string[];
 };
 
-const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, category }: GetArticlesPayload) => {
+const getArticles = async ({ page = 1, pageSize = 10, keyword = '', category }: GetArticlesPayload) => {
   try {
     const articlesDetails = await db.article.findMany({
       where: {
@@ -84,21 +83,85 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', type, catego
         categoryId: true,
         creatorId: true,
       },
-      orderBy:
-        type === 'hot'
-          ? {
-              status: {
-                likes: 'desc',
-              },
-            }
-          : {
-              createdAt: 'desc',
-            },
+      orderBy: {
+        createdAt: 'desc',
+      },
       skip: (page - 1) * pageSize,
       take: pageSize,
     });
 
     const formatArticlesDetails = articlesDetails.map((article) => {
+      const { _count, ...rest } = article;
+
+      return {
+        ...rest,
+        commentCount: _count.comments,
+      };
+    });
+
+    return formatArticlesDetails;
+  } catch (error) {
+    throw new Error('Error while getting articles');
+  }
+};
+
+const getPopularArticles = async ({ page = 1, pageSize = 10, category }: Omit<GetArticlesPayload, 'keyword'>) => {
+  try {
+    const articlesDetails = await db.article.findMany({
+      where: {
+        category: {
+          name: {
+            equals: category,
+          },
+        },
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            profile: {
+              select: {
+                displayName: true,
+                avatarImageUrl: true,
+                bio: true,
+              },
+            },
+          },
+        },
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+        status: {
+          select: {
+            views: true,
+            likes: true,
+            subscriptions: true,
+          },
+        },
+      },
+      omit: {
+        wordCount: true,
+        categoryId: true,
+        creatorId: true,
+      },
+      orderBy: {
+        status: {
+          likes: 'desc',
+        },
+      },
+    });
+
+    const pageStart = (page - 1) * pageSize;
+    const pageEnd = page * pageSize;
+
+    const formatArticlesDetails = articlesDetails.slice(pageStart, pageEnd).map((article) => {
       const { _count, ...rest } = article;
 
       return {
@@ -495,6 +558,7 @@ const getComments = async (articleId: string) => {
 
 export default {
   getArticles,
+  getPopularArticles,
   getArticlesByCreatorId,
   createArticle,
   getArticleById,

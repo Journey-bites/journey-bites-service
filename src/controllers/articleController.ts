@@ -66,7 +66,7 @@ const articleController = {
       }));
 
       return createResponse(res, {
-        data: formatArticles.map((article) => ({ id: article.id, likes: article.status?.likes })),
+        data: formatArticles,
       });
     } catch (error) {
       if (error instanceof HttpException) {

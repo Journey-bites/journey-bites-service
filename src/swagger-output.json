@@ -4410,6 +4410,137 @@
         ]
       }
     },
+    "/user/orders": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user orders.",
+        "responses": {
+          "200": {
+            "description": "User orders",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "orderNo": {
+                        "type": "string",
+                        "example": "20240705_mb2d4d"
+                      },
+                      "sellerId": {
+                        "type": "string",
+                        "example": "6683aaa38b20bb45ec6c7907"
+                      },
+                      "isSuccess": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "payment": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "example": 60
+                          },
+                          "transactionId": {
+                            "type": "string",
+                            "example": "24070516431407295"
+                          },
+                          "paymentIP": {
+                            "type": "string",
+                            "example": "123.194.159.15"
+                          },
+                          "escrowBank": {
+                            "type": "string",
+                            "example": "HNCB"
+                          },
+                          "paymentType": {
+                            "type": "string",
+                            "example": "WEBATM"
+                          },
+                          "account5Code": {
+                            "type": "string",
+                            "example": "12345"
+                          },
+                          "payBankCode": {
+                            "type": "string",
+                            "example": "809"
+                          },
+                          "orderId": {
+                            "type": "string",
+                            "example": "6687b2199dff4ff495c7606d"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2024-07-05T08:43:15.456Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user orders"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/order/ticket/{orderNo}": {
       "get": {
         "tags": ["Order"],

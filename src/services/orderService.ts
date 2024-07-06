@@ -5,6 +5,34 @@ import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 import { generateOrderNo } from '@/utils/comm';
 import { NewebpayReturnData } from '@/utils/newebpay';
 
+const getOrders = async (userId: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        order: {
+          select: {
+            orderNo: true,
+            sellerId: true,
+            status: true,
+            payment: {
+              omit: {
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return user?.order || [];
+  } catch (error) {
+    throw new Error('Error while getting orders');
+  }
+};
+
 const getOrderByUserIdAndOrderNo = async (userId: string, orderNo: string) => {
   try {
     const order = await db.order.findUnique({
@@ -102,6 +130,7 @@ const updateOrder = async (orderNo: string, payload: NewebpayReturnData) => {
 };
 
 export default {
+  getOrders,
   getOrderByUserIdAndOrderNo,
   createOrder,
   updateOrder,

@@ -1,6 +1,7 @@
 import { Prisma, type OAuthProvider } from '@prisma/client';
 
 import db from '@/db';
+import { baseUserQueryWithSocialLinks } from '@/db/queryCondition';
 import { UserProfile } from '@/types/comm';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
@@ -9,18 +10,7 @@ const findUserById = async (id: string, isIncludePassword = false) => {
     where: { id },
     include: {
       profile: {
-        select: {
-          displayName: true,
-          avatarImageUrl: true,
-          bio: true,
-          socialLinks: {
-            select: {
-              website: true,
-              instagram: true,
-              facebook: true,
-            },
-          },
-        },
+        select: baseUserQueryWithSocialLinks,
       },
       oAuthProvider: {
         select: {
@@ -69,18 +59,7 @@ const findUserByEmail = async (email: string, isIncludePassword = false) => {
     where: { email },
     include: {
       profile: {
-        select: {
-          displayName: true,
-          avatarImageUrl: true,
-          bio: true,
-          socialLinks: {
-            select: {
-              website: true,
-              instagram: true,
-              facebook: true,
-            },
-          },
-        },
+        select: baseUserQueryWithSocialLinks,
       },
       oAuthProvider: {
         select: {
@@ -218,18 +197,7 @@ const getUserFollowers = async (userId: string) => {
                 id: true,
                 email: true,
                 profile: {
-                  select: {
-                    displayName: true,
-                    avatarImageUrl: true,
-                    socialLinks: {
-                      select: {
-                        website: true,
-                        instagram: true,
-                        facebook: true,
-                      },
-                    },
-                    bio: true,
-                  },
+                  select: baseUserQueryWithSocialLinks,
                 },
                 followedBy: {
                   select: {
@@ -270,18 +238,7 @@ const getUserFollowings = async (userId: string) => {
                 id: true,
                 email: true,
                 profile: {
-                  select: {
-                    displayName: true,
-                    avatarImageUrl: true,
-                    socialLinks: {
-                      select: {
-                        website: true,
-                        instagram: true,
-                        facebook: true,
-                      },
-                    },
-                    bio: true,
-                  },
+                  select: baseUserQueryWithSocialLinks,
                 },
                 follows: {
                   select: {

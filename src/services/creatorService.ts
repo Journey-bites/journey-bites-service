@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import db from '@/db';
+import { baseUserQueryWithSocialLinks } from '@/db/queryCondition';
 import { HttpException } from '@/exceptions/HttpException';
 
 type GetCreatorsPayload = {
@@ -94,18 +95,7 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', keyword =
         id: true,
         email: true,
         profile: {
-          select: {
-            avatarImageUrl: true,
-            displayName: true,
-            socialLinks: {
-              select: {
-                website: true,
-                instagram: true,
-                facebook: true,
-              },
-            },
-            bio: true,
-          },
+          select: baseUserQueryWithSocialLinks,
         },
         follows: {
           select: {
@@ -145,18 +135,7 @@ const getCreatorById = async (id: string) => {
         id: true,
         email: true,
         profile: {
-          select: {
-            displayName: true,
-            avatarImageUrl: true,
-            bio: true,
-            socialLinks: {
-              select: {
-                website: true,
-                instagram: true,
-                facebook: true,
-              },
-            },
-          },
+          select: baseUserQueryWithSocialLinks,
         },
         _count: {
           select: {

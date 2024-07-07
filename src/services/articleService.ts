@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import db from '@/db';
+import { baseUserQuery } from '@/db/queryCondition';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 type GetArticlesPayload = {
@@ -49,16 +50,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', category }: 
       },
       include: {
         creator: {
-          select: {
-            id: true,
-            profile: {
-              select: {
-                displayName: true,
-                avatarImageUrl: true,
-                bio: true,
-              },
-            },
-          },
+          select: baseUserQuery,
         },
         category: {
           select: {
@@ -269,16 +261,7 @@ const getArticleById = async (articleId: string) => {
       },
       include: {
         creator: {
-          select: {
-            id: true,
-            profile: {
-              select: {
-                displayName: true,
-                avatarImageUrl: true,
-                bio: true,
-              },
-            },
-          },
+          select: baseUserQuery,
         },
         category: {
           select: {
@@ -291,28 +274,10 @@ const getArticleById = async (articleId: string) => {
             likes: true,
             subscriptions: true,
             likedUsers: {
-              select: {
-                id: true,
-                profile: {
-                  select: {
-                    displayName: true,
-                    avatarImageUrl: true,
-                    bio: true,
-                  },
-                },
-              },
+              select: baseUserQuery,
             },
             favoriteBy: {
-              select: {
-                id: true,
-                profile: {
-                  select: {
-                    displayName: true,
-                    avatarImageUrl: true,
-                    bio: true,
-                  },
-                },
-              },
+              select: baseUserQuery,
             },
           },
         },
@@ -536,16 +501,7 @@ const getComments = async (articleId: string) => {
       },
       include: {
         user: {
-          select: {
-            id: true,
-            profile: {
-              select: {
-                displayName: true,
-                avatarImageUrl: true,
-                bio: true,
-              },
-            },
-          },
+          select: baseUserQuery,
         },
       },
     });

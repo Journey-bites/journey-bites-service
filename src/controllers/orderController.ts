@@ -13,13 +13,17 @@ const orderController = {
     const userId = req.user.id;
 
     try {
-      const orders = await orderService.getOrders(userId);
+      const orders = await orderService.getOrdersByUserId(userId);
 
       const data = orders.map((order) => {
-        const { status, ...rest } = order;
+        const { status, subscription, ...rest } = order;
         const isSuccess = status === 'SUCCESS';
 
-        return { ...rest, isSuccess };
+        return {
+          ...rest,
+          seller: subscription?.subscribedTo,
+          isSuccess,
+        };
       });
 
       return createResponse(res, {

@@ -549,7 +549,7 @@ const getArticlesLikedByUser = async (userId: string) => {
       const { _count, category, ...rest } = article;
       return {
         ...rest,
-        catetory: category.name,
+        category: category.name,
         commentCount: _count.comments,
       };
     });

@@ -3202,7 +3202,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
         "tags": ["Comment"],
@@ -3296,7 +3301,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/payment/newebpay/notify": {
@@ -3427,6 +3437,20 @@
                       }
                     },
                     "subscribers": {
+                      "type": "array",
+                      "example": ["667b20205e32661530d68501"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "follows": {
+                      "type": "array",
+                      "example": ["667b20205e32661530d68501"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "likedArticles": {
                       "type": "array",
                       "example": ["667b20205e32661530d68501"],
                       "items": {
@@ -4580,7 +4604,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   }

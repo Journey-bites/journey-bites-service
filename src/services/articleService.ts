@@ -546,9 +546,10 @@ const getArticlesLikedByUser = async (userId: string) => {
     });
 
     const formatArticles = articles.map((article) => {
-      const { _count, ...rest } = article;
+      const { _count, category, ...rest } = article;
       return {
         ...rest,
+        catetory: category.name,
         commentCount: _count.comments,
       };
     });

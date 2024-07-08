@@ -411,7 +411,7 @@ router.get(
                 orderId: '6687b2199dff4ff495c7606d',
                 createdAt: '2024-07-05T08:43:15.456Z'
             },
-            seller" {
+            seller: {
               id: '667b20205e32661530d68501',
               profile: {
                 displayName: 'Journey Bites',

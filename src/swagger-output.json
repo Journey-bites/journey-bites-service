@@ -4437,14 +4437,6 @@
                         "type": "string",
                         "example": "20240705_mb2d4d"
                       },
-                      "sellerId": {
-                        "type": "string",
-                        "example": "6683aaa38b20bb45ec6c7907"
-                      },
-                      "isSuccess": {
-                        "type": "boolean",
-                        "example": true
-                      },
                       "payment": {
                         "type": "object",
                         "properties": {
@@ -4485,6 +4477,36 @@
                             "example": "2024-07-05T08:43:15.456Z"
                           }
                         }
+                      },
+                      "seller": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "667b20205e32661530d68501"
+                          },
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Journey Bites"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://journey-bites.com/avatar.jpg"
+                              },
+                              "bio": {
+                                "type": "string",
+                                "example": "Travel blogger"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "isSuccess": {
+                        "type": "boolean",
+                        "example": true
                       }
                     }
                   }
@@ -4526,6 +4548,171 @@
                 "message": {
                   "type": "string",
                   "example": "Error while getting user orders"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/liked-articles": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get articles liked by user.",
+        "responses": {
+          "200": {
+            "description": "Getting articles successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Getting articles successfully"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 19
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com/thumbnail.jpg"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-07-02T09:40:44.226Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-07-02T09:40:44.226Z"
+                      },
+                      "category": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "健行日記"
+                          }
+                        }
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 1
+                          }
+                        }
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "6671ac7cac8af0d4f5eaf2be"
+                          },
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Journey bites"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://www.example.com/avatar.jpg"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "commentCount": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting articles liked by user"
                 }
               },
               "xml": {

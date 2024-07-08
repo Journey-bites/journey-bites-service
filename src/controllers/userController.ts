@@ -262,6 +262,22 @@ const userController = {
       throw new SystemException('Error while create order for subscription');
     }
   }),
+  getArticlesLikedByUser: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const articles = await articleServices.getArticlesLikedByUser(req.user.id);
+
+      return createResponse(res, {
+        data: articles,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting articles liked by user');
+    }
+  }),
 };
 
 export default userController;

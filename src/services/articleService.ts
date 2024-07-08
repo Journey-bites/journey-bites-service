@@ -556,6 +556,73 @@ const getComments = async (articleId: string) => {
   }
 };
 
+const getArticlesLikedByUser = async (userId: string) => {
+  try {
+    const articles = await db.article.findMany({
+      where: {
+        status: {
+          likedUsers: {
+            some: {
+              id: userId,
+            },
+          },
+        },
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        status: {
+          select: {
+            views: true,
+            likes: true,
+          },
+        },
+        creator: {
+          select: {
+            id: true,
+            profile: {
+              select: {
+                displayName: true,
+                avatarImageUrl: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+      },
+      omit: {
+        wordCount: true,
+        categoryId: true,
+        creatorId: true,
+        content: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const formatArticles = articles.map((article) => {
+      const { _count, category, ...rest } = article;
+      return {
+        ...rest,
+        category: category.name,
+        commentCount: _count.comments,
+      };
+    });
+
+    return formatArticles;
+  } catch (error) {
+    throw new Error('Error while getting articles liked by user');
+  }
+};
+
 export default {
   getArticles,
   getPopularArticles,
@@ -570,4 +637,5 @@ export default {
   unlikeArticle,
   createComment,
   getComments,
+  getArticlesLikedByUser,
 };

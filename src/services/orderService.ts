@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import db from '@/db';
-import { baseUserQuery } from '@/db/queryCondition';
+import { baseUserProfileQuery } from '@/db/queryCondition';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 import { generateOrderNo } from '@/utils/comm';
 import { NewebpayReturnData } from '@/utils/newebpay';
@@ -20,7 +20,10 @@ const getOrdersByUserId = async (userId: string) => {
             subscription: {
               select: {
                 subscribedTo: {
-                  select: baseUserQuery,
+                  select: {
+                    id: true,
+                    profile: baseUserProfileQuery,
+                  },
                 },
               },
             },

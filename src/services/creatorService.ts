@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import db from '@/db';
-import { baseUserQueryWithSocialLinks } from '@/db/queryCondition';
+import { baseUserProfileQueryWithSocialLinks } from '@/db/queryCondition';
 import { HttpException } from '@/exceptions/HttpException';
 
 type GetCreatorsPayload = {
@@ -94,9 +94,7 @@ const getCreators = async ({ page = 1, pageSize = 10, type = 'common', keyword =
       select: {
         id: true,
         email: true,
-        profile: {
-          select: baseUserQueryWithSocialLinks,
-        },
+        profile: baseUserProfileQueryWithSocialLinks,
         follows: {
           select: {
             followingId: true,
@@ -134,9 +132,7 @@ const getCreatorById = async (id: string) => {
       select: {
         id: true,
         email: true,
-        profile: {
-          select: baseUserQueryWithSocialLinks,
-        },
+        profile: baseUserProfileQueryWithSocialLinks,
         _count: {
           select: {
             followedBy: true,

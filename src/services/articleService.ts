@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import db from '@/db';
-import { baseUserQuery } from '@/db/queryCondition';
+import { baseUserProfileQuery } from '@/db/queryCondition';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 type GetArticlesPayload = {
@@ -50,7 +50,10 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', category }: 
       },
       include: {
         creator: {
-          select: baseUserQuery,
+          select: {
+            id: true,
+            profile: baseUserProfileQuery,
+          },
         },
         category: {
           select: {
@@ -261,7 +264,10 @@ const getArticleById = async (articleId: string) => {
       },
       include: {
         creator: {
-          select: baseUserQuery,
+          select: {
+            id: true,
+            profile: baseUserProfileQuery,
+          },
         },
         category: {
           select: {
@@ -274,10 +280,16 @@ const getArticleById = async (articleId: string) => {
             likes: true,
             subscriptions: true,
             likedUsers: {
-              select: baseUserQuery,
+              select: {
+                id: true,
+                profile: baseUserProfileQuery,
+              },
             },
             favoriteBy: {
-              select: baseUserQuery,
+              select: {
+                id: true,
+                profile: baseUserProfileQuery,
+              },
             },
           },
         },
@@ -501,7 +513,10 @@ const getComments = async (articleId: string) => {
       },
       include: {
         user: {
-          select: baseUserQuery,
+          select: {
+            id: true,
+            profile: baseUserProfileQuery,
+          },
         },
       },
     });

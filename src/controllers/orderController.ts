@@ -16,7 +16,7 @@ const orderController = {
       const orders = await orderService.getOrdersByUserId(userId);
 
       const data =
-        orders.map((order) => {
+        orders?.map((order) => {
           const { status, subscription, ...rest } = order;
 
           return {

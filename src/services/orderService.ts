@@ -37,7 +37,7 @@ const getOrdersByUserId = async (userId: string) => {
       },
     });
 
-    return user?.order ?? [];
+    return user?.order;
   } catch (error) {
     throw new Error('Error while getting orders');
   }

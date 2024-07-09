@@ -33,6 +33,9 @@ const getOrdersByUserId = async (userId: string) => {
               },
             },
           },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
       },
     });

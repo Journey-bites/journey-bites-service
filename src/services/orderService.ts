@@ -1,9 +1,47 @@
-import db from '@/db';
 import { Prisma } from '@prisma/client';
 
+import db from '@/db';
+import { baseUserProfileQuery } from '@/db/queryCondition';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 import { generateOrderNo } from '@/utils/comm';
 import { NewebpayReturnData } from '@/utils/newebpay';
+
+const getOrdersByUserId = async (userId: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        order: {
+          select: {
+            orderNo: true,
+            status: true,
+            subscription: {
+              select: {
+                subscribedTo: {
+                  select: {
+                    id: true,
+                    profile: baseUserProfileQuery,
+                  },
+                },
+              },
+            },
+            payment: {
+              omit: {
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return user?.order;
+  } catch (error) {
+    throw new Error('Error while getting orders');
+  }
+};
 
 const getOrderByUserIdAndOrderNo = async (userId: string, orderNo: string) => {
   try {
@@ -11,6 +49,25 @@ const getOrderByUserIdAndOrderNo = async (userId: string, orderNo: string) => {
       where: {
         orderNo,
         userId,
+      },
+      select: {
+        orderNo: true,
+        status: true,
+        subscription: {
+          select: {
+            subscribedTo: {
+              select: {
+                id: true,
+                profile: baseUserProfileQuery,
+              },
+            },
+          },
+        },
+        payment: {
+          omit: {
+            id: true,
+          },
+        },
       },
     });
 
@@ -102,6 +159,7 @@ const updateOrder = async (orderNo: string, payload: NewebpayReturnData) => {
 };
 
 export default {
+  getOrdersByUserId,
   getOrderByUserIdAndOrderNo,
   createOrder,
   updateOrder,

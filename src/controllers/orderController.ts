@@ -9,6 +9,35 @@ import { createResponse } from '@/utils/http';
 import { createMpgAesDecrypt } from '@/utils/newebpay';
 
 const orderController = {
+  getOrders: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user.id;
+
+    try {
+      const orders = await orderService.getOrdersByUserId(userId);
+
+      const data =
+        orders?.map((order) => {
+          const { status, subscription, ...rest } = order;
+
+          return {
+            ...rest,
+            seller: subscription?.subscribedTo,
+            isSuccess: status === 'SUCCESS',
+          };
+        }) ?? [];
+
+      return createResponse(res, {
+        data,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        next(error);
+        return;
+      }
+
+      throw new SystemException('Error while getting orders');
+    }
+  }),
   getOrder: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user.id;
     const { orderNo } = req.params;
@@ -20,8 +49,15 @@ const orderController = {
         throw new ResourceNotFoundException('Order not found');
       }
 
+      const { status, subscription, ...rest } = order;
+      const data = {
+        ...rest,
+        seller: subscription?.subscribedTo,
+        isSuccess: status === 'SUCCESS',
+      };
+
       return createResponse(res, {
-        data: order,
+        data,
       });
     } catch (error) {
       if (error instanceof HttpException) {

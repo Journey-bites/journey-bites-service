@@ -4410,6 +4410,324 @@
         ]
       }
     },
+    "/user/orders": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get user orders.",
+        "responses": {
+          "200": {
+            "description": "User orders",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "orderNo": {
+                        "type": "string",
+                        "example": "20240705_mb2d4d"
+                      },
+                      "payment": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "example": 60
+                          },
+                          "transactionId": {
+                            "type": "string",
+                            "example": "24070516431407295"
+                          },
+                          "paymentIP": {
+                            "type": "string",
+                            "example": "123.194.159.15"
+                          },
+                          "escrowBank": {
+                            "type": "string",
+                            "example": "HNCB"
+                          },
+                          "paymentType": {
+                            "type": "string",
+                            "example": "WEBATM"
+                          },
+                          "account5Code": {
+                            "type": "string",
+                            "example": "12345"
+                          },
+                          "payBankCode": {
+                            "type": "string",
+                            "example": "809"
+                          },
+                          "orderId": {
+                            "type": "string",
+                            "example": "6687b2199dff4ff495c7606d"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2024-07-05T08:43:15.456Z"
+                          }
+                        }
+                      },
+                      "seller": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "667b20205e32661530d68501"
+                          },
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Journey Bites"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://journey-bites.com/avatar.jpg"
+                              },
+                              "bio": {
+                                "type": "string",
+                                "example": "Travel blogger"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "isSuccess": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting user orders"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/liked-articles": {
+      "get": {
+        "tags": ["User"],
+        "description": "Get articles liked by user.",
+        "responses": {
+          "200": {
+            "description": "Getting articles successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 0
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Getting articles successfully"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "6671ac7cac8af0d4f5eaf2be"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "冰島旅遊適合你嗎？──兩次造訪冰島後我學到的事"
+                      },
+                      "abstract": {
+                        "type": "string",
+                        "example": "像《白日夢冒險王》的班史提勒在遼闊公路上追夢？在極光、瀑布、懸崖前露出觀光客的滿足微笑？這些你對冰島旅遊的美好想像，可能都會在親訪後大失所望…"
+                      },
+                      "isNeedPay": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "readTime": {
+                        "type": "number",
+                        "example": 19
+                      },
+                      "thumbnailUrl": {
+                        "type": "string",
+                        "example": "https://www.example.com/thumbnail.jpg"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "example": ["旅遊"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-07-02T09:40:44.226Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-07-02T09:40:44.226Z"
+                      },
+                      "category": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "健行日記"
+                          }
+                        }
+                      },
+                      "status": {
+                        "type": "object",
+                        "properties": {
+                          "views": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "likes": {
+                            "type": "number",
+                            "example": 1
+                          }
+                        }
+                      },
+                      "creator": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "6671ac7cac8af0d4f5eaf2be"
+                          },
+                          "profile": {
+                            "type": "object",
+                            "properties": {
+                              "displayName": {
+                                "type": "string",
+                                "example": "Journey bites"
+                              },
+                              "avatarImageUrl": {
+                                "type": "string",
+                                "example": "https://www.example.com/avatar.jpg"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "commentCount": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 2003
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Permission denied"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 9999
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error while getting articles liked by user"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/order/ticket/{orderNo}": {
       "get": {
         "tags": ["Order"],
@@ -4442,102 +4760,78 @@
                   "properties": {
                     "orderNo": {
                       "type": "string",
-                      "example": "1"
+                      "example": "20240705_mb2d4d"
                     },
-                    "status": {
-                      "type": "string",
-                      "example": "pending"
-                    },
-                    "ticket": {
+                    "payment": {
                       "type": "object",
                       "properties": {
-                        "ticketNo": {
+                        "amount": {
+                          "type": "number",
+                          "example": 60
+                        },
+                        "transactionId": {
                           "type": "string",
-                          "example": "1"
+                          "example": "24070516431407295"
                         },
-                        "title": {
+                        "paymentIP": {
                           "type": "string",
-                          "example": "Ticket 1"
+                          "example": "123.194.159.15"
                         },
-                        "price": {
-                          "type": "number",
-                          "example": 100
+                        "escrowBank": {
+                          "type": "string",
+                          "example": "HNCB"
                         },
-                        "quantity": {
-                          "type": "number",
-                          "example": 2
+                        "paymentType": {
+                          "type": "string",
+                          "example": "WEBATM"
                         },
-                        "total": {
-                          "type": "number",
-                          "example": 200
+                        "account5Code": {
+                          "type": "string",
+                          "example": "12345"
+                        },
+                        "payBankCode": {
+                          "type": "string",
+                          "example": "809"
+                        },
+                        "orderId": {
+                          "type": "string",
+                          "example": "6687b2199dff4ff495c7606d"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2024-07-05T08:43:15.456Z"
                         }
                       }
                     },
-                    "user": {
+                    "seller": {
                       "type": "object",
                       "properties": {
-                        "userId": {
+                        "id": {
                           "type": "string",
-                          "example": "1"
+                          "example": "667b20205e32661530d68501"
                         },
-                        "email": {
-                          "type": "string",
-                          "example": "test1@gmail.com"
-                        },
-                        "displayName": {
-                          "type": "string",
-                          "example": "Journey Bites"
-                        },
-                        "avatarImageUrl": {
-                          "type": "string",
-                          "example": "https://journey-bites.com/avatar.jpg"
-                        },
-                        "bio": {
-                          "type": "string",
-                          "example": "Journey Bites is a travel blogger"
-                        },
-                        "socialLinks": {
+                        "profile": {
                           "type": "object",
                           "properties": {
-                            "website": {
+                            "displayName": {
                               "type": "string",
-                              "example": "https://journey-bites.com"
+                              "example": "Journey Bites"
                             },
-                            "instagram": {
+                            "avatarImageUrl": {
                               "type": "string",
-                              "example": "https://instagram.com/journey-bites"
+                              "example": "https://journey-bites.com/avatar.jpg"
                             },
-                            "facebook": {
+                            "bio": {
                               "type": "string",
-                              "example": "https://facebook.com/journey-bites"
-                            }
-                          }
-                        },
-                        "followers": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "followerId": {
-                                "type": "number",
-                                "example": 2
-                              }
-                            }
-                          }
-                        },
-                        "followings": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "followingId": {
-                                "type": "number",
-                                "example": 1
-                              }
+                              "example": "Travel blogger"
                             }
                           }
                         }
                       }
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
                     }
                   }
                 }

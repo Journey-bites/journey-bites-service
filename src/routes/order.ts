@@ -22,37 +22,27 @@ router.get(
         statusCode: 0,
         message: 'success',
         data: {
-          orderNo: '1',
-          status: 'pending',
-          ticket: {
-            ticketNo: '1',
-            title: 'Ticket 1',
-            price: 100,
-            quantity: 2,
-            total: 200
+          orderNo: '20240705_mb2d4d',
+          payment: {
+              amount: 60,
+              transactionId: '24070516431407295',
+              paymentIP: '123.194.159.15',
+              escrowBank: 'HNCB',
+              paymentType: 'WEBATM',
+              account5Code: '12345',
+              payBankCode: '809',
+              orderId: '6687b2199dff4ff495c7606d',
+              createdAt: '2024-07-05T08:43:15.456Z'
           },
-          user: {
-            userId: '1',
-            email: 'test1@gmail.com',
-            displayName: 'Journey Bites',
-            avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
-            bio: 'Journey Bites is a travel blogger',
-            socialLinks: {
-              website: 'https://journey-bites.com',
-              instagram: 'https://instagram.com/journey-bites',
-              facebook: 'https://facebook.com/journey-bites',
-            },
-            followers: [
-              {
-                followerId: 2
-              }
-            ],
-            followings: [
-              {
-                followingId: 1
-              }
-            ]
-          }
+          seller: {
+            id: '667b20205e32661530d68501',
+            profile: {
+              displayName: 'Journey Bites',
+              avatarImageUrl: 'https://journey-bites.com/avatar.jpg',
+              bio: 'Travel blogger',
+            }
+          },
+          isSuccess: true,
         }
       }
     }

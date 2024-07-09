@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import db from '@/db';
+import { baseUserProfileQuery } from '@/db/queryCondition';
 import { PrismaClientErrorCode } from '@/types/PrismaClientErrorCode';
 
 type GetArticlesPayload = {
@@ -51,13 +52,7 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', category }: 
         creator: {
           select: {
             id: true,
-            profile: {
-              select: {
-                displayName: true,
-                avatarImageUrl: true,
-                bio: true,
-              },
-            },
+            profile: baseUserProfileQuery,
           },
         },
         category: {
@@ -271,13 +266,7 @@ const getArticleById = async (articleId: string) => {
         creator: {
           select: {
             id: true,
-            profile: {
-              select: {
-                displayName: true,
-                avatarImageUrl: true,
-                bio: true,
-              },
-            },
+            profile: baseUserProfileQuery,
           },
         },
         category: {
@@ -293,25 +282,13 @@ const getArticleById = async (articleId: string) => {
             likedUsers: {
               select: {
                 id: true,
-                profile: {
-                  select: {
-                    displayName: true,
-                    avatarImageUrl: true,
-                    bio: true,
-                  },
-                },
+                profile: baseUserProfileQuery,
               },
             },
             favoriteBy: {
               select: {
                 id: true,
-                profile: {
-                  select: {
-                    displayName: true,
-                    avatarImageUrl: true,
-                    bio: true,
-                  },
-                },
+                profile: baseUserProfileQuery,
               },
             },
           },
@@ -538,13 +515,7 @@ const getComments = async (articleId: string) => {
         user: {
           select: {
             id: true,
-            profile: {
-              select: {
-                displayName: true,
-                avatarImageUrl: true,
-                bio: true,
-              },
-            },
+            profile: baseUserProfileQuery,
           },
         },
       },

@@ -94,8 +94,6 @@ model Article {
   status       ArticleStatus? @relation("ArticleStatus")
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
-
-  @@unique([id, creatorId])
 }
 
 model ArticleStatus {
@@ -147,9 +145,9 @@ model Subscription {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
   subscribedTo   User     @relation("UserSubscribers", fields: [subscribedToId], references: [id], onDelete: Cascade)
-  subscribedToId String   @unique @db.ObjectId
+  subscribedToId String   @db.ObjectId
   subscriber     User     @relation("UserSubscriptions", fields: [subscriberId], references: [id], onDelete: Cascade)
-  subscriberId   String   @unique @db.ObjectId
+  subscriberId   String   @db.ObjectId
   order          Order?   @relation(fields: [orderId], references: [id])
   orderId        String   @unique @db.ObjectId
 
@@ -165,9 +163,9 @@ model Payment {
   paymentType   String
   account5Code  String
   payBankCode   String
+  createdAt     DateTime @default(now()) @map("created_at")
   order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId       String   @unique @db.ObjectId
-  createdAt     DateTime @default(now()) @map("created_at")
 }
 
 model Order {

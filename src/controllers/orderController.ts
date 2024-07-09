@@ -15,16 +15,16 @@ const orderController = {
     try {
       const orders = await orderService.getOrdersByUserId(userId);
 
-      const data = orders.map((order) => {
-        const { status, subscription, ...rest } = order;
-        const isSuccess = status === 'SUCCESS';
+      const data =
+        orders.map((order) => {
+          const { status, subscription, ...rest } = order;
 
-        return {
-          ...rest,
-          seller: subscription?.subscribedTo,
-          isSuccess,
-        };
-      });
+          return {
+            ...rest,
+            seller: subscription?.subscribedTo,
+            isSuccess: status === 'SUCCESS',
+          };
+        }) ?? [];
 
       return createResponse(res, {
         data,
@@ -49,8 +49,15 @@ const orderController = {
         throw new ResourceNotFoundException('Order not found');
       }
 
+      const { status, subscription, ...rest } = order;
+      const data = {
+        ...rest,
+        seller: subscription?.subscribedTo,
+        isSuccess: status === 'SUCCESS',
+      };
+
       return createResponse(res, {
-        data: order,
+        data,
       });
     } catch (error) {
       if (error instanceof HttpException) {

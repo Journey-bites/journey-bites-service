@@ -50,6 +50,25 @@ const getOrderByUserIdAndOrderNo = async (userId: string, orderNo: string) => {
         orderNo,
         userId,
       },
+      select: {
+        orderNo: true,
+        status: true,
+        subscription: {
+          select: {
+            subscribedTo: {
+              select: {
+                id: true,
+                profile: baseUserProfileQuery,
+              },
+            },
+          },
+        },
+        payment: {
+          omit: {
+            id: true,
+          },
+        },
+      },
     });
 
     return order;

@@ -517,6 +517,9 @@ const getComments = async (articleId: string) => {
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     return comments;

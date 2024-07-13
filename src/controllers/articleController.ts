@@ -219,22 +219,6 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const result = await articleService.getArticleById(articleId);
-
-      if (!result) {
-        throw new ResourceNotFoundException('Article not found');
-      }
-
-      const isLiked = await articleService.checkIsArticleLiked(userId, articleId);
-
-      if (isLiked) {
-        return createResponse(res, {
-          httpCode: 400,
-          errorCode: ErrorCode.BAD_REQUEST,
-          message: 'Article already liked',
-        });
-      }
-
       await articleService.likeArticle(userId, articleId);
 
       return createResponse(res, { httpCode: 204 });
@@ -252,22 +236,6 @@ const articleController = {
     const { articleId } = req.params;
 
     try {
-      const result = await articleService.getArticleById(articleId);
-
-      if (!result) {
-        throw new ResourceNotFoundException('Article not found');
-      }
-
-      const isLiked = await articleService.checkIsArticleLiked(userId, articleId);
-
-      if (!isLiked) {
-        return createResponse(res, {
-          httpCode: 400,
-          errorCode: ErrorCode.BAD_REQUEST,
-          message: 'Article not liked yet',
-        });
-      }
-
       await articleService.unlikeArticle(userId, articleId);
 
       return createResponse(res, { httpCode: 204 });

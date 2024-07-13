@@ -240,17 +240,9 @@ router.post(
       description: 'Invalid field',
       schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
-    #swagger.responses[400] = {
-      description: 'Article already liked',
-      schema: { statusCode: 1008, message: 'Article already liked' }
-    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 1002, message: 'Unauthorized' }
-    }
-    #swagger.responses[404] = {
-      description: 'Article not found',
-      schema: { statusCode: 1007, message: 'Article not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',
@@ -276,17 +268,9 @@ router.delete(
       description: 'Invalid field',
       schema: { statusCode: 1006, message: 'Invalid field (param)' }
     }
-    #swagger.responses[400] = {
-      description: 'Article not liked',
-      schema: { statusCode: 1008, message: 'Article not liked yet' }
-    }
     #swagger.responses[401] = {
       description: 'Unauthorized',
       schema: { statusCode: 1002, message: 'Unauthorized' }
-    }
-    #swagger.responses[404] = {
-      description: 'Article not found',
-      schema: { statusCode: 1007, message: 'Article not found' }
     }
     #swagger.responses[500] = {
       description: 'Internal server error',

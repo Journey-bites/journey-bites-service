@@ -70,6 +70,12 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', category }: 
             views: true,
             likes: true,
             subscriptions: true,
+            likedUsers: {
+              select: {
+                id: true,
+                profile: baseUserProfileQuery,
+              },
+            },
           },
         },
       },
@@ -86,10 +92,14 @@ const getArticles = async ({ page = 1, pageSize = 10, keyword = '', category }: 
     });
 
     const formatArticlesDetails = articlesDetails.map((article) => {
-      const { _count, ...rest } = article;
+      const { _count, status, ...rest } = article;
 
       return {
         ...rest,
+        status: {
+          ...status,
+          likes: status?.likedUsers.length,
+        },
         commentCount: _count.comments,
       };
     });
@@ -301,7 +311,15 @@ const getArticleById = async (articleId: string) => {
       },
     });
 
-    return article;
+    if (!article?.status) return null;
+
+    return {
+      ...article,
+      status: {
+        ...article.status,
+        likes: article.status.likedUsers.length,
+      },
+    };
   } catch (error) {
     throw new Error('Error while getting article');
   }

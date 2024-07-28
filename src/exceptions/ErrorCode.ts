@@ -18,6 +18,8 @@ const enum ErrorCode {
   RESOURCE_NOT_FOUND = 1007,
   /** General bad request error */
   BAD_REQUEST = 1008,
+  /** Form data in request is illegal or malformed   */
+  ILLEGAL_FORM_DATA = 1009,
   /** User not found in the db */
   USER_NOT_FOUND = 2001,
   /** User already exists in the db */

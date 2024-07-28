@@ -5,7 +5,7 @@ import { AnyZodObject, ZodError } from 'zod';
 import ErrorCode from '@/exceptions/ErrorCode';
 import { createResponse } from '@/utils/http';
 
-type FieldType = 'body' | 'params' | 'query';
+type FieldType = 'body' | 'params' | 'query' | 'file';
 
 const validateRequest = (schema: AnyZodObject, type: FieldType = 'body'): RequestHandler => {
   return (req, res, next) => {

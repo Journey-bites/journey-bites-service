@@ -1,10 +1,11 @@
 import { Router } from 'express';
-
+import multer from 'multer';
 import fileController from '@/controllers/fileController';
 import validateRequest from '@/middlewares/validateRequest';
-import { fileRequestSchema } from '@/validateSchema/fileRequest';
+import { imageFileRequestSchema } from '@/validateSchema/fileRequest';
 
 const router = Router();
+const upload = multer();
 
 router.post(
   '/upload-image',
@@ -27,7 +28,8 @@ router.post(
     schema: { statusCode: 9999, message: 'Error while getting pre-signed URL' }
   }
 */
-  validateRequest(fileRequestSchema),
+  upload.single('image'),
+  validateRequest(imageFileRequestSchema, 'file'),
   fileController.uploadImageToR2
 );
 export default router;

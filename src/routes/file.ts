@@ -12,7 +12,7 @@ router.post(
   /* 
   #swagger.security = [{'Bearer': []}]
   #swagger.tags = ['File']
-  #swagger.description = 'Get pre-signed URL.'
+  #swagger.description = 'Upload image to R2.'
   #swagger.responses[201] = {
     description: 'success',
     schema: { 
@@ -25,7 +25,7 @@ router.post(
   }
   #swagger.responses[500] = {
     description: 'Internal server error',
-    schema: { statusCode: 9999, message: 'Error while getting pre-signed URL' }
+    schema: { statusCode: 9999, message: 'Error while uploading image to R2' }
   }
 */
   upload.single('image'),

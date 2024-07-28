@@ -34,11 +34,7 @@ const fileController = {
         },
       });
       if (!uploadResponse.ok) {
-        throw new HttpException({
-          httpCode: 500,
-          errorCode: ErrorCode.BAD_REQUEST,
-          message: 'Error while uploading image to R2',
-        });
+        throw new SystemException('Error while uploading image to R2');
       }
 
       return createResponse(res, {

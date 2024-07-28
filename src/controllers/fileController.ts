@@ -30,7 +30,7 @@ const fileController = {
         method: 'PUT',
         body: file.buffer,
         headers: {
-          'Content-Type': file?.mimetype,
+          'Content-Type': file.mimetype,
         },
       });
       if (!uploadResponse.ok) {

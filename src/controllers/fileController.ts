@@ -6,7 +6,6 @@ import { R2Client } from '@/lib/r2';
 import { SystemException } from '@/exceptions/SystemException';
 import { createResponse } from '@/utils/http';
 import asyncHandler from '@/utils/asyncHandler';
-import { R2_DEV_URL } from '@/constants';
 import { HttpException } from '@/exceptions/HttpException';
 import ErrorCode from '@/exceptions/ErrorCode';
 
@@ -39,7 +38,7 @@ const fileController = {
 
       return createResponse(res, {
         data: {
-          url: `${R2_DEV_URL}/${key}`,
+          url: `${process.env.R2_DEV_URL}/${key}`,
         },
       });
     } catch (error) {
@@ -47,7 +46,7 @@ const fileController = {
         next(error);
         return;
       }
-      throw new SystemException('Error while getting pre-signed URL');
+      throw new SystemException('Error while uploading image to R2');
     }
   }),
 };

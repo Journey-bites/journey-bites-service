@@ -12,6 +12,7 @@ import categoryRouter from '@/routes/category';
 import paymentRouter from '@/routes/payment';
 import userRouter from '@/routes/user';
 import orderRouter from '@/routes/order';
+import fileRouter from '@/routes/file';
 import swaggerDocument from '@/swagger-output.json';
 import { createResponse } from '@/utils/http';
 
@@ -48,5 +49,6 @@ router.use('/payment', paymentRouter);
 
 router.use('/user', authenticate, userRouter);
 router.use('/order', authenticate, orderRouter);
+router.use('/file', authenticate, fileRouter);
 
 export default router;
